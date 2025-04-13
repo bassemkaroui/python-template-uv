@@ -1,0 +1,216 @@
+[project]
+name = "{{ project_name }}"
+version = "0.0.1"
+description = "{{ project_description }}"
+authors = [{ name = "{{ author_fullname }}", email = "{{ author_email }}" }]
+readme = "README.md"
+keywords = ['python']
+requires-python = ">=3.10,<4.0"
+classifiers = [
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    # "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Homepage = "https://bassemkaroui.github.io/example-project/"
+Repository = "https://github.com/bassemkaroui/example-project"
+Documentation = "https://bassemkaroui.github.io/example-project/"
+
+[dependency-groups]
+dev = [
+    "pytest>=7.2.0",
+    "pre-commit>=2.20.0",
+    "tox-uv>=1.11.3",
+    
+    "mypy>=0.991",
+    "pytest-cov>=4.0.0",
+    "ruff>=0.11.2",
+    "mkdocs>=1.4.2",
+    "mkdocs-material>=8.5.10",
+    "mkdocstrings[python]>=0.26.1",
+    "griffe-typingdoc>=0.2.8",
+]
+
+[build-system]
+requires = ["hatchling", "uv-dynamic-versioning"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
+
+[tool.uv-dynamic-versioning]
+vcs = "git"
+style = "pep440"
+bump = true
+
+[tool.uv]
+cache-keys = [
+    { file = "pyproject.toml" },
+    { git = { commit = true, tags = true } },
+]
+
+[tool.hatch.build.hooks.version]
+path = "src/example_project/_version.py"
+template = '''
+version = "{version}"
+'''
+
+
+
+[tool.mypy]
+files = ["src"]
+disallow_untyped_defs = true
+# disallow_any_unimported = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+show_error_codes = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--import-mode=importlib"]
+
+[tool.ruff]
+# extend = "~/.config/nvim/ruff/pyproject.toml"
+target-version = "py310"
+line-length = 100
+fix = true
+
+[tool.ruff.lint]
+preview = true
+select = [
+    # flake8-2020
+    "YTT",
+    # flake8-bandit
+    "S",
+    # flake8-bugbear
+    "B",
+    # flake8-builtins
+    "A",
+    # flake8-comprehensions
+    "C4",
+    # flake8-debugger
+    "T10",
+    # flake8-simplify
+    "SIM",
+    # flake8-future-annotations
+    "FA",
+    # isort
+    "I",
+    # mccabe
+    "C90",
+    # pycodestyle
+    "E", "W",
+    # pyflakes
+    "F",
+    # pygrep-hooks
+    "PGH",
+    # pyupgrade
+    "UP",
+    # ruff
+    "RUF",
+    # tryceratops
+    "TRY",
+    # NumPy-specific rules
+    "NPY",
+    # pandas-vet
+    "PD",
+    # pep8-naming
+    "N",
+    # flake8-pytest-style
+    "PT",
+    # flake8-pie
+    "PIE",
+    # flake8-tidy-imports
+    "TID",
+    # flake8-implicit-str-concat
+    "ISC",
+    # Perflint
+    "PERF",
+    # flynt
+    "FLY",
+    # unconventional-import-alias
+    "ICN001",
+    # pylint
+    "PL",
+]
+ignore = [
+    # LineTooLong
+    "E501",
+    # indentation-with-invalid-multiple
+    "E111",
+    # indentation-with-invalid-multiple-comment
+    "E114",
+    # over-indented
+    "E117",
+    # tab-indentation
+    "W191",
+    # too-many-public-methods
+    "PLR0904",
+    # Too many returns
+    "PLR0911",
+    # Too many branches
+    "PLR0912",
+    # Too many arguments to function call
+    "PLR0913",
+    # too-many-locals
+    "PLR0914",
+    # Too many statements
+    "PLR0915",
+    # too-many-boolean-expressions
+    "PLR0916",
+    # Too many positional arguments
+    "PLR0917",
+    # too-many-nested-blocks
+    "PLR1702",
+    # literal-membership
+    "PLR6201",
+    # Private name import
+    "PLC2701",
+    # compare-to-empty-string
+    "PLC1901",
+    # import-outside-toplevel
+    "PLC0415",
+    # unnecessary-dunder-call
+    "PLC2801",
+    # Global statements are discouraged
+    "PLW0603",
+    # unspecified-encoding
+    "PLW1514",
+    # raise-vanilla-args
+    "TRY003",
+
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+
+[tool.ruff.format]
+preview = true
+docstring-code-format = true
+
+# [tool.ruff.lint.isort]
+# # Useful when using Python < 3.10
+# required-imports = ["from __future__ import annotations"]
+
+[tool.coverage.report]
+skip_empty = true
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self\\.debug",
+    "if __name__ == .__main__.:",
+]
+omit = ["*/__init__.py", "*/example_project/testing/*"]
+
+[tool.coverage.run]
+branch = true
+source = ["src"]

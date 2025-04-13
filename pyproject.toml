@@ -22,6 +22,7 @@ dependencies = [
     "copier>=9.6.0",
     "cz-conventional-gitmoji>=0.7.0",
     "pre-commit>=4.2.0",
+    "ruff>=0.11.5",
 ]
 
 [tool.commitizen]

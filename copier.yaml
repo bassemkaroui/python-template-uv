@@ -1,1 +1,31 @@
 _subdirectory: template
+_jinja_extensions:
+    - extensions.py:GitExtension
+
+project_name:
+    type: str
+    help: What is your project name?
+    validator: >-
+        {% if not (project_name | regex_search('^[a-z][a-z0-9\-]+$')) %}
+        project_name must start with a letter, followed by one or more letters,
+        digits or dashes all lowercase.
+        {% endif %}
+
+project_slug:
+    type: str
+    default: "{{ project_name.replace('-', '_') }}"
+    when: false
+
+project_description:
+    type: str
+    help: Your project description
+
+author_fullname:
+  type: str
+  help: Your full name
+  default: "{{ 'Bassem Karoui' | git_user_name }}"
+
+author_email:
+  type: str
+  help: Your email
+  default: "{{ 'bassem.karoui1@gmail.com' | git_user_email }}"
