@@ -1,6 +1,6 @@
 [project]
 name = "python-template-uv"
-version = "0.0.1"
+version = "0.1.0"
 description = "A Copier-powered template for creating Python packages managed with uv."
 readme = "README.md"
 authors = [{ name = "Bassem Karoui", email = "bassem.karoui1@gmail.com" }]
@@ -22,7 +22,6 @@ dependencies = [
     "copier>=9.6.0",
     "cz-conventional-gitmoji>=0.7.0",
     "pre-commit>=4.2.0",
-    "ruff>=0.11.5",
 ]
 
 [tool.commitizen]

@@ -1,5 +1,6 @@
 _subdirectory: template
 _jinja_extensions:
+    - copier_templates_extensions.TemplateExtensionLoader
     - extensions.py:GitExtension
 
 project_name:
