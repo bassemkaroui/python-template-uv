@@ -1,0 +1,118 @@
+site_name: {{ project_name }}
+{%- if repository_provider == 'github' %}
+repo_url: {{ repository }}
+site_url: {{ homepage }}
+repo_name: {{ author_github_handle }}/{{ project_name }}
+{%- endif %}
+site_description: {{ project_description }}
+site_author: {{ author_fullname }}
+edit_uri: edit/main/docs/
+# copyright: Maintained by <a href="https://{{ author_github_handle }}.com">{{ author_github_handle }}</a>.
+copyright: Maintained by <a href="https://github.com/{{ author_github_handle }}">{{ author }}</a>.
+
+nav:
+  - Home: index.md
+  - Modules: modules.md
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: ["src/{{ project_slug }}"]
+          options:
+            extensions:
+            - griffe_typingdoc
+            show_root_heading: true
+            show_if_no_docstring: true
+            # preload_modules:
+            # - httpx
+            # - starlette
+            inherited_members: true
+            members_order: source
+            separate_signature: true
+            unwrap_annotated: true
+            filters:
+            - '!^_'
+            merge_init_into_class: true
+            docstring_section_style: spacy
+            signature_crossrefs: true
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+theme:
+  name: material
+  features:
+    - navigation.footer
+    - navigation.indexes
+    - navigation.instant
+    - navigation.instant.prefetch
+    # - navigation.instant.preview
+    - navigation.instant.progress
+    - navigation.path
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    # - navigation.sections
+    # - toc.integrate
+    - toc.follow
+    - search.suggest
+    - search.share
+    - search.highlight
+    - content.tabs.link
+    # - content.code.annotation
+    # - content.code.select
+    - content.code.annotate
+    - content.code.copy
+    - content.tooltips
+    - content.footnote.tooltips
+  # feature:
+  #   tabs: true
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/lightbulb-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: white
+      accent: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  icon:
+    repo: fontawesome/brands/github
+
+extra:
+  social:
+    {%- if repository_provider == 'github' %}
+    - icon: fontawesome/brands/github
+      link: {{ repository }}
+    {%- endif %}
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/{{ project_name }}
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - admonition
+  - footnotes
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.mark
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg

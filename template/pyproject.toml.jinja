@@ -1,86 +1,95 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "{{ project_name }}"
 version = "0.0.1"
 description = "{{ project_description }}"
 authors = [{ name = "{{ author_fullname }}", email = "{{ author_email }}" }]
 readme = "README.md"
-keywords = ['python']
-requires-python = ">=3.10,<4.0"
+license = { file = "LICENSE" }
+keywords = [
+{%- set keywords = (project_keywords.split(",") | map("trim") | list) %}
+{%- for keyword in keywords | sort %}
+    "{{ keyword }}",
+{%- endfor %}
+]
+requires-python = ">={{ min_python_version }},<4.0"
 classifiers = [
     "Intended Audience :: Developers",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    # "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
+    {%- for version in py_versions %}
+    {%- set v_tuple = version.split('.') | map('int') | list -%}
+    {%- set min_tuple = min_python_version.split('.') | map('int') | list -%}
+    {%- if v_tuple >= min_tuple %}
+    "Programming Language :: Python :: {{ version }}",
+    {%- endif %}
+    {%- endfor %}
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 
+{% if repository_provider == 'github' -%}
 [project.urls]
-Homepage = "https://bassemkaroui.github.io/example-project/"
-Repository = "https://github.com/bassemkaroui/example-project"
-Documentation = "https://bassemkaroui.github.io/example-project/"
+Homepage = "{{ homepage }}"
+Repository = "{{ repository }}"
+Documentation = "{{ documentation }}"
+{%- endif %}
 
 [dependency-groups]
 dev = [
-    "pytest>=7.2.0",
-    "pre-commit>=2.20.0",
-    "tox-uv>=1.11.3",
-    
-    "mypy>=0.991",
-    "pytest-cov>=4.0.0",
-    "ruff>=0.11.2",
-    "mkdocs>=1.4.2",
-    "mkdocs-material>=8.5.10",
-    "mkdocstrings[python]>=0.26.1",
+    "pytest>=8.3.5",
+    "pytest-cov>=6.1.1",
+    "pre-commit>=4.2.0",
+    {%- if tox %}
+    "tox-uv>=1.25.0",
+    {%- endif %}
+    "mypy>=1.15.0",
+    "ruff>=0.11.5",
+    {%- if with_conventional_commits %}
+    "commitizen>=4.6.0",
+    "cz-conventional-gitmoji>=0.7.0",
+    {%- endif %}
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.6.11",
+    "mkdocstrings[python]>=0.29.1",
     "griffe-typingdoc>=0.2.8",
+    "ipython>=8.35.0",
 ]
 
-[build-system]
-requires = ["hatchling", "uv-dynamic-versioning"]
-build-backend = "hatchling.build"
-
-[tool.hatch.version]
-source = "uv-dynamic-versioning"
-
-[tool.uv-dynamic-versioning]
-vcs = "git"
-style = "pep440"
-bump = true
-
-[tool.uv]
-cache-keys = [
-    { file = "pyproject.toml" },
-    { git = { commit = true, tags = true } },
-]
-
-[tool.hatch.build.hooks.version]
-path = "src/example_project/_version.py"
-template = '''
-version = "{version}"
-'''
-
-
+{% if with_conventional_commits -%}
+[tool.commitizen]  # https://commitizen-tools.github.io/commitizen/config/
+{%- if cz_gitmoji %}
+name = "cz_gitmoji"
+{%- else %}
+name = "cz_conventional_commits"
+{%- endif %}
+version_files = ["src/{{ project_slug }}/__version__.py"]
+tag_format = "$version"
+version_scheme = "pep440"
+version_provider = "uv"
+update_changelog_on_bump = true
+changelog_merge_prerelease = true
+{%- if gpg_sign_tags %}
+gpg_sign = true
+{%- endif %}
+{%- endif %}
 
 [tool.mypy]
 files = ["src"]
+check_untyped_defs = true
 disallow_untyped_defs = true
 # disallow_any_unimported = true
 no_implicit_optional = true
-check_untyped_defs = true
 warn_return_any = true
 warn_unused_ignores = true
+show_column_numbers = true
 show_error_codes = true
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-addopts = ["--import-mode=importlib"]
+show_error_context = true
 
 [tool.ruff]
-# extend = "~/.config/nvim/ruff/pyproject.toml"
-target-version = "py310"
+target-version = "py{{ min_python_version | replace('.', '') }}"
 line-length = 100
 fix = true
 
@@ -201,6 +210,10 @@ docstring-code-format = true
 # # Useful when using Python < 3.10
 # required-imports = ["from __future__ import annotations"]
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--import-mode=importlib"]
+
 [tool.coverage.report]
 skip_empty = true
 exclude_lines = [
@@ -209,7 +222,7 @@ exclude_lines = [
     "if self\\.debug",
     "if __name__ == .__main__.:",
 ]
-omit = ["*/__init__.py", "*/example_project/testing/*"]
+omit = ["*/__init__.py", "*/{{ project_slug }}/testing/*"]
 
 [tool.coverage.run]
 branch = true

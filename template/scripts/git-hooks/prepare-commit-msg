@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Get the root of the git repo
+REPO_ROOT=$(git rev-parse --show-toplevel)
+
+uv run "$REPO_ROOT/scripts/git-hooks/prepare-commit-msg.py"
