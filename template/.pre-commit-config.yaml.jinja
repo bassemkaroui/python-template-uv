@@ -36,12 +36,6 @@ repos:
       {%- endif %}
       stages:
       - commit-msg
-    - id: commitizen-branch
-      {%- if cz_gitmoji %}
-      additional_dependencies: [cz-conventional-gitmoji]
-      {%- endif %}
-      stages:
-      - pre-push
   {%- endif %}
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: "v0.11.5"
