@@ -1,11 +1,12 @@
 #!/usr/bin/env python
+import sys
 from pathlib import Path
 
 try:
     from commitizen.cz.utils import get_backup_file_path
 except ImportError as error:
     print(f"could not import commitizen:\n{error}")
-    exit(1)
+    sys.exit(1)
 
 
 def post_commit() -> None:
@@ -18,4 +19,4 @@ def post_commit() -> None:
 
 if __name__ == "__main__":
     post_commit()
-    exit(0)
+    sys.exit(0)
