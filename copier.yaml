@@ -5,8 +5,10 @@ _jinja_extensions:
     - extensions.py:CurrentYearExtension
 _tasks:
     - "git init"
-    - "mv scripts/git-hooks/post-commit .git/hooks"
-    - "mv scripts/git-hooks/prepare-commit-msg .git/hooks"
+    - command: mv scripts/git-hooks/post-commit .git/hooks
+      when: "{{ with_conventional_commits }}"
+    - command: mv scripts/git-hooks/prepare-commit-msg .git/hooks
+      when: "{{ with_conventional_commits }}"
 
 project_name:
     type: str
