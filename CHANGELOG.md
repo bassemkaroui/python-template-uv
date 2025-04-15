@@ -1,3 +1,18 @@
+## 0.1.0b1 (2025-04-15)
+
+### 🐛🚑️ Fixes
+
+- **commitizen**: make the `post-commit` and `prepare-commit-msg` available only when using commitizen
+
+### 📌➕⬇️➖⬆️ Dependencies
+
+- add `copier-templates-extensions` and `ruff` to the dependencies
+
+### 🔧🔨📦️ Configuration, Scripts, Packages
+
+- **pre-commit**: Run certain hooks only in `pre-commit` if `pre-push` is in `default_install_hook_types`
+- **pre-commit**: set the default stage to `pre-commit`
+
 ## 0.1.0b0 (2025-04-15)
 
 ### ✨ Features
