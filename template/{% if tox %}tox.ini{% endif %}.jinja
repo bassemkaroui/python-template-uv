@@ -1,0 +1,30 @@
+[tox]
+skipsdist = true
+{% set ns = namespace(envlist="") -%}
+{%- for version in py_versions -%}
+  {%- set v_tuple = version.split('.') | map('int') | list -%}
+  {%- set min_tuple = min_python_version.split('.') | map('int') | list -%}
+  {%- if v_tuple >= min_tuple -%}
+    {%- set sep = ", " if ns.envlist else "" -%}
+    {%- set ns.envlist = ns.envlist + sep + "py" + version.replace(".", "") -%}
+  {%- endif -%}
+{%- endfor -%}
+envlist = {{ ns.envlist }}
+
+[gh-actions]
+python =
+    {%- for version in py_versions %}
+    {%- set v_tuple = version.split('.') | map('int') | list -%}
+    {%- set min_tuple = min_python_version.split('.') | map('int') | list -%}
+    {%- if v_tuple >= min_tuple %}
+    {{ version }}: py{{ version | replace('.', '') }}
+    {%- endif %}
+    {%- endfor %}
+
+[testenv]
+passenv = PYTHON_VERSION
+allowlist_externals = uv
+commands =
+    uv sync --python {envpython}
+    uv run --python {envpython} python -m pytest --doctest-modules tests --cov --cov-config=pyproject.toml --cov-report=xml --cov-report=term-missing -vv
+    mypy

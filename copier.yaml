@@ -1,1 +1,149 @@
 _subdirectory: template
+_jinja_extensions:
+    - copier_templates_extensions.TemplateExtensionLoader
+    - extensions.py:GitExtension
+    - extensions.py:CurrentYearExtension
+_tasks:
+    - "git init"
+    - "mv scripts/git-hooks/post-commit .git/hooks"
+    - "mv scripts/git-hooks/prepare-commit-msg .git/hooks"
+
+project_name:
+    type: str
+    help: What is your project name?
+    validator: >-
+        {% if not (project_name | regex_search('^[a-z][a-z0-9\-]+$')) %}
+        project_name must start with a letter, followed by one or more letters,
+        digits or dashes all lowercase.
+        {% endif %}
+
+project_slug:
+    type: str
+    default: "{{ project_name.replace('-', '_') }}"
+    when: false
+
+project_description:
+    type: str
+    help: Your project description
+
+project_keywords:
+  default: "python,{{ project_name | lower }}"
+  type: str
+  help: "Provide a list of comma-separated keywords to be using in the Python package overview:"
+
+author_fullname:
+  type: str
+  help: Your full name
+  default: "{{ 'Bassem Karoui' | git_user_name }}"
+
+author_email:
+  type: str
+  help: Your email
+  default: "{{ 'bassem.karoui1@gmail.com' | git_user_email }}"
+
+repository_provider:
+  type: str
+  help: Your repository provider
+  default: github
+  choices:
+  - github
+  - other
+
+author_github_handle:
+  when: "{{ repository_provider == 'github' }}"
+  type: str
+  help: Your Github handle
+  default: "{{ author_fullname | lower | replace(' ', '')}}"
+
+homepage:
+  when: "{{ repository_provider == 'github' }}"
+  type: str
+  help: "The project Homepage"
+  default: "https://{{ author_github_handle }}.github.io/{{ project_name }}"
+
+repository:
+  when: "{{ repository_provider == 'github' }}"
+  type: str
+  help: "The project Repository"
+  default: "https://github.com/{{ author_github_handle }}/{{ project_name }}"
+
+documentation:
+  when: "{{ repository_provider == 'github' }}"
+  type: str
+  help: "The project Documentation"
+  default: "https://{{ author_github_handle }}.github.io/{{ project_name }}"
+
+copyright_license:
+  type: str
+  help: Choose the project's license (e.g. "MIT", "GPL-3.0").
+  default: MIT License
+  choices:
+    - Apache Software License
+    - BSD 3-clause License
+    - Boost Software License 1.0 (BSL-1.0)
+    - GNU General Public License v3 (GPLv3)
+    - ISC License
+    - MIT License
+    - The Unlicense (Unlicense)
+
+copyright_holder:
+  type: str
+  help: Name or organization holding the copyright
+  default: "{{ author_fullname }}"
+
+copyright_year:
+  when: false
+  type: str
+  default: "{{ current_year }}"
+
+python_version:
+  type: str
+  help: "Choose the default Python version for development, documentation generation, and package build:"
+  default: "3.12"
+  choices:
+    - "3.10"
+    - "3.11"
+    - "3.12"
+    - "3.13"
+
+min_python_version:
+  type: str
+  help: "Choose the minimum Python version the project should support:"
+  default: "3.10"
+  choices:
+    - "3.10"
+    - "3.11"
+    - "3.12"
+    - "3.13"
+
+py_versions:
+  default: ["3.10", "3.11", "3.12", "3.13"]
+  when: false
+
+tox:
+  type: bool
+  default: true
+  help: Do you want to use Tox?
+
+with_conventional_commits:
+  type: bool
+  help: >-
+    Do you want to follow the Conventional Commits standard (https://www.conventionalcommits.org)
+    for your commit messages?
+  default: true
+
+cz_gitmoji:
+  type: bool
+  help: Do you want to use emojis for your commits?
+  default: true
+  when: "{{ with_conventional_commits }}"
+
+gpg_sign_tags:
+  type: bool
+  default: "{{ false | are_tags_gpg_signed }}"
+  when: false
+
+publish_to_pypi:
+  type: bool
+  default: false
+  help: Do you want to publish a release to PyPI?

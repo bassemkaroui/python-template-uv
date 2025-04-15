@@ -6,7 +6,7 @@ readme = "README.md"
 authors = [{ name = "Bassem Karoui", email = "bassem.karoui1@gmail.com" }]
 license = { file = "LICENSE" }
 requires-python = ">=3.10"
-keywords = ['python', 'copier', 'uv']
+keywords = ['python', 'copier-template', 'project-template', 'uv']
 classifiers = [
     "Intended Audience :: Developers",
     "Programming Language :: Python",
