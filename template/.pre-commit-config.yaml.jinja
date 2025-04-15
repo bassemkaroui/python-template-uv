@@ -22,11 +22,21 @@ repos:
         exclude: ^mkdocs\.yml$
       - id: check-json
       - id: check-added-large-files
+        {%- if with_conventional_commits %}
+        stages: [pre-commit]
+        {%- endif %}
       - id: detect-private-key
       - id: pretty-format-json
         args: [--autofix]
       - id: end-of-file-fixer
+        {%- if with_conventional_commits %}
+        stages: [pre-commit]
+        {%- endif %}
       - id: trailing-whitespace
+        {%- if with_conventional_commits %}
+        stages: [pre-commit]
+        {%- endif %}
+
   {%- if with_conventional_commits %}
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v4.5.1
@@ -38,6 +48,7 @@ repos:
       stages:
       - commit-msg
   {%- endif %}
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: "v0.11.5"
     hooks:
