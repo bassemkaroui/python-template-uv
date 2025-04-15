@@ -30,7 +30,7 @@ repos:
     rev: v4.5.1
     hooks:
     - id: commitizen
-      {%- if cz_gitmoji %}j
+      {%- if cz_gitmoji %}
       additional_dependencies: [cz-conventional-gitmoji]
       {%- endif %}
       stages:
