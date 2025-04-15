@@ -5,7 +5,8 @@ _jinja_extensions:
     - extensions.py:CurrentYearExtension
 _tasks:
     - "git init"
-    - "mv scripts/git-hooks/{post-commit,prepare-commit-msg} .git/hooks"
+    - "mv scripts/git-hooks/post-commit .git/hooks"
+    - "mv scripts/git-hooks/prepare-commit-msg .git/hooks"
 
 project_name:
     type: str
