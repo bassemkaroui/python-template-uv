@@ -215,6 +215,7 @@ testpaths = ["tests"]
 addopts = ["--import-mode=importlib"]
 
 [tool.coverage.report]
+fail_under = {{ coverage_threshold }}
 skip_empty = true
 exclude_lines = [
     "pragma: no cover",
