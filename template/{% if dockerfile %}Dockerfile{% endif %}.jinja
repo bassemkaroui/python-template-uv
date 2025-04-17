@@ -9,10 +9,9 @@ ENV UV_COMPILE_BYTECODE=1
 # Copy from the cache instead of linking since it's a mounted volume
 ENV UV_LINK_MODE=copy
 
-# Disable Python downloads, because we want to use the system interpreter across both images.
+# Disable Python downloads, because we want to use the system interpreter.
 ENV UV_PYTHON_DOWNLOADS=0
 
-# Set the working directory
 WORKDIR /workspaces/{{ project_name }}
 
 # Install dependencies
@@ -25,12 +24,9 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 	uv sync --frozen --no-install-project --all-extras; \
 	fi
 
-
-
-# Copy the project into the intermediate image
 COPY . .
 
-# Sync the project
+# Install the project
 RUN --mount=type=cache,target=/root/.cache/uv \
 	if [ "$ENVIRONMENT" = "prod" ]; then \
 	uv sync --frozen --no-editable --no-dev; \
@@ -39,12 +35,10 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 	fi
 
 # ---------- production image ----------
-
-# Use a final image without uv
 FROM python:{{ python_version }}-slim-bookworm AS prod
 
-{%- if not privileged_container %}
-RUN groupadd -g {{ gid }} {{ project_name }} && useradd -u {{ uid }} -g {{ gid }} -r {{ project_name }}
+{% if not privileged_container -%}
+RUN groupadd -r {{ project_name }} && useradd -r -g {{ project_name }} {{ project_name }}
 
 RUN mkdir -p /workspaces/{{ project_name }} && chown -R {{ project_name }}:{{ project_name }} /workspaces
 {%- endif %}
@@ -54,21 +48,18 @@ WORKDIR /workspaces/{{ project_name }}
 # Pull in just the venv (with project code baked into site‑packages)
 COPY --from=builder {% if not privileged_container %}--chown={{ project_name }}:{{ project_name }} {% endif %}/workspaces/{{ project_name }}/.venv .venv
 
-# Place executables in the environment at the front of the path
 ENV PATH="/workspaces/{{ project_name }}/.venv/bin:$PATH"
 
-{%- if not privileged_container %}
+{% if not privileged_container -%}
 USER {{ project_name }}
 {%- endif %}
 
-# Run the application
-# CMD ["hello-cli"]
-CMD ["uvicorn", "example_project_3:app", "--host", "0.0.0.0", "--port", "8000"]
+# CMD ["uvicorn", "{{ project_name }}:app", "--host", "0.0.0.0", "--port", "8000"]
 
 # ---------- development image ----------
 FROM python:{{ python_version }}-slim-bookworm AS dev
 
-{%- if not privileged_container %}
+{% if not privileged_container -%}
 RUN groupadd -g {{ gid }} {{ project_name }} && useradd -u {{ uid }} -g {{ gid }} -r {{ project_name }}
 
 RUN mkdir -p /workspaces/{{ project_name }} && chown -R {{ project_name }}:{{ project_name }} /workspaces
@@ -79,14 +70,12 @@ WORKDIR /workspaces/{{ project_name }}
 # Pull in the same venv (editable project install)
 COPY --from=builder {% if not privileged_container %}--chown={{ project_name }}:{{ project_name }} {% endif %}/workspaces/{{ project_name }}/.venv .venv
 
-# Copy source so the container starts with your current state
 COPY {% if not privileged_container %}--chown={{ project_name }}:{{ project_name }} {% endif %}. .
 
 ENV PATH="/workspaces/{{ project_name }}/.venv/bin:$PATH"
 
-{%- if not privileged_container %}
+{% if not privileged_container -%}
 USER {{ project_name }}
 {%- endif %}
 
-# reload on code‐changes
-CMD ["uvicorn", "example_project_3:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+# CMD ["uvicorn", "{{ project_name }}:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
