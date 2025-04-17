@@ -1,3 +1,28 @@
+## 0.1.0b2 (2025-04-17)
+
+### ✨ Features
+
+- add support for Docker containers
+
+### 🐛🚑️ Fixes
+
+- **Dockerfile**: fix some issues with Dockerfile
+- **tox**: prevent uv from removing project `.venv` by using `--active` flag in `tox.ini`
+- **commitizen**: avoid running `prepare-commit-msg.py` in certain cases so that `copier update` works
+
+### 🔥⚰️ Clean up
+
+- **commitizen**: remove `prepare-commit-msg` and `post-commit` git hooks
+
+### 🔧🔨📦️ Configuration, Scripts, Packages
+
+- **coverage**: set a default coverage of 100 for the template
+
+### 🩹 fix-simple
+
+- **compose.yaml**: change the version in the Docker images tags automatically with commitizen
+- fix `install` and `install-dev` targets in Makefile and minor change in Dockerfile
+
 ## 0.1.0b1 (2025-04-15)
 
 ### 🐛🚑️ Fixes
