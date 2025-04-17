@@ -3,6 +3,8 @@ _jinja_extensions:
     - copier_templates_extensions.TemplateExtensionLoader
     - extensions.py:GitExtension
     - extensions.py:CurrentYearExtension
+    - extensions.py:UserUIDGUIDExtension
+
 _tasks:
     - "git init"
 
@@ -151,3 +153,30 @@ publish_to_pypi:
   type: bool
   default: false
   help: Do you want to publish a release to PyPI?
+
+dockerfile:
+  type: bool
+  default: true
+  help: Do you need a Dockerfile?
+
+privileged_container:
+  type: bool
+  when: "{{ dockerfile }}"
+  default: false
+  help: Do you want your container to have root access?
+
+uid:
+  type: int
+  when: false
+  default: "{{ uid }}"
+
+gid:
+  type: int
+  when: false
+  default: "{{ gid }}"
+
+gpus:
+  type: bool
+  when: "{{ dockerfile }}"
+  help: Do you need GPU capabilities for you containers?
+  default: false

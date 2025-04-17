@@ -1,3 +1,4 @@
+import os
 import subprocess  # noqa: S404
 from datetime import date
 
@@ -33,3 +34,10 @@ class CurrentYearExtension(Extension):
     def __init__(self, environment):
         super().__init__(environment)
         environment.globals["current_year"] = date.today().year
+
+
+class UserUIDGUIDExtension(Extension):
+    def __init__(self, environment):
+        super().__init__(environment)
+        environment.globals["uid"] = os.getuid()
+        environment.globals["gid"] = os.getgid()

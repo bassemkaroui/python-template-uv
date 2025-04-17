@@ -1,0 +1,57 @@
+services:
+  {{ project_name }}:
+    image: {{ project_name }}:0.0.1
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: prod
+      args:
+        - ENVIRONMENT=prod
+    ports:
+      - "8000:8000"
+    {%- if gpus %}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    {%- endif %}
+    restart: unless-stopped
+
+  {{ project_name }}-dev:
+    image: {{ project_name }}:0.0.1-dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+      args:
+        - ENVIRONMENT=dev
+    ports:
+      - "8001:8000"
+    {%- if gpus %}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    {%- endif %}
+    profiles:
+      - dev
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /workspaces/{{ project_name }}
+          ignore:
+            - .venv/
+            {%- if tox %}
+            - .tox/
+            {%- endif %}
+
+        - action: rebuild
+          path: ./pyproject.toml
+    restart: unless-stopped
