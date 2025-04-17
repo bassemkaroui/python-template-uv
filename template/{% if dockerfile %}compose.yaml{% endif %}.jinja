@@ -21,7 +21,7 @@ services:
     restart: unless-stopped
 
   {{ project_name }}-dev:
-    image: {{ project_name }}:0.0.1-dev
+    image: {{ project_name }}:0.0.1-devel
     build:
       context: .
       dockerfile: Dockerfile
