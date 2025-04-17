@@ -25,6 +25,6 @@ python =
 passenv = PYTHON_VERSION
 allowlist_externals = uv
 commands =
-    uv sync --python {envpython}
-    uv run --python {envpython} python -m pytest --doctest-modules tests --cov --cov-config=pyproject.toml --cov-report=xml --cov-report=term-missing -vv
-    mypy
+    uv sync --python {envpython} --active
+    uv run --python {envpython} --active python -m pytest --doctest-modules tests --cov --cov-config=pyproject.toml --cov-report=xml --cov-report=term-missing -vv
+    uv run --python {envpython} --active mypy
