@@ -38,7 +38,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 FROM python:{{ python_version }}-slim-bookworm AS prod
 
 {% if not privileged_container -%}
-RUN groupadd -r {{ project_name }} && useradd -r -g {{ project_name }} {{ project_name }}
+RUN groupadd -r {{ project_name }} && useradd -r -g {{ project_name }} -M -s /usr/sbin/nologin {{ project_name }}
 
 RUN mkdir -p /workspaces/{{ project_name }} && chown -R {{ project_name }}:{{ project_name }} /workspaces
 {%- endif %}

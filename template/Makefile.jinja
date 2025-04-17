@@ -2,13 +2,13 @@
 install: ## Install the virtual environment and install the pre-commit hooks
 	@command -v uv >/dev/null 2>&1 || { echo "⚡ uv not found, installing..."; curl -LsSf https://astral.sh/uv/install.sh | sh; }
 	@echo "🚀 Creating virtual environment using uv"
-	@uv sync
+	@uv sync --no-dev
 
 .PHONY: install-dev
 install-dev: ## Install the virtual environment with the dev dependencies and install the pre-commit hooks
 	@command -v uv >/dev/null 2>&1 || { echo "⚡ uv not found, installing..."; curl -LsSf https://astral.sh/uv/install.sh | sh; }
 	@echo "🚀 Creating virtual environment using uv"
-	@uv sync
+	@uv sync --all-extras
 	@uv run pre-commit install -f
 
 .PHONY: check
