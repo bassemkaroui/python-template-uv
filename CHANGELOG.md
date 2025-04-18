@@ -1,3 +1,26 @@
+## 0.1.0b3 (2025-04-18)
+
+### ✨ Features
+
+- add support for a Typer CLI and strict typing
+
+### 🐛🚑️ Fixes
+
+- fix some issues with Typer config and code
+- add `.jinja` suffix to some files
+
+### 🎨🏗️ Style & Architecture
+
+- change the order of packages imports
+
+### 🔧🔨📦️ Configuration, Scripts, Packages
+
+- move `__version__` to `__init__.py`
+
+### 🩹 fix-simple
+
+- avoid asking for the CLI's name when the user doesn't want one
+
 ## 0.1.0b2 (2025-04-17)
 
 ### ✨ Features
