@@ -29,6 +29,11 @@ classifiers = [
     {%- endfor %}
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+dependencies = [
+    {%- if with_typer_cli %}
+    "typer>=0.15.2",
+    {%- endif %}
+]
 
 {% if repository_provider == 'github' -%}
 [project.urls]
@@ -36,7 +41,6 @@ Homepage = "{{ homepage }}"
 Repository = "{{ repository }}"
 Documentation = "{{ documentation }}"
 {%- endif %}
-
 
 {% if with_typer_cli -%}
 [project.scripts]
@@ -71,7 +75,7 @@ name = "cz_gitmoji"
 {%- else %}
 name = "cz_conventional_commits"
 {%- endif %}
-version_files = ["src/{{ project_slug }}/__version__.py"{% if dockerfile %}", compose.yaml"{% endif %}]
+version_files = ["src/{{ project_slug }}/__version__.py"{% if dockerfile %}, "compose.yaml"{% endif %}]
 tag_format = "$version"
 version_scheme = "pep440"
 version_provider = "uv"

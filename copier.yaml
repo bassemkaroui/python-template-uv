@@ -13,7 +13,7 @@ project_name:
     help: What is your project name?
     validator: >-
         {% if not (project_name | regex_search('^[a-z][a-z0-9\-]+$')) %}
-        project_name must start with a letter, followed by one or more letters,
+        Project name must start with a letter, followed by one or more letters,
         digits or dashes all lowercase.
         {% endif %}
 
@@ -130,8 +130,8 @@ cli_name:
     help: Set the CLI's name
     default: "{{ project_name }}"
     validator: >-
-        {% if not (project_name | regex_search('^[a-z][a-z0-9\-]+$')) %}
-        project_name must start with a letter, followed by one or more letters,
+        {% if not (cli_name | regex_search('^[a-z][a-z0-9\-]+$')) %}
+        The CLI's name must start with a letter, followed by one or more letters,
         digits or dashes all lowercase.
         {% endif %}
 

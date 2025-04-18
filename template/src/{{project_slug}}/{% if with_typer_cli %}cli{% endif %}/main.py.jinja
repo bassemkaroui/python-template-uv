@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from rich import print as rprint
-from typer import Typer
+import typer
 
 from {{ project_slug }} import __version__
 from {{ project_slug }}.cli.commands import version
@@ -10,7 +10,7 @@ app = typer.Typer(
     help="{{ cli_name }} CLI.",
     no_args_is_help=True,
     rich_markup_mode="rich",
-    # epilog="Made with [red]:heart:[/red] by [bold]Bassem Karoui[/bold]",
+    # epilog="Made with [red]:heart:[/red] by [bold]{{ author_fullname }}[/bold]",
     # pretty_exceptions_show_locals=False,
 )
 
@@ -24,4 +24,4 @@ def callback(
         raise typer.Exit()
 
 
-app.add_typer(version.app, help="Show the CLI's version.")
+app.add_typer(version.app)
