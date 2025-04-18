@@ -7,7 +7,7 @@ from {{ project_slug }} import __version__
 from {{ project_slug }}.cli.commands import version
 
 app = typer.Typer(
-    help="{{ package_name }} CLI.",
+    help="{{ cli_name }} CLI.",
     no_args_is_help=True,
     rich_markup_mode="rich",
     # epilog="Made with [red]:heart:[/red] by [bold]Bassem Karoui[/bold]",
