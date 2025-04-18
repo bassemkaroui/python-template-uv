@@ -75,7 +75,7 @@ name = "cz_gitmoji"
 {%- else %}
 name = "cz_conventional_commits"
 {%- endif %}
-version_files = ["src/{{ project_slug }}/__version__.py"{% if dockerfile %}, "compose.yaml"{% endif %}]
+version_files = ["src/{{ project_slug }}/__init__.py"{% if dockerfile %}, "compose.yaml"{% endif %}]
 tag_format = "$version"
 version_scheme = "pep440"
 version_provider = "uv"
