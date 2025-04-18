@@ -127,6 +127,7 @@ with_typer_cli:
 
 cli_name:
     type: str
+    when: "{{ with_typer_cli }}"
     help: Set the CLI's name
     default: "{{ project_name }}"
     validator: >-
