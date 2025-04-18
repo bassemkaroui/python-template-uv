@@ -37,6 +37,12 @@ Repository = "{{ repository }}"
 Documentation = "{{ documentation }}"
 {%- endif %}
 
+
+{% if with_typer_cli -%}
+[project.scripts]
+{{ cli_name }} = "{{ project_slug }}.cli.main:app"
+{%- endif %}
+
 [dependency-groups]
 dev = [
     "pytest>=8.3.5",
