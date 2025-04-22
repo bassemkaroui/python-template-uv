@@ -636,6 +636,7 @@ def release(ctx: Context, *cli_args: str) -> None:
         silent=True,
         capture=True,
         allow_overrides=False,
+	nofail=True,
     )
 
     dry_run = "--dry-run" in cli_args
@@ -655,8 +656,23 @@ def release(ctx: Context, *cli_args: str) -> None:
         )
         return
 
-    ctx.run(["git", "push"], title="Pushing commits", pty=False)
-    ctx.run(["git", "push", "--tags"], title="Pushing tags", pty=False)
+    output = ctx.run(
+        ["git", "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"],
+        title="Checking if an upstream is configured for the current branch",
+        nofail=True,
+        capture=True,
+        allow_overrides=False,
+    )
+    is_upstream_set = "fatal" not in output
+    if is_upstream_set:
+        ctx.run(["git", "push"], title="Pushing commits", pty=False)
+        ctx.run(["git", "push", "--tags"], title="Pushing tags", pty=False)
+    else:
+        ctx.run(
+            "false",
+            title="git-push: skipped => no upstream is configured for the current branch",
+            nofail=True,
+        )
 
     clean.run()
     build.run()
@@ -664,7 +680,12 @@ def release(ctx: Context, *cli_args: str) -> None:
     publish.run()
     {%- endif %}
     {%- if repository_provider == 'github' %}
-    docs_deploy.run()
+    if is_upstream_set:
+        docs_deploy.run()
+    else:
+        ctx.run(
+            "false", title="docs-deploy: skipped => the new release was not pushed", nofail=True
+        )
     {%- endif %}
 {%- endif %}
 {%- if dockerfile %}
