@@ -97,6 +97,22 @@ def _is_interactive() -> bool:
     return sys.stdin.isatty() and os.environ.get("CI", "").lower() != "true"
 
 
+def _wait_for_dev_containers_start(ctx: Context) -> None:
+    """Start the dev containers and wait until they are fully up.
+
+    This function triggers the `docker_start` duty with the `dev` profile,
+    then continuously checks the containers status until `{{ project_name }}-dev`
+    is running.
+    """
+    docker_start.run(env="dev")
+    while True:
+        output = ctx.run(
+            ["docker", "compose", "top"], silent=True, allow_overrides=False, capture=True
+        )
+        if "{{ project_name }}-dev" in output:
+            break
+
+
 @contextmanager
 def _setup_container(ctx: Context) -> Iterator[None]:
     """Ensure the dev Docker container is running for the duration of a context block.
@@ -112,19 +128,13 @@ def _setup_container(ctx: Context) -> Iterator[None]:
     )
     if build_docker_images:
         docker_build.run(env="dev")
-        docker_start.run(env="dev")
+        _wait_for_dev_containers_start(ctx)
     else:
         output = ctx.run(
             ["docker", "compose", "top"], silent=True, allow_overrides=False, capture=True
         )
         if "{{ project_name }}-dev" not in output:
-            docker_start.run(env="dev")
-            while True:
-                output = ctx.run(
-                    ["docker", "compose", "top"], silent=True, allow_overrides=False, capture=True
-                )
-                if "{{ project_name }}-dev" in output:
-                    break
+            _wait_for_dev_containers_start(ctx)
     try:
         yield
     finally:
