@@ -28,9 +28,9 @@ PTY = not WINDOWS and not CI
 
 # -----------------------------------------------------------------------------
 # Helper functions ------------------------------------------------------------
-# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------{% if dockerfile %}
 
-{% if dockerfile -%}
+
 def _is_running_in_docker() -> bool:
     """Check if the code is running inside a Docker container."""
     return Path("/.dockerenv").exists()
@@ -56,10 +56,9 @@ def _verify_uv_installed(ctx: Context, duty_name: str) -> None:
         else:
             raise ValueError(
                 f"make: {duty_name}: uv must be installed, see https://docs.astral.sh/uv/getting-started/installation/"
-            )
+            ){% if dockerfile %}
 
 
-{% if dockerfile -%}
 def _pick_env(ctx: Context, env: str = "dev") -> str:
     while True:
         ctx.run(
@@ -224,10 +223,9 @@ def setup_dev(ctx: Context) -> None:
     ctx.run(
         ["uv", "sync"], title="Creating virtual environment using uv and installing the package"
     )
-    ctx.run(["uv", "run", "pre-commit", "install", "-f"], title="Setting up pre-commit")
+    ctx.run(["uv", "run", "pre-commit", "install", "-f"], title="Setting up pre-commit"){% if dockerfile %}
 
 
-{% if dockerfile -%}
 @duty(
     skip_if=_is_running_in_docker(),
     skip_reason="docker-build: skipped => Running inside a Docker container",
@@ -306,9 +304,14 @@ def docker_stop(ctx: Context, env: str | None = None) -> None:
         capture=False,
     )
 {%- endif %}
+{%- if dockerfile %}
 
 
-{% if dockerfile %}@dockerized_duty(){% endif -%}
+@dockerized_duty()
+{% else %}
+
+
+{% endif -%}
 @duty(pre=["check-quality", "check-types", "check-docs", "check-api"])
 def check(ctx: Context) -> None:
     """Check it all!
@@ -324,9 +327,14 @@ def check(ctx: Context) -> None:
     - [`check-docs`][], to check the docs on all Python versions
     - [`check-api`][], to check for API breaking changes
     """
+{%- if dockerfile %}
 
 
-{% if dockerfile %}@dockerized_duty(){% endif -%}
+@dockerized_duty()
+{% else %}
+
+
+{% endif -%}
 @duty
 def check_quality(ctx: Context) -> None:
     """Check the code quality.
@@ -341,9 +349,14 @@ def check_quality(ctx: Context) -> None:
         tools.ruff.check(*PY_SRC_LIST, config="pyproject.toml"),
         title="Checking code quality [ruff]",
     )
+{%- if dockerfile %}
 
 
-{% if dockerfile %}@dockerized_duty(){% endif -%}
+@dockerized_duty()
+{% else %}
+
+
+{% endif -%}
 @duty
 def check_types(ctx: Context) -> None:
     """Check that the code is correctly typed.
@@ -359,9 +372,14 @@ def check_types(ctx: Context) -> None:
         tools.mypy(*PY_SRC_LIST, config_file="pyproject.toml"),
         title="Type-checking [mypy]",
     )
+{%- if dockerfile %}
 
 
-{% if dockerfile %}@dockerized_duty(){% endif -%}
+@dockerized_duty()
+{% else %}
+
+
+{% endif -%}
 @duty
 def check_docs(ctx: Context) -> None:
     """Check if the documentation builds correctly.
@@ -383,9 +401,14 @@ def check_docs(ctx: Context) -> None:
         tools.mkdocs.build(strict=True, verbose=True),
         title="Building documentation [mkdocs]",
     )
+{%- if dockerfile %}
 
 
-{% if dockerfile %}@dockerized_duty(){% endif -%}
+@dockerized_duty()
+{% else %}
+
+
+{% endif -%}
 @duty{% if dockerfile %}(
     skip_if=_is_running_in_docker() and not shutil.which("git"),
     skip_reason="check-api: skipped => Running inside a Docker container that does not have git",
@@ -412,9 +435,14 @@ def check_api(ctx: Context, *cli_args: str) -> None:
         title="Checking for API breaking changes [griffe]",
         nofail=True,
     )
+{%- if dockerfile %}
 
 
-{% if dockerfile %}@dockerized_duty(host="0.0.0.0")  # noqa: S104{% endif -%}
+@dockerized_duty()
+{% else %}
+
+
+{% endif -%}
 @duty
 def docs(ctx: Context, *cli_args: str, host: str = "127.0.0.1", port: int = 8080) -> None:
     """Serve the documentation (localhost:8080).
@@ -434,10 +462,9 @@ def docs(ctx: Context, *cli_args: str, host: str = "127.0.0.1", port: int = 8080
         tools.mkdocs.serve(dev_addr=f"{host}:{port}").add_args(*cli_args),
         title="Serving documentation",
         capture=False,
-    )
+    ){% if repository_provider == 'github' %}
 
 
-{% if repository_provider == 'github' -%}
 @duty{% if dockerfile %}(
     skip_if=_is_running_in_docker(),
     skip_reason="docs-deploy: skipped => Running inside a Docker container",
@@ -499,10 +526,9 @@ def build(ctx: Context) -> None:
         ["uv", "build"],
         title="Building source and wheel distributions",
         pty=PTY,
-    )
+    ){% if publish_to_pypi %}
 
 
-{% if publish_to_pypi -%}
 @duty
 def publish(ctx: Context) -> None:
     """Publish source and wheel distributions to PyPI.
@@ -560,10 +586,9 @@ def clean(ctx: Context) -> None:
     This command deletes build artifacts such as `dist/`, `site/`, etc.
     """
     paths_to_clean = ["build", "dist", "htmlcov", "site", ".coverage*", "coverage.xml"]
-    ctx.run(f"rm -rf {' '.join(paths_to_clean)}", title="Deleting build artifacts")
+    ctx.run(f"rm -rf {' '.join(paths_to_clean)}", title="Deleting build artifacts"){% if with_conventional_commits %}
 
 
-{% if with_conventional_commits -%}
 @duty{% if dockerfile %}(
     skip_if=_is_running_in_docker(),
     skip_reason="release: skipped => Running inside a Docker container",
@@ -613,7 +638,11 @@ def release(ctx: Context, *cli_args: str) -> None:
 
     if dry_run:
         ctx.run("false", title="Dry-run: no new commits and tags to push", nofail=True)
-        ctx.run("false", title="Dry-run: skipping clean, build{% if publish_to_pypi %}, publish{% endif %}{% if repository_provider == 'github' %}, and docs deployment{% endif %}", nofail=True)
+        ctx.run(
+            "false",
+            title="Dry-run: skipping clean, build{% if publish_to_pypi %}, publish{% endif %}{% if repository_provider == 'github' %}, and docs deployment{% endif %}",
+            nofail=True,
+        )
         return
 
     ctx.run(["git", "push"], title="Pushing commits", pty=False)
@@ -628,9 +657,14 @@ def release(ctx: Context, *cli_args: str) -> None:
     docs_deploy.run()
     {%- endif %}
 {%- endif %}
+{%- if dockerfile %}
 
 
-{% if dockerfile %}@dockerized_duty(){% endif -%}
+@dockerized_duty()
+{% else %}
+
+
+{% endif -%}
 @duty(aliases=["cov"])
 def coverage(ctx: Context) -> None:
     """Report coverage as text, HTML and XML.
@@ -655,9 +689,14 @@ def coverage(ctx: Context) -> None:
         capture=False,
         title="Report coverage statistics",
     )
+{%- if dockerfile %}
 
 
-{% if dockerfile %}@dockerized_duty(){% endif -%}
+@dockerized_duty()
+{% else %}
+
+
+{% endif -%}
 @duty(post=["cov"])
 def test(ctx: Context, *cli_args: str, match: str | None = None) -> None:  # noqa: PT028
     """Run the test suite with doctests and coverage tracking.
@@ -669,7 +708,7 @@ def test(ctx: Context, *cli_args: str, match: str | None = None) -> None:  # noq
     This task runs the `tests/` suite using [Pytest](https://docs.pytest.org/), with support for:
     - Embedded doctests via `--doctest-modules`
     - Coverage tracking using [Coverage.py](https://coverage.readthedocs.io/), configured through `pyproject.toml`
-    - Optional test selection using `match=EXPR`, which maps to `-k EXPR` 
+    - Optional test selection using `match=EXPR`, which maps to `-k EXPR`
     {%- if pytest_xdist %}
     - Optional: Parallel execution via `-n auto` (with pytest-xdist)
     {%- endif %}
@@ -702,11 +741,14 @@ def test(ctx: Context, *cli_args: str, match: str | None = None) -> None:  # noq
             *cli_args,
         ),
         title="Running tests",
-    )
+    ){% if tox %}{% if dockerfile %}
 
 
-{% if tox -%}
-{% if dockerfile %}@dockerized_duty(){% endif -%}
+@dockerized_duty()
+{% else %}
+
+
+{% endif -%}
 @duty(post=["cov"])
 def tox(ctx: Context) -> None:
     """Run the test suite in multiple Python environments using Tox.
@@ -721,5 +763,4 @@ def tox(ctx: Context) -> None:
     Once all environments have finished, the `cov` task is automatically triggered
     to combine and report test coverage from all runs.
     """
-    ctx.run(["tox", "run-parallel"], title="Running Tox", capture=False)
-{%- endif %}
+    ctx.run(["tox", "run-parallel"], title="Running Tox", capture=False){%- endif %}
