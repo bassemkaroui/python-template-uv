@@ -24,7 +24,9 @@ python =
 [testenv]
 passenv = PYTHON_VERSION
 allowlist_externals = uv
+setenv =
+    COVERAGE_FILE = .coverage.{envname}
 commands =
     uv sync --python {envpython} --active
-    uv run --python {envpython} --active python -m pytest --doctest-modules tests --cov --cov-config=pyproject.toml --cov-report=xml --cov-report=term-missing -vv
+    uv run --python {envpython} --active python -m pytest --doctest-modules tests --cov --cov-config=pyproject.toml -vv{% if pytest_xdist %} -n auto{% endif %}
     uv run --python {envpython} --active mypy
