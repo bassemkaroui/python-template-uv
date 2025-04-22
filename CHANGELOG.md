@@ -1,3 +1,9 @@
+## 0.1.0rc1 (2025-04-22)
+
+### 🐛🚑️ Fixes
+
+- **duties.py**: rename `duties.py` -> `duties.py.jinja`
+
 ## 0.1.0rc0 (2025-04-22)
 
 ### ✨ Features
