@@ -1,3 +1,22 @@
+## 0.1.0rc0 (2025-04-22)
+
+### ✨ Features
+
+- **duty**: add support for `duty`
+- **tox**: add support for `pytest-xdist` in Tox
+
+### 🐛🚑️ Fixes
+
+- **copier.yaml**: add `pytest-xdist` to `copier.yaml`
+
+### ✅🤡🧪 Tests
+
+- **typer-CLI**: add some tests for typer CLI
+
+### 🩹 fix-simple
+
+- **Dockerfile**: fix a minor issue with Docker images
+
 ## 0.1.0b3 (2025-04-18)
 
 ### ✨ Features
