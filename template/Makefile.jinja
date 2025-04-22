@@ -1,64 +1,56 @@
-.PHONY: install
-install: ## Install the virtual environment and install the pre-commit hooks
-	@command -v uv >/dev/null 2>&1 || { echo "⚡ uv not found, installing..."; curl -LsSf https://astral.sh/uv/install.sh | sh; }
-	@echo "🚀 Creating virtual environment using uv"
-	@uv sync --no-dev
+# This Makefile is just here to allow auto-completion in the terminal.
 
-.PHONY: install-dev
-install-dev: ## Install the virtual environment with the dev dependencies and install the pre-commit hooks
-	@command -v uv >/dev/null 2>&1 || { echo "⚡ uv not found, installing..."; curl -LsSf https://astral.sh/uv/install.sh | sh; }
-	@echo "🚀 Creating virtual environment using uv"
-	@uv sync --all-extras
-	@uv run pre-commit install -f
+actions = \
+	build \
+	check \
+	check-api \
+	check-docs \
+	check-quality \
+	check-types \
+	clean \
+	clean_cache \
+	coverage \
+	{%- if dockerfile %}
+	docker-build \
+	docker-start \
+	docker-stop \
+	docker-exec-check \
+	docker-exec-check-api \
+	docker-exec-check-docs \
+	docker-exec-check-quality \
+	docker-exec-check-types \
+	docker-exec-coverage \
+	docker-exec-docs \
+	docker-exec-test \
+	{%- if tox %}
+	docker-exec-tox \
+	{%- endif %}
+	{%- endif %}
+	docs \
+	{%- if repository_provider == 'github' %}
+	docs-deploy \
+	{%- endif %}
+	format \
+	{%- if publish_to_pypi %}
+	publish \
+	{%- endif %}
+	{%- if with_conventional_commits %}
+	release \
+	{%- endif %}
+	setup \
+	setup-dev \
+	test {% if tox %}\
+	tox
+	{%- endif %}
 
-.PHONY: check
-check: ## Run code quality tools.
-	@echo "🚀 Checking lock file consistency with 'pyproject.toml'"
-	@uv lock --locked
-	@echo "🚀 Running pre-commit"
-	@uv run pre-commit run -a
 
-.PHONY: test
-test: ## Test the code with pytest
-	@echo "🚀 Testing code: Running pytest"
-	@uv run python -m pytest --doctest-modules --cov --cov-config=pyproject.toml --cov-report=xml --cov-report=term-missing -vv
+.PHONY: $(actions)
+$(actions):
+	@uv run duty "$@"
 
-.PHONY: tox
-tox: ## Test Python compatibility with Tox
-	@echo "🚀 Testing compatibility with multiple Python version: Running Tox"
-	@uv run tox
-
-.PHONY: build
-build: clean-build ## Build wheel file
-	@echo "🚀 Creating wheel file"
-	@uvx --from build pyproject-build --installer uv
-
-.PHONY: clean-build
-clean-build: ## Clean build artifacts
-	@echo "🚀 Removing build artifacts"
-	@uv run python -c "import shutil; import os; shutil.rmtree('dist') if os.path.exists('dist') else None"
-
-{%- if publish_to_pypi %}
-.PHONY: publish
-publish: ## Publish a release to PyPI.
-	@echo "🚀 Publishing."
-	@uvx twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
-
-.PHONY: build-and-publish
-build-and-publish: build publish ## Build and publish.
-{%- endif %}
-
-.PHONY: docs-test
-docs-test: ## Test if documentation can be built without warnings or errors
-	@uv run mkdocs build -s
-
-.PHONY: docs
-docs: ## Build and serve the documentation
-	@uv run mkdocs serve
 
 .PHONY: help
 help:
-	@uv run python -c "import re; \
-	[[print(f'\033[36m{m[0]:<20}\033[0m {m[1]}') for m in re.findall(r'^([a-zA-Z_-]+):.*?## (.*)$$', open(makefile).read(), re.M)] for makefile in ('$(MAKEFILE_LIST)').strip().split()]"
+	@uv run duty --list
 
 .DEFAULT_GOAL := help
