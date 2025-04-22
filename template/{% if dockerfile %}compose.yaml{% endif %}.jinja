@@ -18,6 +18,8 @@ services:
               count: all
               capabilities: [gpu]
     {%- endif %}
+    profiles:
+      - prod
     restart: unless-stopped
 
   {{ project_name }}-dev:
@@ -30,6 +32,10 @@ services:
         - ENVIRONMENT=dev
     ports:
       - "8001:8000"
+      - "8080:8080"
+    stdin_open: true
+    tty: true
+    command: [ "sh" ]
     {%- if gpus %}
     deploy:
       resources:

@@ -55,12 +55,13 @@ USER {{ project_name }}
 {%- endif %}
 
 # CMD ["uvicorn", "{{ project_name }}:app", "--host", "0.0.0.0", "--port", "8000"]
+# CMD ["sleep", "1000"]
 
 # ---------- development image ----------
 FROM python:{{ python_version }}-slim-bookworm AS dev
 
 {% if not privileged_container -%}
-RUN groupadd -g {{ gid }} {{ project_name }} && useradd -u {{ uid }} -g {{ gid }} -r {{ project_name }}
+RUN groupadd -g {{ gid }} {{ project_name }} && useradd -m -u {{ uid }} -g {{ gid }} -r {{ project_name }}
 
 RUN mkdir -p /workspaces/{{ project_name }} && chown -R {{ project_name }}:{{ project_name }} /workspaces
 {%- endif %}
