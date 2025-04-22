@@ -146,6 +146,11 @@ tox:
     default: true
     help: Do you want to use Tox?
 
+pytest_xdist:
+    type: bool
+    default: false
+    help: Do you want to use pytest-xdist?
+
 coverage_threshold:
     type: int
     default: 100
