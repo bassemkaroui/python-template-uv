@@ -20,7 +20,7 @@ def callback(
     version: Annotated[bool, typer.Option("--version", help="Show the CLI's version.")] = False,
 ) -> None:
     if version:
-        rprint(f"{{ cli_name }} Version: [green]{__version__}[/green]")
+        rprint(f"{{ cli_name }} version: [green]{__version__}[/green]")
         raise typer.Exit()
 
 
