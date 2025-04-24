@@ -59,11 +59,11 @@ def _verify_uv_installed(ctx: Context, duty_name: str) -> None:
             ){% if dockerfile %}
 
 
-def _pick_env(ctx: Context, env: str = "dev") -> str:
+def _pick_env(ctx: Context, env: str = "dev", action: str = "start") -> str:
     while True:
         ctx.run(
             "true",
-            title="Pick the environment you want to start ([dev]/prod): ",
+            title=f"Pick the environment you want to {action} ([dev]/prod): ",
             nofail=True,
             allow_overrides=False,
         )
@@ -253,7 +253,7 @@ def docker_build(ctx: Context, env: str | None = None) -> None:
     Args:
         env: The environment to build for (`dev` or `prod`). Defaults to `None` to prompt the user.
     """
-    env = env or _pick_env(ctx)
+    env = env or _pick_env(ctx, action="build")
     ctx.run(
         ["docker", "compose", "--profile", env, "build"],
         title=f"Building Docker images for {env} environment",
@@ -307,7 +307,7 @@ def docker_stop(ctx: Context, env: str | None = None) -> None:
     Args:
         env: The environment to stop (`dev` or `prod`). Defaults to `None` to prompt the user.
     """
-    env = env or _pick_env(ctx)
+    env = env or _pick_env(ctx, action="stop")
     ctx.run(
         ["docker", "compose", "--profile", env, "down"],
         title=f"Stopping and removing {env} containers",
