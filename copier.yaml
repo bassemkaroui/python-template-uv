@@ -298,7 +298,7 @@ transformers_deps:
         - peft
         - evaluate
         - timm
-    default: [transformers]
+    default: []
 
 rl_deps:
     type: str
@@ -393,7 +393,7 @@ langchain_deps:
         - firecrawl-py
         - aiostream
         - faiss-cpu
-    default: [langchain]
+    default: []
 
 backend_deps:
     type: str
