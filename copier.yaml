@@ -78,18 +78,20 @@ copyright_license:
     help: Choose the project's license (e.g. "MIT", "GPL-3.0").
     default: MIT License
     choices:
-      - Apache Software License
-      - BSD 3-clause License
-      - Boost Software License 1.0 (BSL-1.0)
-      - GNU General Public License v3 (GPLv3)
-      - ISC License
-      - MIT License
-      - The Unlicense (Unlicense)
+        - No License
+        - Apache Software License
+        - BSD 3-clause License
+        - Boost Software License 1.0 (BSL-1.0)
+        - GNU General Public License v3 (GPLv3)
+        - ISC License
+        - MIT License
+        - The Unlicense (Unlicense)
 
 copyright_holder:
     type: str
     help: Name or organization holding the copyright
     default: "{{ author_fullname }}"
+    when: "{{ copyright_license != 'No License' }}"
 
 copyright_year:
     when: false

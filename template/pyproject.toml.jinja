@@ -8,7 +8,9 @@ version = "0.0.1"
 description = "{{ project_description }}"
 authors = [{ name = "{{ author_fullname }}", email = "{{ author_email }}" }]
 readme = "README.md"
+{%- if copyright_license != 'No License' %}
 license = { file = "LICENSE" }
+{%- endif %}
 keywords = [
 {%- set keywords = (project_keywords.split(",") | map("trim") | list) %}
 {%- for keyword in keywords | sort %}
