@@ -30,11 +30,10 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
-    {%- if with_typer_cli %}
-    "typer>=0.15.2",
-    {%- endif %}
+{% include 'includes/dependencies.jinja' %}
 ]
 
+{% include 'includes/pytorch_indixes.jinja' %}
 {% if repository_provider == 'github' -%}
 [project.urls]
 Homepage = "{{ homepage }}"
@@ -71,6 +70,7 @@ dev = [
     "griffe>=1.7.2",
     "ipython>=8.35.0",
     "duty>=1.6.0",
+    {% include 'includes/extra_dev_dependencies.jinja' %}
 ]
 
 {% if with_conventional_commits -%}

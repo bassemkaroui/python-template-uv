@@ -1,0 +1,224 @@
+    {% if with_typer_cli -%}
+    "typer>=0.15.2",
+    {%- endif %}
+    {%- if preconfig_dependencies %}
+    {%- if 'numpy' in core_data_deps %}
+    "numpy>=2.2.5",
+    {%- endif %}
+    {%- if 'pandas' in core_data_deps %}
+    "pandas>=2.2.3",
+    {%- endif %}
+    {%- if 'polars' in core_data_deps %}
+    "polars>=1.27.1",
+    {%- endif %}
+    {%- if 'scipy' in core_data_deps %}
+    "scipy>=1.15.2",
+    {%- endif %}
+    {%- if 'statsmodels' in core_data_deps %}
+    "statsmodels>=0.14.4",
+    {%- endif %}
+    {%- if 'numba' in core_data_deps %}
+    "numba>=0.61.2",
+    {%- endif %}
+    {%- if 'pyspark' in core_data_deps %}
+    "pyspark>=3.5.5",
+    {%- endif %}
+    {%- if 'dask' in core_data_deps %}
+    "dask>=2025.4.0",
+    {%- endif %}
+    {%- if 'scikit-learn' in machine_learning_deps %}
+    "scikit-learn>=1.6.1",
+    {%- endif %}
+    {%- if 'scikit-learn-intelex' in machine_learning_deps %}
+    "scikit-learn-intelex>=2024.7.0",
+    {%- endif %}
+    {%- if 'xgboost' in machine_learning_deps %}
+    "xgboost>=3.0.0",
+    {%- endif %}
+    {%- if 'joblib' in machine_learning_deps %}
+    "joblib>=1.4.2",
+    {%- endif %}
+    {%- if 'scikit-optimize' in machine_learning_deps %}
+    "scikit-optimize>=0.10.2",
+    {%- endif %}
+    {%- if 'shap' in machine_learning_deps %}
+    "shap>=0.47.2",
+    {%- endif %}
+    {%- if 'optuna' in machine_learning_deps %}
+    "optuna>=4.3.0",
+    {%- endif %}
+    {%- if 'ray[tune]' in machine_learning_deps %}
+    "ray[tune]>=2.44.1",
+    {%- endif %}
+    {%- if 'transformers' in transformers_deps %}
+    "transformers>=4.51.3",
+    {%- endif %}
+    {%- if 'datasets' in transformers_deps %}
+    "datasets>=3.5.0",
+    {%- endif %}
+    {%- if 'accelerate' in transformers_deps %}
+    "accelerate>=1.6.0",
+    {%- endif %}
+    {%- if 'bitsandbytes' in transformers_deps %}
+    "bitsandbytes>=0.45.5",
+    {%- endif %}
+    {%- if 'peft' in transformers_deps %}
+    "peft>=0.15.2",
+    {%- endif %}
+    {%- if 'evaluate' in transformers_deps %}
+    "evaluate>=0.4.3",
+    {%- endif %}
+    {%- if 'timm' in transformers_deps %}
+    "timm>=1.0.15",
+    {%- endif %}
+    {%- if 'pytorch_cpu' in dl_pytorch_deps or 'pytorch_cu118' in dl_pytorch_deps or 'pytorch_cu121' in dl_pytorch_deps or 'pytorch_cu124' in dl_pytorch_deps %}
+    "torch>=2.3.0",
+    {%- endif %}
+    {%- if 'torchvision' in dl_pytorch_deps %}
+    "torchvision>=0.18.0",
+    {%- endif %}
+    {%- if 'torchaudio' in dl_pytorch_deps %}
+    "torchaudio>=2.3.0",
+    {%- endif %}
+    {%- if 'tensorboard' in dl_pytorch_deps %}
+    "tensorboard>=2.19.0",
+    {%- endif %}
+    {%- if 'lightning' in dl_pytorch_deps %}
+    "lightning>=2.5.1",
+    {%- endif %}
+    {%- if 'torchmetrics' in dl_pytorch_deps %}
+    "torchmetrics>=1.7.1",
+    {%- endif %}
+    {%- if 'gymnasium' in rl_deps %}
+    "gymnasium>=1.0.0",
+    {%- endif %}
+    {%- if 'stable-baselines3' in rl_deps %}
+    "stable-baselines3[extra]>=2.6.0",
+    {%- endif %}
+    {%- if 'ray[rllib]' in rl_deps %}
+    "ray[rllib]>=2.44.1",
+    {%- endif %}
+    {%- if 'pygame' in rl_deps %}
+    "pygame>=2.6.1",
+    {%- endif %}
+    {%- if 'pygame-ce' in rl_deps %}
+    "pygame-ce>=2.5.3",
+    {%- endif %}
+    {%- if 'matplotlib' in data_viz_deps %}
+    "matplotlib>=3.10.1",
+    {%- endif %}
+    {%- if 'seaborn' in data_viz_deps %}
+    "seaborn>=0.13.2",
+    {%- endif %}
+    {%- if 'plotly' in data_viz_deps %}
+    "plotly>=6.0.1",
+    {%- endif %}
+    {%- if 'streamlit' in data_viz_deps %}
+    "streamlit>=1.44.1",
+    {%- endif %}
+    {%- if 'langchain' in langchain_deps %}
+    "langchain>=0.3.24",
+    {%- endif %}
+    {%- if 'langgraph' in langchain_deps %}
+    "langgraph>=0.3.32",
+    {%- endif %}
+    {%- if 'langgraph-checkpoint-sqlite' in langchain_deps %}
+    "langgraph-checkpoint-sqlite>=2.0.6",
+    {%- endif %}
+    {%- if 'langgraph-checkpoint-postgres' in langchain_deps %}
+    "langgraph-checkpoint-postgres>=2.0.21",
+    {%- endif %}
+    {%- if 'faiss-cpu' in langchain_deps %}
+    "faiss-cpu>=1.10.0",
+    {%- endif %}
+    {%- if 'langchain-openai' in langchain_deps %}
+    "langchain-openai>=0.3.14",
+    {%- endif %}
+    {%- if 'langchain-community' in langchain_deps %}
+    "langchain-community>=0.3.22",
+    {%- endif %}
+    {%- if 'langchain-ollama' in langchain_deps %}
+    "langchain-ollama>=0.3.2",
+    {%- endif %}
+    {%- if 'langchain-anthropic' in langchain_deps %}
+    "langchain-anthropic>=0.3.12",
+    {%- endif %}
+    {%- if 'langchain-pinecone' in langchain_deps %}
+    "langchain-pinecone>=0.2.5",
+    {%- endif %}
+    {%- if 'unstructured' in langchain_deps %}
+    "unstructured>=0.17.2",
+    {%- endif %}
+    {%- if 'pypdf' in langchain_deps %}
+    "pypdf>=5.4.0",
+    {%- endif %}
+    {%- if 'wikipedia' in langchain_deps %}
+    "wikipedia>=1.4.0",
+    {%- endif %}
+    {%- if 'firecrawl-py' in langchain_deps %}
+    "firecrawl-py>=2.2.0",
+    {%- endif %}
+    {%- if 'aiostream' in langchain_deps %}
+    "aiostream>=0.6.4",
+    {%- endif %}
+    {%- if 'fastapi[standard]' in backend_deps %}
+    "fastapi[standard]>=0.115.12",
+    {%- endif %}
+    {%- if 'slowapi' in backend_deps %}
+    "slowapi>=0.1.9",
+    {%- endif %}
+    {%- if 'gunicorn' in backend_deps %}
+    "gunicorn>=23.0.0",
+    {%- endif %}
+    {%- if 'flask' in backend_deps %}
+    "flask>=3.1.0",
+    {%- endif %}
+    {%- if 'pydantic' in backend_deps %}
+    "pydantic>=2.10.6",
+    {%- endif %}
+    {%- if 'pydantic-settings' in backend_deps %}
+    "pydantic-settings>=2.8.1",
+    {%- endif %}
+    {%- if 'python-dotenv' in backend_deps %}
+    "python-dotenv>=1.1.0",
+    {%- endif %}
+    {%- if 'requests' in backend_deps %}
+    "requests>=2.32.3",
+    {%- endif %}
+    {%- if 'httpx' in backend_deps %}
+    "httpx>=0.28.1",
+    {%- endif %}
+    {%- if 'aiohttp' in backend_deps %}
+    "aiohttp>=3.10.11",
+    {%- endif %}
+    {%- if 'sqlmodel' in backend_deps %}
+    "sqlmodel>=0.0.24",
+    {%- endif %}
+    {%- if 'sqlalchemy' in backend_deps %}
+    "slqalchemy>=2.0.40",
+    {%- endif %}
+    {%- if 'psycopg2-binary' in backend_deps %}
+    "psycopg2-binary>=2.9.10",
+    {%- endif %}
+    {%- if 'alembic' in backend_deps %}
+    "alembic>=1.15.2",
+    {%- endif %}
+    {%- if 'quixstreams' in backend_deps %}
+    "quixstreams>=3.13.1",
+    {%- endif %}
+    {%- if 'mlflow' in mlops_deps %}
+    "mlflow>=2.21.3",
+    {%- endif %}
+    {%- if 'weights-and-biases' in mlops_deps %}
+    "wandb>=0.19.10",
+    {%- endif %}
+    {%- if 'prefect' in mlops_deps %}
+    "prefect>=3.3.5",
+    {%- endif %}
+    {%- if 'dvc' in mlops_deps %}
+    "dvc{% if dvc_extras %}{{ dvc_extras | replace('\'', '') | replace(' ', '') }}{% endif %}>=3.59.1",
+    {%- endif %}
+    {%- if 'ray' in mlops_deps %}
+    "ray{% if ray_extras %}{{ ray_extras | replace('\'', '') | replace(' ', '') }}{% endif %}>=2.44.1",
+    {%- endif %}
+    {%- endif -%}

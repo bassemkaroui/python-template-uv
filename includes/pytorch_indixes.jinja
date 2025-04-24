@@ -1,0 +1,56 @@
+{% if 'pytorch_cpu' in dl_pytorch_deps or 'pytorch_cu118' in dl_pytorch_deps or 'pytorch_cu121' in dl_pytorch_deps or 'pytorch_cu124' in dl_pytorch_deps %}
+[tool.uv.sources]
+torch = [
+    {%- if 'pytorch_cpu' in dl_pytorch_deps %}
+    { index = "pytorch-cpu"},
+    {%- elif 'pytorch_cu118' in dl_pytorch_deps %}
+    { index = "pytorch-cu118"},
+    {%- elif 'pytorch_cu121' in dl_pytorch_deps %}
+    { index = "pytorch-cu121"},
+    {%- elif 'pytorch_cu124' in dl_pytorch_deps %}
+    { index = "pytorch-cu124"},
+    {%- endif %}
+]
+{%- if 'torchvision' in dl_pytorch_deps %}
+torchvision = [
+    {%- if 'pytorch_cpu' in dl_pytorch_deps %}
+    { index = "pytorch-cpu"},
+    {%- elif 'pytorch_cu118' in dl_pytorch_deps %}
+    { index = "pytorch-cu118"},
+    {%- elif 'pytorch_cu121' in dl_pytorch_deps %}
+    { index = "pytorch-cu121"},
+    {%- elif 'pytorch_cu124' in dl_pytorch_deps %}
+    { index = "pytorch-cu124"},
+    {%- endif %}
+]
+{%- endif %}
+{%- if 'torchaudio' in dl_pytorch_deps %}
+torchaudio = [
+    {%- if 'pytorch_cpu' in dl_pytorch_deps %}
+    { index = "pytorch-cpu"},
+    {%- elif 'pytorch_cu118' in dl_pytorch_deps %}
+    { index = "pytorch-cu118"},
+    {%- elif 'pytorch_cu121' in dl_pytorch_deps %}
+    { index = "pytorch-cu121"},
+    {%- elif 'pytorch_cu124' in dl_pytorch_deps %}
+    { index = "pytorch-cu124"},
+    {%- endif %}
+]
+{%- endif %}
+
+[[tool.uv.index]]
+{%- if 'pytorch_cpu' in dl_pytorch_deps %}
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+{%- elif 'pytorch_cu118' in dl_pytorch_deps %}
+name = "pytorch-cu118"
+url = "https://download.pytorch.org/whl/cu118"
+{%- elif 'pytorch_cu121' in dl_pytorch_deps %}
+name = "pytorch-cu121"
+url = "https://download.pytorch.org/whl/cu121"
+{%- elif 'pytorch_cu124' in dl_pytorch_deps %}
+name = "pytorch-cu124"
+url = "https://download.pytorch.org/whl/cu124"
+{%- endif %}
+explicit = true
+{%- endif %}

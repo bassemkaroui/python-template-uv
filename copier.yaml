@@ -206,3 +206,230 @@ gpus:
     when: "{{ dockerfile }}"
     help: Do you need GPU capabilities for you containers?
     default: false
+
+preconfig_dependencies:
+    type: bool
+    default: False
+    help: Do you want to preconfigure some dependencies?
+
+dependencies_categories:
+    type: str
+    when: "{{ preconfig_dependencies }}"
+    multiselect: true
+    choices:
+        Core Data & Big Data: core_data
+        Machine Learning & Hyperparameter Optimization: ml
+        Deep Learning - PyTorch Ecosystem: dl_pytorch
+        Deep Learning - Transformers: dl_transformers
+        # Deep Learning - Extras: dl_extras
+        Reinforcement Learning & Simulation: rl
+        MLOps & Production: mlops
+        Visualization & Dashboards: data_viz
+        LLM Apps & LangChain Toolkit: langchain
+        Backend & APIs: backend
+        Dev, Testing & Profiling: dev
+    default: []
+
+core_data_deps:
+    type: str
+    when: "{{ 'core_data' in dependencies_categories }}"
+    help: Core Data & Big Data
+    multiselect: true
+    choices:
+        - numpy
+        - pandas
+        - polars
+        - scipy
+        - statsmodels
+        - numba
+        - pyspark
+        - dask
+    default: []
+
+machine_learning_deps:
+    type: str
+    when: "{{ 'ml' in dependencies_categories }}"
+    help: Machine Learning & Hyperparameter Optimization
+    multiselect: true
+    choices:
+        - scikit-learn
+        - scikit-learn-intelex
+        - xgboost
+        - joblib
+        - scikit-optimize
+        - shap
+        - optuna
+        - ray[tune]
+    default: []
+
+dl_pytorch_deps:
+    type: str
+    when: "{{ 'dl_pytorch' in dependencies_categories }}"
+    help: Deep Learning - PyTorch Ecosystem
+    multiselect: true
+    choices:
+        PyTorch (CPU): pytorch_cpu
+        PyTorch (CUDA 11.8): pytorch_cu118
+        PyTorch (CUDA 12.1): pytorch_cu121
+        PyTorch (CUDA 12.4): pytorch_cu124
+        torchvision: torchvision
+        torchaudio: torchaudio
+        tensorboard: tensorboard
+        Lightning (PyTorch Lightning): lightning
+        torchmetrics: torchmetrics
+    validator: >-
+        {% if 'pytorch_cpu' in dl_pytorch_deps and ('pytorch_cu124' in dl_pytorch_deps or 'pytorch_cu118' in dl_pytorch_deps) %}
+        You must choose either a CPU or a GPU backend, not both
+        {% elif 'pytorch_cu118' in dl_pytorch_deps and 'pytorch_cu124' in dl_pytorch_deps %}
+        You must choose one version of CUDA not both
+        {% endif %}
+    default: []
+
+transformers_deps:
+    type: str
+    when: "{{ 'dl_transformers' in dependencies_categories }}"
+    help: Deep Learning - Transformers
+    multiselect: true
+    choices:
+        - transformers
+        - datasets
+        - accelerate
+        - bitsandbytes
+        - peft
+        - evaluate
+        - timm
+    default: [transformers]
+
+rl_deps:
+    type: str
+    when: "{{ 'rl' in dependencies_categories }}"
+    help: Reinforcement Learning & Simulation
+    multiselect: true
+    choices:
+        - gymnasium
+        - stable-baselines3
+        - ray[rllib]
+        - pygame
+        - pygame-ce
+    validator: >-
+        {% if 'pygame' in rl_deps and 'pygame-ce' in rl_deps %}
+        You must choose either pygame or pygame-ce not both
+        {% endif %}
+    default: []
+
+mlops_deps:
+    type: str
+    when: "{{ 'mlops' in dependencies_categories }}"
+    help: MLOps
+    multiselect: true
+    choices:
+        - mlflow
+        - weights-and-biases
+        - dvc
+        - prefect
+        - ray
+        # - feast
+    default: []
+
+dvc_extras:
+    type: str
+    when: "{{ 'dvc' in mlops_deps }}"
+    help: "Select optional dependencies for dvc depending on your remote storage:"
+    multiselect: true
+    choices:
+        - s3
+        - gdrive
+        - gs
+        - azure
+        - ssh
+        - hdfs
+        - webdav
+        - oss
+    default: []
+
+ray_extras:
+    type: str
+    when: "{{ 'ray' in mlops_deps }}"
+    help: "Select optional dependencies for ray:"
+    multiselect: true
+    choices:
+        - default
+        - data
+        - train
+        - tune
+        - serve
+    default: []
+
+data_viz_deps:
+    type: str
+    when: "{{ 'data_viz' in dependencies_categories }}"
+    help: Visualization & Dashboards
+    multiselect: true
+    choices:
+        - matplotlib
+        - seaborn
+        - plotly
+        - streamlit
+    default: []
+
+langchain_deps:
+    type: str
+    when: "{{ 'langchain' in dependencies_categories }}"
+    help: LLM Apps & LangChain Toolkit
+    multiselect: true
+    choices:
+        - langgraph
+        - langgraph-checkpoint-sqlite
+        - langgraph-checkpoint-postgres
+        - langchain
+        - langchain-openai
+        - langchain-community
+        - langchain-ollama
+        - langchain-anthropic
+        - langchain-pinecone
+        - unstructured
+        - pypdf
+        - wikipedia
+        - firecrawl-py
+        - aiostream
+        - faiss-cpu
+    default: [langchain]
+
+backend_deps:
+    type: str
+    when: "{{ 'backend' in dependencies_categories }}"
+    help: Backend & APIs
+    multiselect: true
+    choices:
+        - fastapi[standard]
+        - slowapi
+        - gunicorn
+        - flask
+        - pydantic
+        - pydantic-settings
+        - python-dotenv
+        - requests
+        - httpx
+        - aiohttp
+        - sqlmodel
+        - slqalchemy
+        - psycopg2-binary
+        - alembic
+        - quixstreams
+        # - redis
+        # - aioredis
+    default: []
+
+dev_deps:
+    type: str
+    when: "{{ 'dev' in dependencies_categories }}"
+    help: Dev, Testing & Profiling
+    multiselect: true
+    choices:
+        - pytest-asyncio
+        - responses
+        - aioresponses
+        - types-requests
+        - pyinstrument
+        - jupyterlab
+    default: []
