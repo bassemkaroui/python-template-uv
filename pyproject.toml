@@ -1,6 +1,6 @@
 [project]
 name = "python-template-uv"
-version = "0.1.0rc1"
+version = "0.1.0rc2"
 description = "A Copier-powered template for creating Python packages managed with uv."
 readme = "README.md"
 authors = [{ name = "Bassem Karoui", email = "bassem.karoui1@gmail.com" }]

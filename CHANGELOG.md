@@ -1,3 +1,43 @@
+## 0.1.0rc2 (2025-04-25)
+
+### ✨ Features
+
+- **duties.py**: add a duty to setup the CLI globally
+- add support forfoptional dependency pre-configuration in template
+
+### 🐛🚑️ Fixes
+
+- **copier.yaml**: remove default dependencies
+- **duties.py**: made the `release` duty more robust to errors
+
+### ✅🤡🧪 Tests
+
+- group tests for `version` functionality in a class
+- exclude src/<project>/__main__.py from test coverage since it's an entry point
+
+### 🎨🏗️ Style & Architecture
+
+- **duties.py**: change jinja2 templating in `duties.py`
+
+### 📄 License
+
+- add support for `No License`
+
+### 📝💡 Documentation
+
+- **mkdocs**: add some cool examples to `docs/index.md`
+
+### 🔧🔨📦️ Configuration, Scripts, Packages
+
+- **mkdocs**: change the font size and add minify plugin
+- change `mypy` config to ignore missing imports
+- **mkdocs.yaml**: enable `callouts` and `PyMdown Tab Extension`
+
+### 🩹 fix-simple
+
+- **duties.py**: add `action` parameter to `_pick_env` to distinguish between `build`, `start` and `stop` when dealing with Docker containers
+- **duties.py**: wait for dev containers to fully start after building them in `_setup_container`
+
 ## 0.1.0rc1 (2025-04-22)
 
 ### 🐛🚑️ Fixes
