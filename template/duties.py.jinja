@@ -55,7 +55,8 @@ def _verify_uv_installed(ctx: Context, duty_name: str) -> None:
             )
         else:
             raise ValueError(
-                f"make: {duty_name}: uv must be installed, see https://docs.astral.sh/uv/getting-started/installation/"
+                f"make: {duty_name.replace('_', '-')}: uv must be installed, "
+                "see https://docs.astral.sh/uv/getting-started/installation/"
             ){% if dockerfile %}
 
 
@@ -233,7 +234,27 @@ def setup_dev(ctx: Context) -> None:
     ctx.run(
         ["uv", "sync"], title="Creating virtual environment using uv and installing the package"
     )
-    ctx.run(["uv", "run", "pre-commit", "install", "-f"], title="Setting up pre-commit"){% if dockerfile %}
+    ctx.run(["uv", "run", "pre-commit", "install", "-f"], title="Setting up pre-commit"){% if with_typer_cli %}
+
+
+@duty{% if dockerfile %}(
+    skip_if=_is_running_in_docker(),
+    skip_reason="setup-cli: skipped => Running inside a Docker container",
+)
+{%- endif %}
+def setup_cli(ctx: Context) -> None:
+    """Install the project's CLI globally using `uv`.
+
+    ```bash
+    make setup-cli
+    ```
+
+    Use `uv` to globally install the CLI defined in the current project.
+    This allows you to invoke the CLI directly from the command line, without activating
+    a virtual environment.
+    """
+    _verify_uv_installed(ctx, "setup_cli")
+    ctx.run(["uv", "tool", "install", "."], title="Installing the CLI globally via uv"){% endif %}{% if dockerfile %}
 
 
 @duty(
