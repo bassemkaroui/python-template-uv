@@ -38,6 +38,9 @@ plugins:
             signature_crossrefs: true
             show_symbol_type_heading: true
             show_symbol_type_toc: true
+  - minify:
+      minify_html: !ENV [DEPLOY, false]
+
 theme:
   name: material
   features:
@@ -88,6 +91,9 @@ theme:
         name: Switch to system preference
   icon:
     repo: fontawesome/brands/github
+
+extra_css:
+  - css/overrides.css
 
 extra:
   social:
