@@ -6,13 +6,15 @@ from {{ project_slug }}.cli.main import app
 runner = CliRunner()
 
 
-def test_version_as_command() -> None:
-    result = runner.invoke(app, ["version"])
-    assert result.exit_code == 0
-    assert f"{{ cli_name }} version: {__version__}" in result.stdout
+class TestVersion:
+    @staticmethod
+    def test_as_command() -> None:
+        result = runner.invoke(app, ["version"])
+        assert result.exit_code == 0
+        assert f"{{ cli_name }} version: {__version__}" in result.stdout
 
-
-def test_version_as_option() -> None:
-    result = runner.invoke(app, ["--version"])
-    assert result.exit_code == 0
-    assert f"{{ cli_name }} version: {__version__}" in result.stdout
+    @staticmethod
+    def test_as_option() -> None:
+        result = runner.invoke(app, ["--version"])
+        assert result.exit_code == 0
+        assert f"{{ cli_name }} version: {__version__}" in result.stdout
