@@ -37,7 +37,7 @@ repos:
         stages: [pre-commit]
         {%- endif %}
 
-  {%- if with_conventional_commits %}
+  {% if with_conventional_commits -%}
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v4.5.1
     hooks:
