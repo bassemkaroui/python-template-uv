@@ -1,3 +1,14 @@
+## 0.1.0 (2025-04-26)
+
+### 💚👷 CI & Build
+
+- add a `release.yaml` workflow to automate new releases
+
+### 📝💡 Documentation
+
+- add README.md
+- modify the template `README.md`
+
 ## 0.1.0rc2 (2025-04-25)
 
 ### ✨ Features
