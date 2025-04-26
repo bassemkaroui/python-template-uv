@@ -6,7 +6,9 @@ repo_name: {{ author_github_handle }}/{{ project_name }}
 {%- endif %}
 site_description: {{ project_description }}
 site_author: {{ author_fullname }}
+{%- if repository_provider == 'github' %}
 edit_uri: edit/main/docs/
+{%- endif %}
 # copyright: Maintained by <a href="https://{{ author_github_handle }}.com">{{ author_github_handle }}</a>.
 copyright: Maintained by <a href="https://github.com/{{ author_github_handle }}">{{ author }}</a>.
 
