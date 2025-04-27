@@ -32,6 +32,6 @@ repos:
     - id: check-added-large-files
     - id: detect-private-key
     - id: pretty-format-json
-      args: [--autofix]
+      args: [--autofix, --no-sort-keys]
     - id: end-of-file-fixer
     - id: trailing-whitespace
