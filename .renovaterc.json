@@ -1,0 +1,23 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices",
+    ":enablePreCommit",
+    ":maintainLockFilesMonthly",
+    ":semanticCommitTypeAll(build)"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "datasourceTemplate": "pypi",
+      "depNameTemplate": "{{{ lowercase depName }}}",
+      "description": "Match Copier and copier-template-extensions in README.md",
+      "fileMatch": [
+        "^README\\.md$"
+      ],
+      "matchStrings": [
+        "- \\*\\*(?<depName>Copier|copier-template-extensions)\\*\\* \u2265 (?<currentValue>.*?)\\s"
+      ]
+    }
+  ]
+}
