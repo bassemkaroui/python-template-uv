@@ -6,6 +6,9 @@
     ":maintainLockFilesMonthly",
     ":semanticCommitTypeAll(build)"
   ],
+  "pyenv": {
+    "enabled": false
+  },
   "customManagers": [
     {
       "customType": "regex",
