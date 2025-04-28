@@ -6,7 +6,7 @@
 
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-grayscale-inverted-border-orange.json)](https://github.com/copier-org/copier)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
-[![Python Versions](https://img.shields.io/badge/python-{{ min_python_version }}%20|%20{% for minor in range(min_python_version.split('.')[1]|int, 14) %}3.{{ minor }}{% if not loop.last %}%20|%20{% endif %}{% endfor %}-blue.svg)]()
+[![Python Versions](https://img.shields.io/badge/python-{% for minor in range(min_python_version.split('.')[1]|int, 14) %}3.{{ minor }}{% if not loop.last %}%20|%20{% endif %}{% endfor %}-blue.svg)]()
 {%- if publish_to_pypi %}
 [![PyPI](https://img.shields.io/pypi/v/{{ project_name }})](https://pypi.org/project/{{ project_name }}/)
 {%- endif %}

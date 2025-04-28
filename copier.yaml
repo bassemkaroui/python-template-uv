@@ -122,11 +122,19 @@ min_python_version:
     type: str
     help: "Choose the minimum Python version the project should support:"
     default: "3.10"
-    choices:
-      - "3.10"
-      - "3.11"
-      - "3.12"
-      - "3.13"
+    choices: |
+        {%- if python_version|float >= 3.10 %}
+        - "3.10"
+        {%- endif %}
+        {% if python_version|float >= 3.11 %}
+        - "3.11"
+        {%- endif %}
+        {% if python_version|float >= 3.12 %}
+        - "3.12"
+        {%- endif %}
+        {% if python_version|float >= 3.13 %}
+        - "3.13"
+        {%- endif %}
 
 py_versions:
     default: ["3.10", "3.11", "3.12", "3.13"]
