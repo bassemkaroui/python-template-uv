@@ -26,3 +26,96 @@
 {%- endif %}
 
 </div>
+
+## Installation
+
+{% if publish_to_pypi -%}
+You can install this package in several ways:
+
+### From PyPI
+
+- Using `pip`:
+
+    ```bash
+    pip install {{ project_name }}
+    ```
+
+- Using `uv`:
+
+    ```bash
+    uv add {{ project_name }}
+    ```
+{%- endif %}
+
+{% if repository_provider == 'github' -%}
+{% if publish_to_pypi -%}
+### From Source
+{% else -%}
+You can install this package in several ways:
+{% endif %}
+
+- Directly from GitHub:
+
+    ```bash
+    uv add git+{{ repository }}
+    ```
+
+- Or by cloning the repository:
+
+    ```bash
+    git clone {{ repository }}
+    cd my-package
+    ```
+
+Then, install the dependencies using Make:
+
+{% elif publish_to_pypi -%}
+### From Source
+{% else -%}
+To install the package, simply run:
+{% endif %}
+
+- For production dependencies:
+
+    ```bash
+    make setup
+    ```
+
+- For development setup (includes dev dependencies and Git hooks):
+
+    ```bash
+    make setup-dev
+    ```
+
+> [!info]
+> Using `make` ensures that `uv` is installed automatically if it's not already present.
+
+{% if with_typer_cli -%}
+> [!tip]
+> To make the CLI available globally (without needing to activate the virtual environment every time), you can run:
+> ```bash
+> make setup-cli
+> ```
+{%- endif %}
+
+> [!tip]
+> This quick guide should get you started, but for a complete overview of the project's features and usage, check out the original [python-template-uv](https://github.com/bassemkaroui/python-template-uv) template used to generate this repository.
+
+{% if not documentation -%}
+## Documentation
+
+You can generate the project documentation locally by running:
+
+```bash
+make docs
+```
+
+This will build the documentation using MkDocs.
+Once generated, simply open the provided URL in your browser to explore it.
+{%- endif %}
+
+{% if copyright_license != "No License" -%}
+## 📄 License
+
+This project is released under the **{{ copyright_license }}**. {% if repository %}See [LICENSE]({{ repository }}/blob/main/LICENSE) for details.{% endif -%}
+{%- endif -%}

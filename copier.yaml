@@ -60,19 +60,28 @@ homepage:
     when: "{{ repository_provider == 'github' }}"
     type: str
     help: "The project Homepage"
-    default: "https://{{ author_github_handle }}.github.io/{{ project_name }}"
+    default: >-
+      {% if repository_provider == 'github' -%}
+      https://{{ author_github_handle }}.github.io/{{ project_name }}
+      {%- endif %}
 
 repository:
     when: "{{ repository_provider == 'github' }}"
     type: str
     help: "The project Repository"
-    default: "https://github.com/{{ author_github_handle }}/{{ project_name }}"
+    default: >-
+      {% if repository_provider == 'github' -%}
+      https://github.com/{{ author_github_handle }}/{{ project_name }}
+      {%- endif %}
 
 documentation:
     when: "{{ repository_provider == 'github' }}"
     type: str
     help: "The project Documentation"
-    default: "https://{{ author_github_handle }}.github.io/{{ project_name }}"
+    default: >-
+      {% if repository_provider == 'github' -%}
+      https://{{ author_github_handle }}.github.io/{{ project_name }}
+      {%- endif %}
 
 copyright_license:
     type: str
