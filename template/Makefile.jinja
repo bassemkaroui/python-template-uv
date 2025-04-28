@@ -38,6 +38,9 @@ actions = \
 	release \
 	{%- endif %}
 	setup \
+	{%- if with_typer_cli %}
+	setup-cli \
+	{%- endif %}
 	setup-dev \
 	test{% if tox %}\
 	tox
