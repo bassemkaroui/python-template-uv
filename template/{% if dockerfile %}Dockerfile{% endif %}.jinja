@@ -54,7 +54,7 @@ ENV PATH="/workspaces/{{ project_name }}/.venv/bin:$PATH"
 USER {{ project_name }}
 {%- endif %}
 
-# CMD ["uvicorn", "{{ project_name }}:app", "--host", "0.0.0.0", "--port", "8000"]
+# CMD ["uvicorn", "{{ project_slug }}.main:app", "--host", "0.0.0.0", "--port", "8000"]
 # CMD ["sleep", "1000"]
 
 # ---------- development image ----------
@@ -79,4 +79,4 @@ ENV PATH="/workspaces/{{ project_name }}/.venv/bin:$PATH"
 USER {{ project_name }}
 {%- endif %}
 
-# CMD ["uvicorn", "{{ project_name }}:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+# CMD ["uvicorn", "{{ project_slug }}.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
