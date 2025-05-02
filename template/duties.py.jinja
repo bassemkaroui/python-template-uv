@@ -302,7 +302,7 @@ def docker_start(ctx: Context, env: str | None = None) -> None:
     env = env or _pick_env(ctx)
     if env == "dev":
         ctx.run(
-            "docker compose --profile dev up --watch {{ project_name }}-dev > /dev/null 2>&1 &",
+            "docker compose --profile dev up --watch > /dev/null 2>&1 &",
             title="Starting dev containers",
         )
     elif env == "prod":
