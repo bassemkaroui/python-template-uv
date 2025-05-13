@@ -15,11 +15,11 @@
       "datasourceTemplate": "pypi",
       "depNameTemplate": "{{{ lowercase depName }}}",
       "description": "Match Copier and copier-templates-extensions in README.md",
-      "fileMatch": [
-        "^README\\.md$"
+      "managerFilePatterns": [
+        "/^README\\.md$/"
       ],
       "matchStrings": [
-        "- \\*\\*(?<depName>Copier|copier-templates-extensions)\\*\\* \u2265 (?<currentValue>.*?)\\s"
+        "- \\*\\*(?<depName>Copier|copier-templates-extensions)\\*\\* ≥ (?<currentValue>.*?)\\s"
       ]
     }
   ]
