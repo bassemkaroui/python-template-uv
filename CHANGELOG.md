@@ -1,3 +1,70 @@
+## 0.2.0 (2025-05-13)
+
+### ✨ Features
+
+- add `README.md.jinja` for the template
+- **copier.yaml**: set the project name by default to the project root directory
+
+### 🐛🚑️ Fixes
+
+- change how Python versions show in the template `README.md.jinja` and in copier.yaml
+- fix some bugs
+
+### ♻️ Refactorings
+
+- include waiting for containers' startup in `docker_start`
+
+### build
+
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.7.0
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.7.0
+- **deps**: lock file maintenance
+- **deps**: lock file maintenance
+- **deps**: update astral-sh/setup-uv digest to 6b9c606
+- **deps**: update astral-sh/setup-uv digest to 6b9c606
+- **deps**: lock file maintenance
+- **deps**: lock file maintenance
+- **deps**: update astral-sh/setup-uv action to v6
+- **deps**: update astral-sh/setup-uv action to v6
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.6.0
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.6.0
+- **deps**: update dependency copier to v9.7.1
+- **deps**: update dependency copier to v9.7.1
+- **deps**: pin dependencies
+- **deps**: pin dependencies
+
+### chore
+
+- **config**: migrate renovate config
+- **config**: migrate config .renovaterc.json
+
+### 📌➕⬇️➖⬆️ Dependencies
+
+- add `mkdocs-minify-plugin` as dependency
+
+### 📝💡 Documentation
+
+- **template/docs/index.md.jinja**: remove a non-existing path
+- **README.md.jinja**: change `info` to `note` for better rendering on GitHub
+
+### 🔐🚧📈✏️💩👽️🍻💬🥚🌱🚩🥅🩺 Others
+
+- **copier-templates-extensions**: fix dependency name in `README.md` and in `.renovaterc.json`
+- correct file name from `pytorch_indixes.jinja` to `pytorch_indexes.jinja`
+
+### 🔧🔨📦️ Configuration, Scripts, Packages
+
+- **.gitignore**: add `**/*.posting.yaml` to `.gitignore` to ignore Posting requests
+- **.renovaterc.json**: disable Renovate `pyenv` manager to avoid updating `.python-version`
+- **Renovate**: add the first version of `.renovaterc.json`
+- **pre-commit**: don't sort keys in `pretty-format-json` hook
+- **pre-commit**: modify `.pre-commit-config.yaml` files for the project and the template to be compatible with Renovate
+
+### 🩹 fix-simple
+
+- **duties.py.jinja**: watch all services in dev profile
+- **Dockerfile.jinja**: use the project slug in the CMD for FastAPI
+
 ## 0.1.0 (2025-04-26)
 
 ### 💚👷 CI & Build
