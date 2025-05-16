@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Post PR Comment
         id: giphy
-        uses: bassemkaroui/docker-action-pr-giphy-comment@v1
+        uses: bassemkaroui/docker-action-pr-giphy-comment@f4e007d6ddab0eb3554d24beed0e0813ca5ebeb3 # v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           giphy-api-key: ${{ secrets.GIPHY_API_KEY }}
