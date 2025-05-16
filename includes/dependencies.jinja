@@ -170,6 +170,12 @@
     {%- if 'gunicorn' in backend_deps %}
     "gunicorn>=23.0.0",
     {%- endif %}
+    {%- if 'pyjwt[crypto]' in backend_deps %}
+    "pyjwt[crypto]>=2.10.1",
+    {%- endif %}
+    {%- if 'passlib[bcrypt]' in backend_deps %}
+    "passlib[bcrypt]>=1.7.4",
+    {%- endif %}
     {%- if 'flask' in backend_deps %}
     "flask>=3.1.0",
     {%- endif %}
