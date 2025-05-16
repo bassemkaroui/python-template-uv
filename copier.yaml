@@ -7,6 +7,11 @@ _jinja_extensions:
 
 _tasks:
     - "git init"
+    - "make setup-dev"
+    - "git add -A"
+    - "pre-commit run -a || true"
+    - "git add -A"
+    - "pre-commit run -a"
 
 project_name:
     type: str
@@ -424,6 +429,8 @@ backend_deps:
         - fastapi[standard]
         - slowapi
         - gunicorn
+        - pyjwt[crypto]
+        - passlib[bcrypt]
         - flask
         - pydantic
         - pydantic-settings
