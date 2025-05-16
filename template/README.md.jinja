@@ -12,6 +12,7 @@
 {%- endif %}
 {%- if repository_provider == 'github' %}
 [![Release](https://img.shields.io/github/v/release/{{ author_github_handle }}/{{ project_name }})](https://github.com/{{ author_github_handle }}/{{ project_name }}/releases)
+[![CI/CD Pipeline](https://github.com/{{ author_github_handle }}/{{ project_name }}/actions/workflows/main.yaml/badge.svg)](https://github.com/{{ author_github_handle }}/{{ project_name }}/actions/workflows/main.yaml)
 [![Commit activity](https://img.shields.io/github/commit-activity/m/{{ author_github_handle }}/{{ project_name }})](https://github.com/{{ author_github_handle }}/{{ project_name }}/commits)
 [![GitHub](https://img.shields.io/github/license/{{ author_github_handle }}/{{ project_name }})](https://github.com/{{ author_github_handle }}/{{ project_name }}/blob/main/LICENSE)
 {%- endif %}

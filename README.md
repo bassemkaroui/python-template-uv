@@ -13,7 +13,6 @@ A modern, batteries‑included [Copier](https://github.com/copier-org/copier) te
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 [![GitHub](https://img.shields.io/github/license/bassemkaroui/python-template-uv)](https://github.com/bassemkaroui/python-template-uv/blob/main/LICENSE)
 
-
 </div>
 
 ## 🚀 Features
@@ -26,39 +25,55 @@ A modern, batteries‑included [Copier](https://github.com/copier-org/copier) te
   Simply run tasks with `make <task>` (e.g. `make check`, `make docs`).
 
 - **Quality & standards**
+
   - **Formatting** and **Linting**: [Ruff](https://github.com/astral-sh/ruff) ➜ `make format` & `make check-quality`
   - **Type checking**: [Mypy](https://github.com/python/mypy) ➜ `make check-types`
   - **Pre-commit hooks**: [pre-commit](https://pre-commit.com/)
 
 - **Testing & coverage**
+
   - [**pytest**](https://github.com/pytest-dev/pytest) ➜ `make test`
   - [**Coverage**](https://github.com/nedbat/coveragepy) (text, HTML, XML) ➜ `make coverage`
   - Compatibility testing for multiple versions of Python with [**Tox**](https://github.com/tox-dev/tox) and its plugin [tox-uv](https://github.com/tox-dev/tox-uv) ➜ `make tox`
 
 - **Documentation**
+
   - [**MkDocs**](https://github.com/mkdocs/mkdocs) with [mkdocs-material](https://github.com/squidfunk/mkdocs-material) theme
   - Live server: `make docs` (serves on localhost:8080)
   - Deploy to GitHub Pages: `make docs-deploy`
 
 - **Release & changelog**
+
   - [Conventional Commits](https://www.conventionalcommits.org/) + [Commitizen](https://github.com/commitizen-tools/commitizen) + [gitmoji](https://github.com/ljnsn/cz-conventional-gitmoji)
   - Automated `CHANGELOG.md` updates
   - Release new versions ➜ `make release`
 
-
 - **Docker & Docker Compose**
+
   - Generate `Dockerfile` + `compose.yml` for local development and deployment (GPU support)
   - Docker targets: `make docker-build`, `make docker-start`, `make docker-stop`
 
 - **Optional tooling**
+
   - Typer CLI scaffold
   - Strict typing
   - Run tests with parallel execution via pytest-xdist
   - Preconfigured dependency categories (ML, data, web, etc.)
 
-- **Future CI support**:
-  CI workflows are scaffolded for upcoming releases.
+- **CI/CD Workflows**
 
+  This template includes GitHub Actions workflows for continuous integration, testing, and release automation:
+
+  - **PR Commenting** (`pr-thank-you.yaml`): Posts a fun GIPHY comment on new pull requests using [`docker-action-pr-giphy-comment`](https://github.com/bassemkaroui/docker-action-pr-giphy-comment)
+
+  - **CI/CD Pipeline** (`main.yaml.jinja`):
+    - **Checks**: Linting (Ruff), type checking (Mypy), documentation build.
+    - **Tests**: Runs `pytest` across supported Python versions using a matrix strategy.
+    - **Releases**: Automatically publishes releases when a Git tag is pushed.
+    - **Docs Deployment**: Deploys MkDocs documentation to GitHub Pages.
+    - **Package Publishing** (optional): Publishes the package to PyPI if `publish_to_pypi` is enabled and `PYPI_TOKEN` is set.
+
+  These workflows are generated into `.github/workflows/` in the scaffolded project. You can customize them further as needed.
 
 ## 🛠 Prerequisites
 
@@ -66,7 +81,6 @@ A modern, batteries‑included [Copier](https://github.com/copier-org/copier) te
 - **Copier** ≥ 9.7.1
 - **copier-templates-extensions** ≥ 0.3.1
 - **uv** (if not installed check [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/))
-
 
 ## 🎉 Quickstart
 
@@ -101,6 +115,7 @@ make check   # runs all checks: lint, types, docs build, API, etc.
 ```
 
 **Stay up to date**
+
 ```bash
 cd /path/to/my-project
 
@@ -109,7 +124,6 @@ uvx copier update --trust --exclude src/ --exclude tests/ .
 
 > [!WARNING]
 > To be able to [update your project](https://copier.readthedocs.io/en/stable/updating/), do not delete or manually modify the generated `.copier-answers.yml` file.
-
 
 ## 📋 Available Duties
 
@@ -143,32 +157,30 @@ tox                        Run tests across multiple Python versions.
 
 For the full list and details, see [duties.py](https://github.com/bassemkaroui/python-template-uv/blob/main/template/duties.py.jinja).
 
-
 ## 🔧 Template Variables
 
 When running `copier`, you’ll be prompted for:
 
-| Variable                   | Description                                                      | Default            |
-| -------------------------- | ---------------------------------------------------------------- | ------------------ |
-| `project_name`             | Your project’s **name** (lowercase, letters/digits/dashes)       | *—*                |
-| `project_description`      | A short summary of what your project does                        | *—*                |
-| `author_fullname`          | Your full name                                                   | from `git`         |
-| `author_email`             | Your email address                                               | from `git`         |
-| `repository_provider`      | Where you host your repo (`github` or `other`)                   | `github`           |
-| `homepage`                 | Project homepage URL                                             | `https://<user>.github.io/<proj>` |
-| `python_version`           | Default Python interpreter for development                       | `3.12`             |
-| `min_python_version`       | Minimum supported Python version                                  | `3.10`             |
-| `with_typer_cli`           | Include a Typer CLI scaffold?                                     | `false`            |
-| `with_strict_typing`       | Enable strict typing enforcement?                                 | `false`            |
-| `tox`                      | Include Tox configuration?                                        | `true`             |
-| `coverage_threshold`       | Minimum test coverage %                                           | `100`              |
-| `with_conventional_commits`| Enforce Conventional Commits?                                     | `true`             |
-| `cz_gitmoji`               | Include emojis in commit messages?                               | `true`             |
-| `dockerfile`               | Generate Dockerfile and Compose file?                             | `true`             |
-| `gpus`                     | Enable GPU support in Docker builds?                              | `false`            |
+| Variable                    | Description                                                | Default                           |
+| --------------------------- | ---------------------------------------------------------- | --------------------------------- |
+| `project_name`              | Your project’s **name** (lowercase, letters/digits/dashes) | _—_                               |
+| `project_description`       | A short summary of what your project does                  | _—_                               |
+| `author_fullname`           | Your full name                                             | from `git`                        |
+| `author_email`              | Your email address                                         | from `git`                        |
+| `repository_provider`       | Where you host your repo (`github` or `other`)             | `github`                          |
+| `homepage`                  | Project homepage URL                                       | `https://<user>.github.io/<proj>` |
+| `python_version`            | Default Python interpreter for development                 | `3.12`                            |
+| `min_python_version`        | Minimum supported Python version                           | `3.10`                            |
+| `with_typer_cli`            | Include a Typer CLI scaffold?                              | `false`                           |
+| `with_strict_typing`        | Enable strict typing enforcement?                          | `false`                           |
+| `tox`                       | Include Tox configuration?                                 | `true`                            |
+| `coverage_threshold`        | Minimum test coverage %                                    | `100`                             |
+| `with_conventional_commits` | Enforce Conventional Commits?                              | `true`                            |
+| `cz_gitmoji`                | Include emojis in commit messages?                         | `true`                            |
+| `dockerfile`                | Generate Dockerfile and Compose file?                      | `true`                            |
+| `gpus`                      | Enable GPU support in Docker builds?                       | `false`                           |
 
 > See the full list in [copier.yaml](https://github.com/bassemkaroui/python-template-uv/blob/main/copier.yaml).
-
 
 ## 📄 License
 

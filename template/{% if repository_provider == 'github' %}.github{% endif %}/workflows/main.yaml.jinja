@@ -1,0 +1,162 @@
+name: CI
+
+concurrency:
+  group: {% raw %}${{ github.workflow }}-${{ github.ref }}{% endraw %}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "*"
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Setup env
+        uses: ./.github/actions/setup-env
+        with:
+          python-version-file: ".python-version"
+
+      - name: Check the code quality with Ruff
+        run: make check-quality
+
+      - name: Check typing
+        run: make check-types
+
+      - name: Check if the documentation builds correctly
+        run: make check-docs
+
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+{%- set start = min_python_version.split('.')[-1] | int %}
+{%- set majors = range(start, 14) %}
+{%- for minor in majors %}
+          - "3.{{ minor }}"
+{%- endfor %}
+      fail-fast: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Setup env
+        uses: ./.github/actions/setup-env
+        with:
+          python-version: {% raw %}${{ matrix.python-version }}{% endraw %}
+
+      - name: Run tests
+        run: make test
+
+  release:
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' &&
+      startsWith(github.ref, 'refs/tags/')
+    needs:
+      - checks
+      - tests
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Setup env
+        uses: ./.github/actions/setup-env
+        with:
+          python-version-file: ".python-version"
+
+      - name: Prepare release notes
+        run: {% raw %}uvx --from commitizen --with cz-conventional-gitmoji cz changelog ${{ github.ref_name }} --file-name release-notes.md && echo ${{ github.ref }}{% endraw %}
+
+      - name: Create release
+        uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631 # v2
+        with:
+          body_path: release-notes.md
+          prerelease: {% raw %}${{ contains(github.ref_name, 'rc') || contains(github.ref_name, 'b') || contains(github.ref_name, 'a') }}{% endraw %}
+
+  deploy-docs:
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' &&
+      startsWith(github.ref, 'refs/tags/'))
+    runs-on: ubuntu-latest
+    needs:
+      - checks
+      - tests
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Setup env
+        uses: ./.github/actions/setup-env
+        with:
+          python-version-file: ".python-version"
+
+      - name: Build docs
+        run: uv run mkdocs build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@e9c66a37f080288a11235e32cbe2dc5fb3a679cc # v4
+        with:
+          github_token: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+          publish_dir: ./site
+  {%- if publish_to_pypi %}
+
+  publish-package:
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' &&
+      startsWith(github.ref, 'refs/tags/'))
+    runs-on: ubuntu-latest
+    needs:
+      - checks
+      - tests
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Setup env
+        uses: ./.github/actions/setup-env
+        with:
+          python-version-file: ".python-version"
+
+      - name: Build package
+        run: uv build
+
+      - name: Publish package
+        if: secrets.PYPI_TOKEN != ''
+        env:
+          UV_PUBLISH_TOKEN: {% raw %}${{ secrets.PYPI_TOKEN }}{% endraw %}
+        run: uv publish
+  {%- endif %}
