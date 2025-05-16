@@ -108,6 +108,13 @@ show_error_codes = true
 show_error_context = true
 ignore_missing_imports = true
 
+[tool.pyright]
+include = ["src"]
+pythonVersion = "py{{ python_version | replace('.', '') }}"
+typeCheckingMode = "off"
+useLibraryCodeForTypes = true
+reportUndefinedVariable = "none"
+
 [tool.ruff]
 target-version = "py{{ min_python_version | replace('.', '') }}"
 line-length = 100
@@ -170,6 +177,10 @@ select = [
     "ICN001",
     # pylint
     "PL",
+    # flake8-unused-arguments
+    "ARG",
+    # FastAPI
+    "FAST",
 ]
 ignore = [
     # LineTooLong
