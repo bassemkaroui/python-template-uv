@@ -1,7 +1,7 @@
 on:
   pull_request:
     types:
-    - opened
+      - opened
 
 jobs:
   pr-action:
@@ -10,12 +10,12 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-    - name: Post PR Comment
-      id: giphy
-      uses: bassemkaroui/docker-action-pr-giphy-comment@v1
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        giphy-api-key: ${{ secrets.GIPHY_API_KEY }}
+      - name: Post PR Comment
+        id: giphy
+        uses: bassemkaroui/docker-action-pr-giphy-comment@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          giphy-api-key: ${{ secrets.GIPHY_API_KEY }}
 
-    - name: Log Comment URL
-      run: echo "URL - ${{ steps.giphy.outputs.pr-comment-url }}"
+      - name: Log Comment URL
+        run: echo "URL - ${{ steps.giphy.outputs.pr-comment-url }}"

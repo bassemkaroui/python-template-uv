@@ -19,8 +19,19 @@
         "/^README\\.md$/"
       ],
       "matchStrings": [
-        "- \\*\\*(?<depName>Copier|copier-templates-extensions)\\*\\* ≥ (?<currentValue>.*?)\\s"
+        "- \\*\\*(?<depName>Copier|copier-templates-extensions)\\*\\* \u2265 (?<currentValue>.*?)\\s"
       ]
     }
-  ]
+  ],
+  "pre-commit": {
+    "managerFilePatterns": [
+      "/(^|/)template/\\.pre-commit-config\\.ya?ml(?:\\.jinja)?$/"
+    ]
+  },
+  "github-actions": {
+    "managerFilePatterns": [
+      "/^template/.+\\.github.+/actions/.*\\.ya?ml(?:\\.jinja)?$/",
+      "/^template/.+\\.github.+/workflows/.*\\.ya?ml(?:\\.jinja)?$/"
+    ]
+  }
 }
