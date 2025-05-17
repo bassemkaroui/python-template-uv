@@ -21,13 +21,22 @@
       "matchStrings": [
         "- \\*\\*(?<depName>Copier|copier-templates-extensions)\\*\\* \u2265 (?<currentValue>.*?)\\s"
       ]
+    },
+    {
+      "description": "Update pre-commit hook revs in Jinja template",
+      "customType": "regex",
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "{{{ depName }}}",
+      "extractVersionTemplate": "{{currentValue}}",
+      "versioningTemplate": "semver",
+      "matchStrings": [
+        "(?ms)^\\s*-\\s*repo:\\s*https?://github\\.com/(?<depName>[^/\\s]+/[^/\\s]+)\\b.*?\\n\\s*rev:\\s*[\"']?(?<currentValue>v?\\d+\\.\\d+\\.\\d+)[\"']?"
+      ],
+      "managerFilePatterns": [
+        "/^template/\\.pre-commit-config\\.ya?ml(?:\\.jinja)?$/"
+      ]
     }
   ],
-  "pre-commit": {
-    "managerFilePatterns": [
-      "/(^|/)template/\\.pre-commit-config\\.ya?ml(?:\\.jinja)?$/"
-    ]
-  },
   "github-actions": {
     "managerFilePatterns": [
       "/^template/.+\\.github.+/actions/.*\\.ya?ml(?:\\.jinja)?$/",
