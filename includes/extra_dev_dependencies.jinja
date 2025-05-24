@@ -1,6 +1,12 @@
     {%- if 'pytest-asyncio' in dev_deps %}
     "pytest-asyncio>=0.26.0",
     {%- endif %}
+    {%- if 'pytest-benchmark[histogram]' in dev_deps %}
+    "pytest-benchmark[histogram]>=5.1.0",
+    {%- endif %}
+    {%- if ('pytest-benchmark' in dev_deps) and ('pytest-benchmark[histogram]' not in dev_deps) %}
+    "pytest-benchmark>=5.1.0",
+    {%- endif %}
     {%- if 'responses' in dev_deps %}
     "responses>=0.25.7",
     {%- endif %}

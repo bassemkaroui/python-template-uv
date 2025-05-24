@@ -52,8 +52,8 @@ repository_provider:
     help: Your repository provider
     default: github
     choices:
-    - github
-    - other
+        - github
+        - other
 
 author_github_handle:
     when: "{{ repository_provider == 'github' }}"
@@ -66,27 +66,27 @@ homepage:
     type: str
     help: "The project Homepage"
     default: >-
-      {% if repository_provider == 'github' -%}
-      https://{{ author_github_handle }}.github.io/{{ project_name }}
-      {%- endif %}
+        {% if repository_provider == 'github' -%}
+        https://{{ author_github_handle }}.github.io/{{ project_name }}
+        {%- endif %}
 
 repository:
     when: "{{ repository_provider == 'github' }}"
     type: str
     help: "The project Repository"
     default: >-
-      {% if repository_provider == 'github' -%}
-      https://github.com/{{ author_github_handle }}/{{ project_name }}
-      {%- endif %}
+        {% if repository_provider == 'github' -%}
+        https://github.com/{{ author_github_handle }}/{{ project_name }}
+        {%- endif %}
 
 documentation:
     when: "{{ repository_provider == 'github' }}"
     type: str
     help: "The project Documentation"
     default: >-
-      {% if repository_provider == 'github' -%}
-      https://{{ author_github_handle }}.github.io/{{ project_name }}
-      {%- endif %}
+        {% if repository_provider == 'github' -%}
+        https://{{ author_github_handle }}.github.io/{{ project_name }}
+        {%- endif %}
 
 copyright_license:
     type: str
@@ -118,10 +118,10 @@ python_version:
     help: "Choose the default Python version for development, documentation generation, and package build:"
     default: "3.12"
     choices:
-      - "3.10"
-      - "3.11"
-      - "3.12"
-      - "3.13"
+        - "3.10"
+        - "3.11"
+        - "3.12"
+        - "3.13"
 
 min_python_version:
     type: str
@@ -185,8 +185,8 @@ coverage_threshold:
 with_conventional_commits:
     type: bool
     help: >-
-      Do you want to follow the Conventional Commits standard (https://www.conventionalcommits.org)
-      for your commit messages?
+        Do you want to follow the Conventional Commits standard (https://www.conventionalcommits.org)
+        for your commit messages?
     default: true
 
 cz_gitmoji:
@@ -454,6 +454,8 @@ dev_deps:
     multiselect: true
     choices:
         - pytest-asyncio
+        - pytest-benchmark
+        - pytest-benchmark[histogram]
         - responses
         - aioresponses
         - types-requests
