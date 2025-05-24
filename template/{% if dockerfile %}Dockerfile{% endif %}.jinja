@@ -16,23 +16,23 @@ WORKDIR /workspaces/{{ project_name }}
 
 # Install dependencies
 RUN --mount=type=cache,target=/root/.cache/uv \
-	--mount=type=bind,source=uv.lock,target=uv.lock \
-	--mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-	if [ "$ENVIRONMENT" = "prod" ]; then \
-	uv sync --frozen --no-install-project --no-editable --no-dev; \
-	else \
-	uv sync --frozen --no-install-project --all-extras; \
-	fi
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    if [ "$ENVIRONMENT" = "prod" ]; then \
+    uv sync --frozen --no-install-project --no-editable --no-dev; \
+    else \
+    uv sync --frozen --no-install-project --all-extras; \
+    fi
 
 COPY . .
 
 # Install the project
 RUN --mount=type=cache,target=/root/.cache/uv \
-	if [ "$ENVIRONMENT" = "prod" ]; then \
-	uv sync --frozen --no-editable --no-dev; \
-	else \
-	uv sync --frozen --all-extras; \
-	fi
+    if [ "$ENVIRONMENT" = "prod" ]; then \
+    uv sync --frozen --no-editable --no-dev; \
+    else \
+    uv sync --frozen --all-extras; \
+    fi
 
 # ---------- production image ----------
 FROM python:{{ python_version }}-slim-bookworm AS prod

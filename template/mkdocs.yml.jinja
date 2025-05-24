@@ -23,7 +23,7 @@ plugins:
           paths: ["src/{{ project_slug }}"]
           options:
             extensions:
-            - griffe_typingdoc
+              - griffe_typingdoc
             show_root_heading: true
             show_if_no_docstring: true
             # preload_modules:
@@ -34,7 +34,7 @@ plugins:
             separate_signature: true
             unwrap_annotated: true
             filters:
-            - '!^_'
+              - "!^_"
             merge_init_into_class: true
             docstring_section_style: spacy
             signature_crossrefs: true

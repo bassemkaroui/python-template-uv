@@ -41,18 +41,18 @@ repos:
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v4.5.1
     hooks:
-    - id: commitizen
-      {%- if cz_gitmoji %}
-      {%- if repository_provider == 'github' %}
-      # needed by Renovate to support additional dependencies
-      # see https://docs.renovatebot.com/modules/manager/pre-commit/
-      language: python
-      {%- endif %}
-      additional_dependencies:
-        - cz-conventional-gitmoji
-      {%- endif %}
-      stages:
-      - commit-msg
+      - id: commitizen
+        {%- if cz_gitmoji %}
+        {%- if repository_provider == 'github' %}
+        # needed by Renovate to support additional dependencies
+        # see https://docs.renovatebot.com/modules/manager/pre-commit/
+        language: python
+        {%- endif %}
+        additional_dependencies:
+          - cz-conventional-gitmoji
+        {%- endif %}
+        stages:
+          - commit-msg
   {%- endif %}
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
