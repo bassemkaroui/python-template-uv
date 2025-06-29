@@ -203,14 +203,20 @@
     {%- if 'sqlalchemy' in backend_deps %}
     "slqalchemy>=2.0.40",
     {%- endif %}
-    {%- if 'psycopg2-binary' in backend_deps %}
+    {%- if 'psycopg2-binary (v2)' in backend_deps %}
     "psycopg2-binary>=2.9.10",
+    {%- endif %}
+    {%- if 'psycopg[binary] (v3)' in backend_deps %}
+    "psycopg[binary]>=3.2.9",
     {%- endif %}
     {%- if 'alembic' in backend_deps %}
     "alembic>=1.15.2",
     {%- endif %}
     {%- if 'quixstreams' in backend_deps %}
     "quixstreams>=3.13.1",
+    {%- endif %}
+    {%- if 'tenacity' in backend_deps %}
+    "tenacity>=9.1.2",
     {%- endif %}
     {%- if 'mlflow' in mlops_deps %}
     "mlflow>=2.21.3",

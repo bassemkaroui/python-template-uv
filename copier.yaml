@@ -1,464 +1,467 @@
 _subdirectory: template
 _jinja_extensions:
-    - copier_templates_extensions.TemplateExtensionLoader
-    - extensions.py:GitExtension
-    - extensions.py:CurrentYearExtension
-    - extensions.py:UserUIDGUIDExtension
+  - copier_templates_extensions.TemplateExtensionLoader
+  - extensions.py:GitExtension
+  - extensions.py:CurrentYearExtension
+  - extensions.py:UserUIDGUIDExtension
 
 _tasks:
-    - "git init"
-    - "make setup-dev"
-    - "git add -A"
-    - "pre-commit run -a || true"
-    - "git add -A"
-    - "pre-commit run -a"
+  - "git init"
+  - "mkdir scripts"
+  - "make setup-dev"
+  - "git add -A"
+  - "pre-commit run -a || true"
+  - "git add -A"
+  - "pre-commit run -a"
 
 project_name:
-    type: str
-    help: What is your project name?
-    default: "{{ _folder_name }}"
-    validator: >-
-        {% if not (project_name | regex_search('^[a-z][a-z0-9\-]+$')) %}
-        Project name must start with a letter, followed by one or more letters,
-        digits or dashes all lowercase.
-        {% endif %}
+  type: str
+  help: What is your project name?
+  default: "{{ _folder_name }}"
+  validator: >-
+    {% if not (project_name | regex_search('^[a-z][a-z0-9\-]+$')) %}
+    Project name must start with a letter, followed by one or more letters,
+    digits or dashes all lowercase.
+    {% endif %}
 
 project_slug:
-    type: str
-    default: "{{ project_name.replace('-', '_') }}"
-    when: false
+  type: str
+  default: "{{ project_name.replace('-', '_') }}"
+  when: false
 
 project_description:
-    type: str
-    help: Your project description
+  type: str
+  help: Your project description
 
 project_keywords:
-    default: "python,{{ project_name | lower }}"
-    type: str
-    help: "Provide a list of comma-separated keywords to be using in the Python package overview:"
+  default: "python,{{ project_name | lower }}"
+  type: str
+  help: "Provide a list of comma-separated keywords to be using in the Python package overview:"
 
 author_fullname:
-    type: str
-    help: Your full name
-    default: "{{ 'Bassem Karoui' | git_user_name }}"
+  type: str
+  help: Your full name
+  default: "{{ 'Bassem Karoui' | git_user_name }}"
 
 author_email:
-    type: str
-    help: Your email
-    default: "{{ 'bassem.karoui1@gmail.com' | git_user_email }}"
+  type: str
+  help: Your email
+  default: "{{ 'bassem.karoui1@gmail.com' | git_user_email }}"
 
 repository_provider:
-    type: str
-    help: Your repository provider
-    default: github
-    choices:
-        - github
-        - other
+  type: str
+  help: Your repository provider
+  default: github
+  choices:
+    - github
+    - other
 
 author_github_handle:
-    when: "{{ repository_provider == 'github' }}"
-    type: str
-    help: Your Github handle
-    default: "{{ author_fullname | lower | replace(' ', '')}}"
+  when: "{{ repository_provider == 'github' }}"
+  type: str
+  help: Your Github handle
+  default: "{{ author_fullname | lower | replace(' ', '')}}"
 
 homepage:
-    when: "{{ repository_provider == 'github' }}"
-    type: str
-    help: "The project Homepage"
-    default: >-
-        {% if repository_provider == 'github' -%}
-        https://{{ author_github_handle }}.github.io/{{ project_name }}
-        {%- endif %}
+  when: "{{ repository_provider == 'github' }}"
+  type: str
+  help: "The project Homepage"
+  default: >-
+    {% if repository_provider == 'github' -%}
+    https://{{ author_github_handle }}.github.io/{{ project_name }}
+    {%- endif %}
 
 repository:
-    when: "{{ repository_provider == 'github' }}"
-    type: str
-    help: "The project Repository"
-    default: >-
-        {% if repository_provider == 'github' -%}
-        https://github.com/{{ author_github_handle }}/{{ project_name }}
-        {%- endif %}
+  when: "{{ repository_provider == 'github' }}"
+  type: str
+  help: "The project Repository"
+  default: >-
+    {% if repository_provider == 'github' -%}
+    https://github.com/{{ author_github_handle }}/{{ project_name }}
+    {%- endif %}
 
 documentation:
-    when: "{{ repository_provider == 'github' }}"
-    type: str
-    help: "The project Documentation"
-    default: >-
-        {% if repository_provider == 'github' -%}
-        https://{{ author_github_handle }}.github.io/{{ project_name }}
-        {%- endif %}
+  when: "{{ repository_provider == 'github' }}"
+  type: str
+  help: "The project Documentation"
+  default: >-
+    {% if repository_provider == 'github' -%}
+    https://{{ author_github_handle }}.github.io/{{ project_name }}
+    {%- endif %}
 
 copyright_license:
-    type: str
-    help: Choose the project's license (e.g. "MIT", "GPL-3.0").
-    default: MIT License
-    choices:
-        - No License
-        - Apache Software License
-        - BSD 3-clause License
-        - Boost Software License 1.0 (BSL-1.0)
-        - GNU General Public License v3 (GPLv3)
-        - ISC License
-        - MIT License
-        - The Unlicense (Unlicense)
+  type: str
+  help: Choose the project's license (e.g. "MIT", "GPL-3.0").
+  default: MIT License
+  choices:
+    - No License
+    - Apache Software License
+    - BSD 3-clause License
+    - Boost Software License 1.0 (BSL-1.0)
+    - GNU General Public License v3 (GPLv3)
+    - ISC License
+    - MIT License
+    - The Unlicense (Unlicense)
 
 copyright_holder:
-    type: str
-    help: Name or organization holding the copyright
-    default: "{{ author_fullname }}"
-    when: "{{ copyright_license != 'No License' }}"
+  type: str
+  help: Name or organization holding the copyright
+  default: "{{ author_fullname }}"
+  when: "{{ copyright_license != 'No License' }}"
 
 copyright_year:
-    when: false
-    type: str
-    default: "{{ current_year }}"
+  when: false
+  type: str
+  default: "{{ current_year }}"
 
 python_version:
-    type: str
-    help: "Choose the default Python version for development, documentation generation, and package build:"
-    default: "3.12"
-    choices:
-        - "3.10"
-        - "3.11"
-        - "3.12"
-        - "3.13"
+  type: str
+  help: "Choose the default Python version for development, documentation generation, and package build:"
+  default: "3.12"
+  choices:
+    - "3.10"
+    - "3.11"
+    - "3.12"
+    - "3.13"
 
 min_python_version:
-    type: str
-    help: "Choose the minimum Python version the project should support:"
-    default: "3.10"
-    choices: |
-        {%- if python_version|float >= 3.10 %}
-        - "3.10"
-        {%- endif %}
-        {% if python_version|float >= 3.11 %}
-        - "3.11"
-        {%- endif %}
-        {% if python_version|float >= 3.12 %}
-        - "3.12"
-        {%- endif %}
-        {% if python_version|float >= 3.13 %}
-        - "3.13"
-        {%- endif %}
+  type: str
+  help: "Choose the minimum Python version the project should support:"
+  default: "3.10"
+  choices: |
+    {%- if python_version|float >= 3.10 %}
+    - "3.10"
+    {%- endif %}
+    {% if python_version|float >= 3.11 %}
+    - "3.11"
+    {%- endif %}
+    {% if python_version|float >= 3.12 %}
+    - "3.12"
+    {%- endif %}
+    {% if python_version|float >= 3.13 %}
+    - "3.13"
+    {%- endif %}
 
 py_versions:
-    default: ["3.10", "3.11", "3.12", "3.13"]
-    when: false
+  default: ["3.10", "3.11", "3.12", "3.13"]
+  when: false
 
 with_typer_cli:
-    type: bool
-    help: Does your project need a Typer CLI?
-    default: false
+  type: bool
+  help: Does your project need a Typer CLI?
+  default: false
 
 cli_name:
-    type: str
-    when: "{{ with_typer_cli }}"
-    help: Set the CLI's name
-    default: "{{ project_name }}"
-    validator: >-
-        {% if not (cli_name | regex_search('^[a-z][a-z0-9\-]+$')) %}
-        The CLI's name must start with a letter, followed by one or more letters,
-        digits or dashes all lowercase.
-        {% endif %}
+  type: str
+  when: "{{ with_typer_cli }}"
+  help: Set the CLI's name
+  default: "{{ project_name }}"
+  validator: >-
+    {% if not (cli_name | regex_search('^[a-z][a-z0-9\-]+$')) %}
+    The CLI's name must start with a letter, followed by one or more letters,
+    digits or dashes all lowercase.
+    {% endif %}
 
 with_strict_typing:
-    type: bool
-    help: Do you want to use strict typing?
-    default: false
+  type: bool
+  help: Do you want to use strict typing?
+  default: false
 
 tox:
-    type: bool
-    default: true
-    help: Do you want to use Tox?
+  type: bool
+  default: true
+  help: Do you want to use Tox?
 
 pytest_xdist:
-    type: bool
-    default: false
-    help: Do you want to use pytest-xdist?
+  type: bool
+  default: false
+  help: Do you want to use pytest-xdist?
 
 coverage_threshold:
-    type: int
-    default: 100
-    help: "Set the threshold for test coverage, ranging from 0 to 100:"
-    validator: "{% if not 0 <= coverage_threshold <= 100 %}Test Coverage threshold should be between 0 and 100{% endif %}"
+  type: int
+  default: 100
+  help: "Set the threshold for test coverage, ranging from 0 to 100:"
+  validator: "{% if not 0 <= coverage_threshold <= 100 %}Test Coverage threshold should be between 0 and 100{% endif %}"
 
 with_conventional_commits:
-    type: bool
-    help: >-
-        Do you want to follow the Conventional Commits standard (https://www.conventionalcommits.org)
-        for your commit messages?
-    default: true
+  type: bool
+  help: >-
+    Do you want to follow the Conventional Commits standard (https://www.conventionalcommits.org)
+    for your commit messages?
+  default: true
 
 cz_gitmoji:
-    type: bool
-    help: Do you want to use emojis for your commits?
-    default: true
-    when: "{{ with_conventional_commits }}"
+  type: bool
+  help: Do you want to use emojis for your commits?
+  default: true
+  when: "{{ with_conventional_commits }}"
 
 gpg_sign_tags:
-    type: bool
-    default: "{{ false | are_tags_gpg_signed }}"
-    when: false
+  type: bool
+  default: "{{ false | are_tags_gpg_signed }}"
+  when: false
 
 publish_to_pypi:
-    type: bool
-    default: false
-    help: Do you want to publish a release to PyPI?
+  type: bool
+  default: false
+  help: Do you want to publish a release to PyPI?
 
 dockerfile:
-    type: bool
-    default: true
-    help: Do you need a Dockerfile?
+  type: bool
+  default: true
+  help: Do you need a Dockerfile?
 
 privileged_container:
-    type: bool
-    when: "{{ dockerfile }}"
-    default: false
-    help: Do you want your container to have root access?
+  type: bool
+  when: "{{ dockerfile }}"
+  default: false
+  help: Do you want your container to have root access?
 
 uid:
-    type: int
-    when: false
-    default: "{{ uid }}"
+  type: int
+  when: false
+  default: "{{ uid }}"
 
 gid:
-    type: int
-    when: false
-    default: "{{ gid }}"
+  type: int
+  when: false
+  default: "{{ gid }}"
 
 gpus:
-    type: bool
-    when: "{{ dockerfile }}"
-    help: Do you need GPU capabilities for you containers?
-    default: false
+  type: bool
+  when: "{{ dockerfile }}"
+  help: Do you need GPU capabilities for you containers?
+  default: false
 
 preconfig_dependencies:
-    type: bool
-    default: False
-    help: Do you want to preconfigure some dependencies?
+  type: bool
+  default: False
+  help: Do you want to preconfigure some dependencies?
 
 dependencies_categories:
-    type: str
-    when: "{{ preconfig_dependencies }}"
-    multiselect: true
-    choices:
-        Core Data & Big Data: core_data
-        Machine Learning & Hyperparameter Optimization: ml
-        Deep Learning - PyTorch Ecosystem: dl_pytorch
-        Deep Learning - Transformers: dl_transformers
-        # Deep Learning - Extras: dl_extras
-        Reinforcement Learning & Simulation: rl
-        MLOps & Production: mlops
-        Visualization & Dashboards: data_viz
-        LLM Apps & LangChain Toolkit: langchain
-        Backend & APIs: backend
-        Dev, Testing & Profiling: dev
-    default: []
+  type: str
+  when: "{{ preconfig_dependencies }}"
+  multiselect: true
+  choices:
+    Core Data & Big Data: core_data
+    Machine Learning & Hyperparameter Optimization: ml
+    Deep Learning - PyTorch Ecosystem: dl_pytorch
+    Deep Learning - Transformers: dl_transformers
+    # Deep Learning - Extras: dl_extras
+    Reinforcement Learning & Simulation: rl
+    MLOps & Production: mlops
+    Visualization & Dashboards: data_viz
+    LLM Apps & LangChain Toolkit: langchain
+    Backend & APIs: backend
+    Dev, Testing & Profiling: dev
+  default: []
 
 core_data_deps:
-    type: str
-    when: "{{ 'core_data' in dependencies_categories }}"
-    help: Core Data & Big Data
-    multiselect: true
-    choices:
-        - numpy
-        - pandas
-        - polars
-        - scipy
-        - statsmodels
-        - numba
-        - pyspark
-        - dask
-    default: []
+  type: str
+  when: "{{ 'core_data' in dependencies_categories }}"
+  help: Core Data & Big Data
+  multiselect: true
+  choices:
+    - numpy
+    - pandas
+    - polars
+    - scipy
+    - statsmodels
+    - numba
+    - pyspark
+    - dask
+  default: []
 
 machine_learning_deps:
-    type: str
-    when: "{{ 'ml' in dependencies_categories }}"
-    help: Machine Learning & Hyperparameter Optimization
-    multiselect: true
-    choices:
-        - scikit-learn
-        - scikit-learn-intelex
-        - xgboost
-        - joblib
-        - scikit-optimize
-        - shap
-        - optuna
-        - ray[tune]
-    default: []
+  type: str
+  when: "{{ 'ml' in dependencies_categories }}"
+  help: Machine Learning & Hyperparameter Optimization
+  multiselect: true
+  choices:
+    - scikit-learn
+    - scikit-learn-intelex
+    - xgboost
+    - joblib
+    - scikit-optimize
+    - shap
+    - optuna
+    - ray[tune]
+  default: []
 
 dl_pytorch_deps:
-    type: str
-    when: "{{ 'dl_pytorch' in dependencies_categories }}"
-    help: Deep Learning - PyTorch Ecosystem
-    multiselect: true
-    choices:
-        PyTorch (CPU): pytorch_cpu
-        PyTorch (CUDA 11.8): pytorch_cu118
-        PyTorch (CUDA 12.1): pytorch_cu121
-        PyTorch (CUDA 12.4): pytorch_cu124
-        torchvision: torchvision
-        torchaudio: torchaudio
-        tensorboard: tensorboard
-        Lightning (PyTorch Lightning): lightning
-        torchmetrics: torchmetrics
-    validator: >-
-        {% if 'pytorch_cpu' in dl_pytorch_deps and ('pytorch_cu124' in dl_pytorch_deps or 'pytorch_cu118' in dl_pytorch_deps) %}
-        You must choose either a CPU or a GPU backend, not both
-        {% elif 'pytorch_cu118' in dl_pytorch_deps and 'pytorch_cu124' in dl_pytorch_deps %}
-        You must choose one version of CUDA not both
-        {% endif %}
-    default: []
+  type: str
+  when: "{{ 'dl_pytorch' in dependencies_categories }}"
+  help: Deep Learning - PyTorch Ecosystem
+  multiselect: true
+  choices:
+    PyTorch (CPU): pytorch_cpu
+    PyTorch (CUDA 11.8): pytorch_cu118
+    PyTorch (CUDA 12.1): pytorch_cu121
+    PyTorch (CUDA 12.4): pytorch_cu124
+    torchvision: torchvision
+    torchaudio: torchaudio
+    tensorboard: tensorboard
+    Lightning (PyTorch Lightning): lightning
+    torchmetrics: torchmetrics
+  validator: >-
+    {% if 'pytorch_cpu' in dl_pytorch_deps and ('pytorch_cu124' in dl_pytorch_deps or 'pytorch_cu118' in dl_pytorch_deps) %}
+    You must choose either a CPU or a GPU backend, not both
+    {% elif 'pytorch_cu118' in dl_pytorch_deps and 'pytorch_cu124' in dl_pytorch_deps %}
+    You must choose one version of CUDA not both
+    {% endif %}
+  default: []
 
 transformers_deps:
-    type: str
-    when: "{{ 'dl_transformers' in dependencies_categories }}"
-    help: Deep Learning - Transformers
-    multiselect: true
-    choices:
-        - transformers
-        - datasets
-        - accelerate
-        - bitsandbytes
-        - peft
-        - evaluate
-        - timm
-    default: []
+  type: str
+  when: "{{ 'dl_transformers' in dependencies_categories }}"
+  help: Deep Learning - Transformers
+  multiselect: true
+  choices:
+    - transformers
+    - datasets
+    - accelerate
+    - bitsandbytes
+    - peft
+    - evaluate
+    - timm
+  default: []
 
 rl_deps:
-    type: str
-    when: "{{ 'rl' in dependencies_categories }}"
-    help: Reinforcement Learning & Simulation
-    multiselect: true
-    choices:
-        - gymnasium
-        - stable-baselines3
-        - ray[rllib]
-        - pygame
-        - pygame-ce
-    validator: >-
-        {% if 'pygame' in rl_deps and 'pygame-ce' in rl_deps %}
-        You must choose either pygame or pygame-ce not both
-        {% endif %}
-    default: []
+  type: str
+  when: "{{ 'rl' in dependencies_categories }}"
+  help: Reinforcement Learning & Simulation
+  multiselect: true
+  choices:
+    - gymnasium
+    - stable-baselines3
+    - ray[rllib]
+    - pygame
+    - pygame-ce
+  validator: >-
+    {% if 'pygame' in rl_deps and 'pygame-ce' in rl_deps %}
+    You must choose either pygame or pygame-ce not both
+    {% endif %}
+  default: []
 
 mlops_deps:
-    type: str
-    when: "{{ 'mlops' in dependencies_categories }}"
-    help: MLOps
-    multiselect: true
-    choices:
-        - mlflow
-        - weights-and-biases
-        - dvc
-        - prefect
-        - ray
-        # - feast
-    default: []
+  type: str
+  when: "{{ 'mlops' in dependencies_categories }}"
+  help: MLOps
+  multiselect: true
+  choices:
+    - mlflow
+    - weights-and-biases
+    - dvc
+    - prefect
+    - ray
+    # - feast
+  default: []
 
 dvc_extras:
-    type: str
-    when: "{{ 'dvc' in mlops_deps }}"
-    help: "Select optional dependencies for dvc depending on your remote storage:"
-    multiselect: true
-    choices:
-        - s3
-        - gdrive
-        - gs
-        - azure
-        - ssh
-        - hdfs
-        - webdav
-        - oss
-    default: []
+  type: str
+  when: "{{ 'dvc' in mlops_deps }}"
+  help: "Select optional dependencies for dvc depending on your remote storage:"
+  multiselect: true
+  choices:
+    - s3
+    - gdrive
+    - gs
+    - azure
+    - ssh
+    - hdfs
+    - webdav
+    - oss
+  default: []
 
 ray_extras:
-    type: str
-    when: "{{ 'ray' in mlops_deps }}"
-    help: "Select optional dependencies for ray:"
-    multiselect: true
-    choices:
-        - default
-        - data
-        - train
-        - tune
-        - serve
-    default: []
+  type: str
+  when: "{{ 'ray' in mlops_deps }}"
+  help: "Select optional dependencies for ray:"
+  multiselect: true
+  choices:
+    - default
+    - data
+    - train
+    - tune
+    - serve
+  default: []
 
 data_viz_deps:
-    type: str
-    when: "{{ 'data_viz' in dependencies_categories }}"
-    help: Visualization & Dashboards
-    multiselect: true
-    choices:
-        - matplotlib
-        - seaborn
-        - plotly
-        - streamlit
-    default: []
+  type: str
+  when: "{{ 'data_viz' in dependencies_categories }}"
+  help: Visualization & Dashboards
+  multiselect: true
+  choices:
+    - matplotlib
+    - seaborn
+    - plotly
+    - streamlit
+  default: []
 
 langchain_deps:
-    type: str
-    when: "{{ 'langchain' in dependencies_categories }}"
-    help: LLM Apps & LangChain Toolkit
-    multiselect: true
-    choices:
-        - langgraph
-        - langgraph-checkpoint-sqlite
-        - langgraph-checkpoint-postgres
-        - langchain
-        - langchain-openai
-        - langchain-community
-        - langchain-ollama
-        - langchain-anthropic
-        - langchain-pinecone
-        - unstructured
-        - pypdf
-        - wikipedia
-        - firecrawl-py
-        - aiostream
-        - faiss-cpu
-    default: []
+  type: str
+  when: "{{ 'langchain' in dependencies_categories }}"
+  help: LLM Apps & LangChain Toolkit
+  multiselect: true
+  choices:
+    - langgraph
+    - langgraph-checkpoint-sqlite
+    - langgraph-checkpoint-postgres
+    - langchain
+    - langchain-openai
+    - langchain-community
+    - langchain-ollama
+    - langchain-anthropic
+    - langchain-pinecone
+    - unstructured
+    - pypdf
+    - wikipedia
+    - firecrawl-py
+    - aiostream
+    - faiss-cpu
+  default: []
 
 backend_deps:
-    type: str
-    when: "{{ 'backend' in dependencies_categories }}"
-    help: Backend & APIs
-    multiselect: true
-    choices:
-        - fastapi[standard]
-        - slowapi
-        - gunicorn
-        - pyjwt[crypto]
-        - passlib[bcrypt]
-        - flask
-        - pydantic
-        - pydantic-settings
-        - python-dotenv
-        - requests
-        - httpx
-        - aiohttp
-        - sqlmodel
-        - slqalchemy
-        - psycopg2-binary
-        - alembic
-        - quixstreams
-        # - redis
-        # - aioredis
-    default: []
+  type: str
+  when: "{{ 'backend' in dependencies_categories }}"
+  help: Backend & APIs
+  multiselect: true
+  choices:
+    - fastapi[standard]
+    - slowapi
+    - gunicorn
+    - pyjwt[crypto]
+    - passlib[bcrypt]
+    - flask
+    - pydantic
+    - pydantic-settings
+    - python-dotenv
+    - requests
+    - httpx
+    - aiohttp
+    - sqlmodel
+    - slqalchemy
+    - psycopg2-binary (v2)
+    - psycopg[binary] (v3)
+    - alembic
+    - quixstreams
+    - tenacity
+    # - redis
+    # - aioredis
+  default: []
 
 dev_deps:
-    type: str
-    when: "{{ 'dev' in dependencies_categories }}"
-    help: Dev, Testing & Profiling
-    multiselect: true
-    choices:
-        - pytest-asyncio
-        - pytest-benchmark
-        - pytest-benchmark[histogram]
-        - responses
-        - aioresponses
-        - types-requests
-        - pyinstrument
-        - jupyterlab
-    default: []
+  type: str
+  when: "{{ 'dev' in dependencies_categories }}"
+  help: Dev, Testing & Profiling
+  multiselect: true
+  choices:
+    - pytest-asyncio
+    - pytest-benchmark
+    - pytest-benchmark[histogram]
+    - responses
+    - aioresponses
+    - types-requests
+    - pyinstrument
+    - jupyterlab
+  default: []
