@@ -1,0 +1,28 @@
+services:
+   {{ project_name }}:
+    image: {{ project_name }}:0.0.1-devel
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+      args:
+        - ENVIRONMENT=dev
+    ports:
+      - "8001:8000"
+      - "8085:8085"
+    stdin_open: true
+    tty: true
+    command: ["sh"]
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /workspaces/{{ project_name }}
+          ignore:
+            - .venv/
+            {%- if tox %}
+            - .tox/
+            {%- endif %}
+
+        - action: rebuild
+          path: ./pyproject.toml

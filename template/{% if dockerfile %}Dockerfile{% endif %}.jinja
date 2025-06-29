@@ -37,6 +37,14 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # ---------- production image ----------
 FROM python:{{ python_version }}-slim-bookworm AS prod
 
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    libpq-dev \
+    gcc && \
+    rm -rf /var/lib/apt/lists/*
+
 {% if not privileged_container -%}
 RUN groupadd -r {{ project_name }} && useradd -r -g {{ project_name }} -M -s /usr/sbin/nologin {{ project_name }}
 
@@ -48,17 +56,34 @@ WORKDIR /workspaces/{{ project_name }}
 # Pull in just the venv (with project code baked into site‑packages)
 COPY --from=builder {% if not privileged_container %}--chown={{ project_name }}:{{ project_name }} {% endif %}/workspaces/{{ project_name }}/.venv .venv
 
+COPY {% if not privileged_container %}--chown={{ project_name }}:{{ project_name }} {% endif %}scripts scripts
+
 ENV PATH="/workspaces/{{ project_name }}/.venv/bin:$PATH"
 
 {% if not privileged_container -%}
 USER {{ project_name }}
 {%- endif %}
 
-# CMD ["uvicorn", "{{ project_slug }}.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+#     CMD curl -f http://localhost:8085/health || exit 1
+
+# EXPOSE 8085
+
+# CMD ["uvicorn", "{{ project_slug }}.main:app", "--host", "0.0.0.0", "--port", "8085"]
 # CMD ["sleep", "1000"]
 
 # ---------- development image ----------
 FROM python:{{ python_version }}-slim-bookworm AS dev
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    libpq-dev \
+    gcc \
+    git \
+    vim && \
+    rm -rf /var/lib/apt/lists/*
 
 {% if not privileged_container -%}
 RUN groupadd -g {{ gid }} {{ project_name }} && useradd -m -u {{ uid }} -g {{ gid }} -r {{ project_name }}
@@ -79,4 +104,9 @@ ENV PATH="/workspaces/{{ project_name }}/.venv/bin:$PATH"
 USER {{ project_name }}
 {%- endif %}
 
-# CMD ["uvicorn", "{{ project_slug }}.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+# HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+#     CMD curl -f http://localhost:8085/health || exit 1
+
+# EXPOSE 8085
+
+# CMD ["uvicorn", "{{ project_slug }}.main:app", "--host", "0.0.0.0", "--port", "8085", "--reload"]

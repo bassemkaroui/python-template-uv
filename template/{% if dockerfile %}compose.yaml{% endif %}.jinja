@@ -7,8 +7,6 @@ services:
       target: prod
       args:
         - ENVIRONMENT=prod
-    ports:
-      - "8000:8000"
     {%- if gpus %}
     deploy:
       resources:
@@ -18,46 +16,4 @@ services:
               count: all
               capabilities: [gpu]
     {%- endif %}
-    profiles:
-      - prod
-    restart: unless-stopped
-
-  {{ project_name }}-dev:
-    image: {{ project_name }}:0.0.1-devel
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: dev
-      args:
-        - ENVIRONMENT=dev
-    ports:
-      - "8001:8000"
-      - "8080:8080"
-    stdin_open: true
-    tty: true
-    command: ["sh"]
-    {%- if gpus %}
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
-    {%- endif %}
-    profiles:
-      - dev
-    develop:
-      watch:
-        - action: sync
-          path: .
-          target: /workspaces/{{ project_name }}
-          ignore:
-            - .venv/
-            {%- if tox %}
-            - .tox/
-            {%- endif %}
-
-        - action: rebuild
-          path: ./pyproject.toml
     restart: unless-stopped
