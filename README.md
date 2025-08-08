@@ -79,7 +79,7 @@ A modern, batteries‑included [Copier](https://github.com/copier-org/copier) te
 
 - **Python** ≥ 3.10
 - **Copier** ≥ 9.9.0
-- **copier-templates-extensions** ≥ 0.3.1
+- **copier-templates-extensions** ≥ 0.3.2
 - **uv** (if not installed check [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/))
 
 ## 🎉 Quickstart
