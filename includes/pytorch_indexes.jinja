@@ -1,4 +1,4 @@
-{% if 'pytorch_cpu' in dl_pytorch_deps or 'pytorch_cu118' in dl_pytorch_deps or 'pytorch_cu121' in dl_pytorch_deps or 'pytorch_cu124' in dl_pytorch_deps %}
+{% if 'pytorch_cpu' in dl_pytorch_deps or 'pytorch_cu129' in dl_pytorch_deps or 'pytorch_cu128' in dl_pytorch_deps or 'pytorch_cu126' in dl_pytorch_deps or 'pytorch_cu124' in dl_pytorch_deps or 'pytorch_cu121' in dl_pytorch_deps or 'pytorch_cu118' in dl_pytorch_deps %}
 [tool.uv.sources]
 torch = [
     {%- if 'pytorch_cpu' in dl_pytorch_deps %}
@@ -9,6 +9,12 @@ torch = [
     { index = "pytorch-cu121"},
     {%- elif 'pytorch_cu124' in dl_pytorch_deps %}
     { index = "pytorch-cu124"},
+    {%- elif 'pytorch_cu126' in dl_pytorch_deps %}
+    { index = "pytorch-cu126"},
+    {%- elif 'pytorch_cu128' in dl_pytorch_deps %}
+    { index = "pytorch-cu128"},
+    {%- elif 'pytorch_cu129' in dl_pytorch_deps %}
+    { index = "pytorch-cu129"},
     {%- endif %}
 ]
 {%- if 'torchvision' in dl_pytorch_deps %}
@@ -21,6 +27,12 @@ torchvision = [
     { index = "pytorch-cu121"},
     {%- elif 'pytorch_cu124' in dl_pytorch_deps %}
     { index = "pytorch-cu124"},
+    {%- elif 'pytorch_cu126' in dl_pytorch_deps %}
+    { index = "pytorch-cu126"},
+    {%- elif 'pytorch_cu128' in dl_pytorch_deps %}
+    { index = "pytorch-cu128"},
+    {%- elif 'pytorch_cu129' in dl_pytorch_deps %}
+    { index = "pytorch-cu129"},
     {%- endif %}
 ]
 {%- endif %}
@@ -34,6 +46,12 @@ torchaudio = [
     { index = "pytorch-cu121"},
     {%- elif 'pytorch_cu124' in dl_pytorch_deps %}
     { index = "pytorch-cu124"},
+    {%- elif 'pytorch_cu126' in dl_pytorch_deps %}
+    { index = "pytorch-cu126"},
+    {%- elif 'pytorch_cu128' in dl_pytorch_deps %}
+    { index = "pytorch-cu128"},
+    {%- elif 'pytorch_cu129' in dl_pytorch_deps %}
+    { index = "pytorch-cu129"},
     {%- endif %}
 ]
 {%- endif %}
@@ -51,6 +69,15 @@ url = "https://download.pytorch.org/whl/cu121"
 {%- elif 'pytorch_cu124' in dl_pytorch_deps %}
 name = "pytorch-cu124"
 url = "https://download.pytorch.org/whl/cu124"
+{%- elif 'pytorch_cu126' in dl_pytorch_deps %}
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+{%- elif 'pytorch_cu128' in dl_pytorch_deps %}
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+{%- elif 'pytorch_cu129' in dl_pytorch_deps %}
+name = "pytorch-cu129"
+url = "https://download.pytorch.org/whl/cu129"
 {%- endif %}
 explicit = true
 {%- endif %}

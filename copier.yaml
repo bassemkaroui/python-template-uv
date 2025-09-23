@@ -298,16 +298,19 @@ dl_pytorch_deps:
     PyTorch (CUDA 11.8): pytorch_cu118
     PyTorch (CUDA 12.1): pytorch_cu121
     PyTorch (CUDA 12.4): pytorch_cu124
+    PyTorch (CUDA 12.6): pytorch_cu126
+    PyTorch (CUDA 12.8): pytorch_cu128
+    PyTorch (CUDA 12.9): pytorch_cu129
     torchvision: torchvision
     torchaudio: torchaudio
     tensorboard: tensorboard
     Lightning (PyTorch Lightning): lightning
     torchmetrics: torchmetrics
   validator: >-
-    {% if 'pytorch_cpu' in dl_pytorch_deps and ('pytorch_cu124' in dl_pytorch_deps or 'pytorch_cu118' in dl_pytorch_deps) %}
+    {% if 'pytorch_cpu' in dl_pytorch_deps and ('pytorch_cu129' in dl_pytorch_deps or 'pytorch_cu128' in dl_pytorch_deps or 'pytorch_cu126' in dl_pytorch_deps or 'pytorch_cu124' in dl_pytorch_deps or 'pytorch_cu121' in dl_pytorch_deps or 'pytorch_cu118' in dl_pytorch_deps) %}
     You must choose either a CPU or a GPU backend, not both
-    {% elif 'pytorch_cu118' in dl_pytorch_deps and 'pytorch_cu124' in dl_pytorch_deps %}
-    You must choose one version of CUDA not both
+    {% elif 'pytorch_cu129' in dl_pytorch_deps and 'pytorch_cu128' in dl_pytorch_deps and 'pytorch_cu126' in dl_pytorch_deps and 'pytorch_cu124' in dl_pytorch_deps and 'pytorch_cu121' in dl_pytorch_deps and 'pytorch_cu118' in dl_pytorch_deps %}
+    You must choose ONLY one version of CUDA not multiple
     {% endif %}
   default: []
 
