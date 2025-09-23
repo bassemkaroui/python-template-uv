@@ -71,7 +71,7 @@
     {%- if 'timm' in transformers_deps %}
     "timm>=1.0.15",
     {%- endif %}
-    {%- if 'pytorch_cpu' in dl_pytorch_deps or 'pytorch_cu118' in dl_pytorch_deps or 'pytorch_cu121' in dl_pytorch_deps or 'pytorch_cu124' in dl_pytorch_deps %}
+    {%- if 'pytorch_cpu' in dl_pytorch_deps or 'pytorch_cu129' in dl_pytorch_deps or 'pytorch_cu128' in dl_pytorch_deps or 'pytorch_cu126' in dl_pytorch_deps or 'pytorch_cu124' in dl_pytorch_deps or 'pytorch_cu121' in dl_pytorch_deps or 'pytorch_cu118' in dl_pytorch_deps %}
     "torch>=2.3.0",
     {%- endif %}
     {%- if 'torchvision' in dl_pytorch_deps %}
