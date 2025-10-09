@@ -28,6 +28,6 @@ jobs:
       run: uvx --from commitizen --with cz-conventional-gitmoji cz changelog ${{ github.ref_name }} --file-name release-notes.md
 
     - name: Create release
-      uses: softprops/action-gh-release@72f2c25fcb47643c292f7107632f7a47c1df5cd8 # v2
+      uses: softprops/action-gh-release@aec2ec56f94eb8180ceec724245f64ef008b89f5 # v2
       with:
         body_path: release-notes.md
