@@ -14,9 +14,13 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   checks:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout repository
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
@@ -40,6 +44,7 @@ jobs:
 
   tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
       matrix:
         python-version:
@@ -64,8 +69,18 @@ jobs:
       - name: Run tests
         run: make test
 
+      - name: Upload coverage report
+        if: {% raw %}matrix.python-version == '{{ python_version }}'{% endraw %}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: coverage-report
+          path: |
+            htmlcov/
+            coverage.xml
+
   release:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     if: |
       github.event_name == 'push' &&
       startsWith(github.ref, 'refs/tags/')
@@ -87,13 +102,23 @@ jobs:
           python-version-file: ".python-version"
 
       - name: Prepare release notes
-        run: {% raw %}uvx --from commitizen --with cz-conventional-gitmoji cz changelog ${{ github.ref_name }} --file-name release-notes.md && echo ${{ github.ref }}{% endraw %}
+        run: {% raw %}uvx --from commitizen --with cz-conventional-gitmoji cz changelog ${{ github.ref_name }} --file-name release-notes.md{% endraw %}
+
+      - name: Check if prerelease
+        id: check_prerelease
+        run: |
+          TAG="{% raw %}${{ github.ref_name }}{% endraw %}"
+          if echo "$TAG" | grep -qP '\d+\.\d+\.\d+(a|b|rc)\d+'; then
+            echo "is_prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Create release
         uses: softprops/action-gh-release@aec2ec56f94eb8180ceec724245f64ef008b89f5 # v2
         with:
           body_path: release-notes.md
-          prerelease: {% raw %}${{ contains(github.ref_name, 'rc') || contains(github.ref_name, 'b') || contains(github.ref_name, 'a') }}{% endraw %}
+          prerelease: {% raw %}${{ steps.check_prerelease.outputs.is_prerelease }}{% endraw %}
 
   deploy-docs:
     if: |
@@ -101,6 +126,7 @@ jobs:
       (github.event_name == 'push' &&
       startsWith(github.ref, 'refs/tags/'))
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs:
       - checks
       - tests
@@ -136,6 +162,7 @@ jobs:
       (github.event_name == 'push' &&
       startsWith(github.ref, 'refs/tags/'))
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs:
       - checks
       - tests
@@ -155,8 +182,12 @@ jobs:
         run: uv build
 
       - name: Publish package
-        if: secrets.PYPI_TOKEN != ''
         env:
           UV_PUBLISH_TOKEN: {% raw %}${{ secrets.PYPI_TOKEN }}{% endraw %}
-        run: uv publish
+        run: |
+          if [ -n "$UV_PUBLISH_TOKEN" ]; then
+            uv publish
+          else
+            echo "::warning::PYPI_TOKEN secret not set, skipping publish"
+          fi
   {%- endif %}

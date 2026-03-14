@@ -1,3 +1,5 @@
+name: PR Thank You
+
 on:
   pull_request:
     types:
@@ -6,6 +8,7 @@ on:
 jobs:
   pr-action:
     runs-on: ubuntu-latest
+    continue-on-error: true
     permissions:
       issues: write
       pull-requests: write
