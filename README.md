@@ -77,7 +77,7 @@ A modern, batteries‑included [Copier](https://github.com/copier-org/copier) te
 ## 🛠 Prerequisites
 
 - **Python** ≥ 3.10
-- **Copier** ≥ 9.10.2
+- **Copier** ≥ 9.14.0
 - **copier-templates-extensions** ≥ 0.3.2
 - **uv** (if not installed check [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/))
 - **mise** (if not installed check [mise installation guide](https://mise.jdx.dev/getting-started.html))
