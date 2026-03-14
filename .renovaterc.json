@@ -9,6 +9,44 @@
   "pyenv": {
     "enabled": false
   },
+  "packageRules": [
+    {
+      "description": "Group and automerge non-major dev dependency updates",
+      "matchDepTypes": [
+        "devDependencies"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest"
+      ],
+      "groupName": "non-major dev dependencies",
+      "automerge": true
+    },
+    {
+      "description": "Group and automerge patch production dependency updates",
+      "matchUpdateTypes": [
+        "patch",
+        "digest"
+      ],
+      "groupName": "patch production dependencies",
+      "automerge": true
+    },
+    {
+      "description": "Group pre-commit hook updates",
+      "matchManagers": [
+        "pre-commit"
+      ],
+      "groupName": "pre-commit hooks"
+    },
+    {
+      "description": "Group GitHub Actions updates",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "groupName": "GitHub Actions"
+    }
+  ],
   "customManagers": [
     {
       "customType": "regex",
