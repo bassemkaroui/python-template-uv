@@ -27,7 +27,6 @@
       "customType": "regex",
       "datasourceTemplate": "github-tags",
       "depNameTemplate": "{{{ depName }}}",
-      "extractVersionTemplate": "{{currentValue}}",
       "versioningTemplate": "semver",
       "matchStrings": [
         "(?ms)^\\s*-\\s*repo:\\s*https?://github\\.com/(?<depName>[^/\\s]+/[^/\\s]+)\\b.*?\\n\\s*rev:\\s*[\"']?(?<currentValue>v?\\d+\\.\\d+\\.\\d+)[\"']?"
