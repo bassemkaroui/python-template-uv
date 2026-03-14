@@ -89,7 +89,8 @@ To install the package, simply run:
     ```
 
 > [!note]
-> Using `make` ensures that `uv` is installed automatically if it's not already present.
+> This project requires both [`mise`](https://mise.jdx.dev/) and [`uv`](https://docs.astral.sh/uv/) to be installed.
+> `make` tasks proxy through `mise run`, which in turn invokes `uv` and other tools.
 
 {% if with_typer_cli -%}
 > [!tip]
@@ -108,7 +109,7 @@ To install the package, simply run:
 You can generate the project documentation locally by running:
 
 ```bash
-make docs
+make docs-serve
 ```
 
 This will build the documentation using MkDocs.

@@ -21,59 +21,53 @@ A modern, batteries‑included [Copier](https://github.com/copier-org/copier) te
   Effortlessly generate or update projects with one command.
 
 - **Task runner integration**:
-  Project tasks are organized using [duty](https://github.com/pawamoy/duty) and exposed via a [Makefile](https://github.com/bassemkaroui/python-template-uv/blob/main/template/Makefile.jinja) for easy command-line usage.
-  Simply run tasks with `make <task>` (e.g. `make check`, `make docs`).
+  Project tasks are defined in a [mise.toml](https://mise.jdx.dev/) file.
+  The [Makefile](https://github.com/bassemkaroui/python-template-uv/blob/main/template/Makefile.jinja) is a simple wrapper that proxies commands to `mise run` for convenience.
+  Run tasks with `make <task>` (e.g. `make check-all`, `make docs-serve`) or directly with `mise run <task>`.
 
 - **Quality & standards**
-
-  - **Formatting** and **Linting**: [Ruff](https://github.com/astral-sh/ruff) ➜ `make format` & `make check-quality`
-  - **Type checking**: [Mypy](https://github.com/python/mypy) ➜ `make check-types`
-  - **Pre-commit hooks**: [pre-commit](https://pre-commit.com/)
+    - **Formatting** and **Linting**: [Ruff](https://github.com/astral-sh/ruff) ➜ `make format` & `make check-quality`
+    - **Type checking**: [Mypy](https://github.com/python/mypy) ➜ `make check-types`
+    - **Pre-commit hooks**: [pre-commit](https://pre-commit.com/)
 
 - **Testing & coverage**
-
-  - [**pytest**](https://github.com/pytest-dev/pytest) ➜ `make test`
-  - [**Coverage**](https://github.com/nedbat/coveragepy) (text, HTML, XML) ➜ `make coverage`
-  - Compatibility testing for multiple versions of Python with [**Tox**](https://github.com/tox-dev/tox) and its plugin [tox-uv](https://github.com/tox-dev/tox-uv) ➜ `make tox`
+    - [**pytest**](https://github.com/pytest-dev/pytest) ➜ `make test`
+    - [**Coverage**](https://github.com/nedbat/coveragepy) (text, HTML, XML) ➜ `make coverage`
+    - Compatibility testing for multiple versions of Python with [**Tox**](https://github.com/tox-dev/tox) and its plugin [tox-uv](https://github.com/tox-dev/tox-uv) ➜ `make tox`
 
 - **Documentation**
-
-  - [**MkDocs**](https://github.com/mkdocs/mkdocs) with [mkdocs-material](https://github.com/squidfunk/mkdocs-material) theme
-  - Live server: `make docs` (serves on localhost:8080)
-  - Deploy to GitHub Pages: `make docs-deploy`
+    - [**MkDocs**](https://github.com/mkdocs/mkdocs) with [mkdocs-material](https://github.com/squidfunk/mkdocs-material) theme
+    - Live server: `make docs-serve` (serves on localhost:8080)
+    - Deploy to GitHub Pages: `make docs-deploy`
 
 - **Release & changelog**
-
-  - [Conventional Commits](https://www.conventionalcommits.org/) + [Commitizen](https://github.com/commitizen-tools/commitizen) + [gitmoji](https://github.com/ljnsn/cz-conventional-gitmoji)
-  - Automated `CHANGELOG.md` updates
-  - Release new versions ➜ `make release`
+    - [Conventional Commits](https://www.conventionalcommits.org/) + [Commitizen](https://github.com/commitizen-tools/commitizen) + [gitmoji](https://github.com/ljnsn/cz-conventional-gitmoji)
+    - Automated `CHANGELOG.md` updates
+    - Release new versions ➜ `make release`
 
 - **Docker & Docker Compose**
+    - Generate `Dockerfile` + `compose.yml` for local development and deployment (GPU support)
+    - Docker targets: `make docker-build`, `make docker-start`, `make docker-stop`
 
-  - Generate `Dockerfile` + `compose.yml` for local development and deployment (GPU support)
-  - Docker targets: `make docker-build`, `make docker-start`, `make docker-stop`
-
-- **Optional tooling**
-
-  - Typer CLI scaffold
-  - Strict typing
-  - Run tests with parallel execution via pytest-xdist
-  - Preconfigured dependency categories (ML, data, web, etc.)
+- **Optional features**
+    - Typer CLI scaffold
+    - Strict typing (py.typed marker for type checking)
+    - Run tests with parallel execution via pytest-xdist
+    - Settings & configuration with [Pydantic Settings](https://docs.pydantic.dev/latest/concepts/pydantic_settings/) + [Doppler](https://www.doppler.com/) integration for secure secret management
 
 - **CI/CD Workflows**
 
-  This template includes GitHub Actions workflows for continuous integration, testing, and release automation:
+    This template includes GitHub Actions workflows for continuous integration, testing, and release automation:
+    - **PR Commenting** (`pr-thank-you.yaml`): Posts a fun GIPHY comment on new pull requests using [`docker-action-pr-giphy-comment`](https://github.com/bassemkaroui/docker-action-pr-giphy-comment)
 
-  - **PR Commenting** (`pr-thank-you.yaml`): Posts a fun GIPHY comment on new pull requests using [`docker-action-pr-giphy-comment`](https://github.com/bassemkaroui/docker-action-pr-giphy-comment)
+    - **CI/CD Pipeline** (`main.yaml.jinja`):
+        - **Checks**: Linting (Ruff), type checking (Mypy), documentation build.
+        - **Tests**: Runs `pytest` across supported Python versions using a matrix strategy.
+        - **Releases**: Automatically publishes releases when a Git tag is pushed.
+        - **Docs Deployment**: Deploys MkDocs documentation to GitHub Pages.
+        - **Package Publishing** (optional): Publishes the package to PyPI if `publish_to_pypi` is enabled and `PYPI_TOKEN` is set.
 
-  - **CI/CD Pipeline** (`main.yaml.jinja`):
-    - **Checks**: Linting (Ruff), type checking (Mypy), documentation build.
-    - **Tests**: Runs `pytest` across supported Python versions using a matrix strategy.
-    - **Releases**: Automatically publishes releases when a Git tag is pushed.
-    - **Docs Deployment**: Deploys MkDocs documentation to GitHub Pages.
-    - **Package Publishing** (optional): Publishes the package to PyPI if `publish_to_pypi` is enabled and `PYPI_TOKEN` is set.
-
-  These workflows are generated into `.github/workflows/` in the scaffolded project. You can customize them further as needed.
+    These workflows are generated into `.github/workflows/` in the scaffolded project. You can customize them further as needed.
 
 ## 🛠 Prerequisites
 
@@ -81,6 +75,7 @@ A modern, batteries‑included [Copier](https://github.com/copier-org/copier) te
 - **Copier** ≥ 9.10.2
 - **copier-templates-extensions** ≥ 0.3.2
 - **uv** (if not installed check [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/))
+- **mise** (if not installed check [mise installation guide](https://mise.jdx.dev/getting-started.html))
 
 ## 🎉 Quickstart
 
@@ -111,7 +106,7 @@ make setup-dev
 make setup-cli
 
 # 5. Run quality & tests
-make check   # runs all checks: lint, types, docs build, API, etc.
+make check-all   # runs all checks: lint, types, docs build, API, etc.
 ```
 
 **Stay up to date**
@@ -125,25 +120,23 @@ uvx copier update --trust --exclude src/ --exclude tests/ .
 > [!WARNING]
 > To be able to [update your project](https://copier.readthedocs.io/en/stable/updating/), do not delete or manually modify the generated `.copier-answers.yml` file.
 
-## 📋 Available Duties
+## 📋 Available Tasks
 
-All tasks are defined in `duties.py` and exposed through `make`. Common duties include:
+All tasks are defined in `mise.toml` and exposed through `make`. Common tasks include:
 
 ```
 build                      Build source and wheel distributions.
 check                      Check it all!
-check-api                  Check for API breaking changes.
-check-docs                 Check if the documentation builds correctly.
+docs-check                 Check if the documentation builds correctly.
 check-quality              Run linters and format checks.
 check-types                Run static type checks.
 clean                      Delete build artifacts.
 clean-cache                Remove cache files.
 coverage                   Generate coverage reports (text, HTML, XML).
 docker-build               Build Docker images.
-docker-exec-*              Dockerized executions of checks, tests, docs, coverage.
 docker-start               Start Docker Compose services.
 docker-stop                Stop and remove Docker Compose services.
-docs                       Serve the documentation (localhost:8080).
+docs-serve                 Serve the documentation (localhost:8080).
 docs-deploy                Publish docs to GitHub Pages.
 format                     Auto-format code (Ruff).
 publish                    Upload distributions to PyPI.
@@ -155,7 +148,7 @@ test                       Run tests with pytest.
 tox                        Run tests across multiple Python versions.
 ```
 
-For the full list and details, see [duties.py](https://github.com/bassemkaroui/python-template-uv/blob/main/template/duties.py.jinja).
+For the full list and details, see [mise.toml](https://github.com/bassemkaroui/python-template-uv/blob/main/template/mise.toml.jinja).
 
 ## 🔧 Template Variables
 
@@ -172,7 +165,9 @@ When running `copier`, you’ll be prompted for:
 | `python_version`            | Default Python interpreter for development                 | `3.12`                            |
 | `min_python_version`        | Minimum supported Python version                           | `3.10`                            |
 | `with_typer_cli`            | Include a Typer CLI scaffold?                              | `false`                           |
-| `with_strict_typing`        | Enable strict typing enforcement?                          | `false`                           |
+| `with_strict_typing`        | Enable strict typing (py.typed marker)?                    | `false`                           |
+| `with_settings`             | Include Pydantic Settings for configuration?               | `true`                            |
+| `with_doppler`              | Add Doppler integration for secrets management?            | `false`                           |
 | `tox`                       | Include Tox configuration?                                 | `true`                            |
 | `coverage_threshold`        | Minimum test coverage %                                    | `100`                             |
 | `with_conventional_commits` | Enforce Conventional Commits?                              | `true`                            |

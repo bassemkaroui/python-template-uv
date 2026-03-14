@@ -1,0 +1,397 @@
+# Task definitions for {{ project_name }}
+# Run `mise tasks` to list all available tasks.
+
+# --- Setup -------------------------------------------------------------------
+
+[tasks."setup:prod"]
+description = "Set up the project environment"
+quiet = true
+run = "uv sync --no-dev --no-editable"
+
+[tasks."setup:dev"]
+description = "Set up the development environment"
+quiet = true
+run = ["uv sync", "uv run pre-commit install -f"]
+{% if with_typer_cli %}
+[tasks.setup-cli]
+description = "Install the project CLI globally via uv"
+run = "uv tool install ."
+{% endif %}
+{%- if dockerfile %}
+
+# --- Docker ------------------------------------------------------------------
+
+[tasks."docker:build"]
+description = "Build Docker images"
+quiet = true
+usage = """
+flag "--dev" negate="--prod" help="Specify the build environment"
+"""
+run = '''#!/usr/bin/env bash
+set -eo pipefail
+if [ "${usage_dev?}" = "true" ]; then
+  {% if with_doppler -%}
+  doppler run --mount .env --mount-format env-no-quotes -- docker compose -f compose.yaml -f compose.override.yaml build
+  {%- else -%}
+  docker compose -f compose.yaml -f compose.override.yaml build
+  {%- endif %}
+else
+  {% if with_doppler -%}
+  doppler run --mount .env --mount-format env-no-quotes -- docker compose -f compose.yaml build
+  {%- else -%}
+  docker compose -f compose.yaml build
+  {%- endif %}
+fi
+'''
+
+[tasks."docker:start"]
+description = "Start Docker containers (pass 'dev' or 'prod', default: dev)"
+quiet = true
+usage = """
+flag "--dev" negate="--prod" help="Specify the build environment"
+flag "--build" help="Build docker images"
+"""
+run = '''#!/usr/bin/env bash
+set -eo pipefail
+if [ "$usage_dev" = "true" ]; then
+  {% if with_doppler -%}
+  doppler run --mount .env --mount-format env-no-quotes -- docker compose -f compose.yaml -f compose.override.yaml up --watch > /dev/null 2>&1 ${usage_build:+--build} &
+  {%- else -%}
+  docker compose -f compose.yaml -f compose.override.yaml up --watch > /dev/null 2>&1 ${usage_build:+--build} &
+  {%- endif %}
+else
+  {% if with_doppler -%}
+  doppler run --mount .env --mount-format env-no-quotes -- docker compose -f compose.yaml up -d ${usage_build:+--build}
+  {%- else -%}
+  docker compose -f compose.yaml up -d ${usage_build:+--build}
+  {%- endif %}
+fi
+'''
+
+[tasks."docker:stop"]
+description = "Stop and remove Docker containers"
+quiet = true
+usage = """
+flag "--dev" negate="--prod" help="Specify the build environment"
+"""
+run = '''#!/usr/bin/env bash
+set -eo pipefail
+if [ "${usage_dev?}" = "true" ]; then
+  {% if with_doppler -%}
+  doppler run --mount .env --mount-format env-no-quotes -- docker compose down
+  {%- else -%}
+  docker compose down
+  {%- endif %}
+else
+  {% if with_doppler -%}
+  doppler run --mount .env --mount-format env-no-quotes -- docker compose -f compose.yaml down
+  {%- else -%}
+  docker compose -f compose.yaml down
+  {%- endif %}
+fi
+'''
+
+[tasks."docker:shell"]
+description = "Open a shell in a service container"
+quiet = true
+usage = """
+arg "[service]" help="Docker compose service." default="{{ project_name }}"
+"""
+run = '''#!/usr/bin/env bash
+set -eo pipefail
+{% if with_doppler -%}
+doppler run --mount .env --mount-format env-no-quotes -- docker compose exec ${usage_service?} bash
+{%- else -%}
+docker compose exec ${usage_service?} bash
+{%- endif %}
+'''
+{% endif %}
+{%- if with_doppler %}
+
+# --- Doppler -----------------------------------------------------------------
+
+[tasks.dc]
+description = "Run docker compose with Doppler-mounted .env"
+quiet = true
+usage = 'arg "[args]" var=#true'
+run = 'doppler run --mount .env --mount-format env-no-quotes -- docker compose ${usage_args:-}'
+
+[tasks."doppler:create-config"]
+description = "Create a new Doppler branch config"
+quiet = true
+usage = """
+flag "--config <config>" help="Name of the new branch config"
+flag "--env <env>" {
+    help "Environment to inherit from"
+    default "dev"
+    choices "dev" "stg" "prod"
+}
+flag "--project <project>" help="Doppler project name" default="{{ doppler_project }}"
+"""
+run = """
+cd ~ && doppler configs create ${usage_config?} -e ${usage_env?} -p ${usage_project?} || {
+  echo "Failed. Please authenticate first with: doppler login --yes"
+  exit 1
+}
+cd - > /dev/null
+"""
+
+[tasks."doppler:create-token"]
+description = "Create a Doppler service token for this directory"
+quiet = true
+usage = """
+flag "--token-name <token_name>" help="Name of the service token"
+flag "--config <config>" help="Doppler config name" default="dev"
+flag "--project <project>" help="Doppler project name" default="{{ doppler_project }}"
+flag "--access <access>" {
+    help "Access level"
+    choices "read" "read/write"
+    default "read"
+}
+"""
+run = """
+cd ~
+TOKEN="$(doppler configs tokens create ${usage_token_name?} --copy -c ${usage_config?} -p ${usage_project?} --access ${usage_access?} --json | jq -r '.token')" || {
+  echo "Failed. Please authenticate first with: doppler login --yes"
+  exit 1
+}
+cd - > /dev/null
+echo
+echo "\\033[32mToken copied to clipboard. Save it somewhere safe — it won't be shown again.\\033[0m"
+echo "$TOKEN" | doppler configure set token --scope $(pwd) > /dev/null
+unset TOKEN
+doppler configure set config ${usage_config?} --scope $(pwd)
+"""
+
+[tasks."doppler:set-token"]
+description = "Configure a preexisting Doppler service token for this directory"
+raw = true
+quiet = true
+run = """
+#!/usr/bin/env bash
+echo -n "Paste your Doppler token: "
+read -s TOKEN
+echo
+echo "$TOKEN" | doppler configure set token --scope $(pwd) && unset TOKEN
+"""
+
+[tasks."doppler:delete-config"]
+description = "Delete a Doppler branch config"
+quiet = true
+usage = """
+flag "--config <config>" help="Name of the branch config to delete"
+flag "--project <project>" help="Doppler project name" default="{{ doppler_project }}"
+"""
+run = """
+cd ~ && doppler configs delete ${usage_config?} -p ${usage_project?} --yes || {
+  echo "Failed. Please authenticate first with: doppler login --yes"
+  exit 1
+}
+cd - > /dev/null
+"""
+
+[tasks."doppler:upload-secrets"]
+description = "Upload a local .env file to Doppler"
+quiet = true
+run = 'doppler secrets upload .env'
+{% endif %}
+
+# --- Quality checks ----------------------------------------------------------
+
+[tasks."check:all"]
+description = "Run all quality checks"
+quiet = true
+depends = ["check:quality", "check:types"]
+
+[tasks."check:quality"]
+description = "Check the code quality with Ruff"
+quiet = true
+run = "uv run ruff check src tests --config pyproject.toml"
+
+[tasks."check:types"]
+description = "Type-check the code with Mypy"
+quiet = true
+run = "uv run mypy src tests --config-file pyproject.toml"
+
+[tasks."check:security"]
+description = "Run security analysis with Bandit"
+quiet = true
+run = "uv run bandit -r src -c pyproject.toml"
+
+# --- Documentation -----------------------------------------------------------
+
+[tasks."docs:check"]
+description = "Check if the documentation builds correctly"
+quiet = true
+run = "uv run mkdocs build --strict --verbose"
+
+[tasks."docs:serve"]
+description = "Serve the documentation locally (localhost:8080)"
+quiet = true
+run = "uv run mkdocs serve --dev-addr 127.0.0.1:8080"
+{% if repository_provider == 'github' %}
+[tasks."docs:deploy"]
+description = "Deploy the documentation to GitHub Pages"
+quiet = true
+run = "DEPLOY=true uv run mkdocs gh-deploy --force"
+{% endif %}
+
+# --- Formatting --------------------------------------------------------------
+
+[tasks.format]
+description = "Auto-format and fix code with Ruff"
+quiet = true
+run = [
+    "uv run ruff check src tests --config pyproject.toml --fix-only --exit-zero",
+    "uv run ruff format src tests --config pyproject.toml",
+]
+
+# --- Build & Publish ---------------------------------------------------------
+
+[tasks.build]
+description = "Build source and wheel distributions"
+quiet = true
+run = "uv build --clear"
+{% if publish_to_pypi %}
+[tasks.publish]
+description = "Publish distributions to PyPI"
+quiet = true
+run = '''#!/usr/bin/env bash
+set -eo pipefail
+if [ ! -d dist ]; then
+  echo "Error: No distribution files found in dist/"
+  exit 1
+fi
+uv publish
+'''
+{% endif %}
+
+# --- Cleanup -----------------------------------------------------------------
+
+[tasks.clean-cache]
+description = "Delete cache files"
+quiet = true
+run = '''
+find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+rm -rf .cache .pytest_cache .mypy_cache .ruff_cache
+'''
+
+[tasks.clean]
+description = "Delete build artifacts"
+quiet = true
+depends = ["clean-cache"]
+run = "rm -rf build dist htmlcov site .coverage* coverage.xml"
+{% if with_conventional_commits %}
+
+# --- Release -----------------------------------------------------------------
+
+[tasks.release]
+description = "Automate the full release process"
+quiet = true
+usage = """
+flag "--dry-run" help="Perform a dry run without making changes"
+arg "[commitizen_args]" var=#true help="Extra arguments passed to commitizen bump"
+"""
+run = '''#!/usr/bin/env bash
+set -eo pipefail
+
+# Get the next version (may fail if no bumpable commits)
+new_version=$(uv run cz bump --get-next --yes ${usage_commitizen_args:-} 2>/dev/null) || true
+
+# Bump version
+if [ "${usage_dry_run?}" = "true" ]; then
+  echo "Dry-run: Bumping project version to ${new_version:-unknown}"
+  uv run cz bump --yes --dry-run ${usage_commitizen_args:-} || true
+  echo "Dry-run: no new commits and tags to push"
+  echo "Dry-run: skipping clean, build{% if publish_to_pypi %}, publish{% endif %}{% if repository_provider == 'github' %}, and docs deployment{% endif %}"
+  exit 0
+fi
+
+echo "Bumping project version to ${new_version:-unknown}"
+uv run cz bump --yes ${usage_commitizen_args:-}
+
+# Check if upstream is configured
+upstream_set=true
+if ! git rev-parse --abbrev-ref --symbolic-full-name @{u} >/dev/null 2>&1; then
+  upstream_set=false
+fi
+
+if $upstream_set; then
+  echo "Pushing commits..."
+  git push
+  echo "Pushing tags..."
+  git push --tags
+else
+  echo "git-push: skipped => no upstream is configured for the current branch"
+fi
+
+# Post-release tasks
+mise run clean
+mise run build
+{%- if publish_to_pypi %}
+mise run publish
+{%- endif %}
+{%- if repository_provider == 'github' %}
+if $upstream_set; then
+  mise run docs:deploy
+else
+  echo "docs:deploy: skipped => the new release was not pushed"
+fi
+{%- endif %}
+'''
+{% endif %}
+
+# --- Testing & Coverage ------------------------------------------------------
+
+[tasks.coverage]
+description = "Report coverage as text, HTML and XML"
+quiet = true
+alias = "cov"
+run = '''#!/usr/bin/env bash
+uv run coverage combine || true
+uv run coverage html --rcfile=pyproject.toml
+uv run coverage xml --rcfile=pyproject.toml
+uv run coverage report --rcfile=pyproject.toml --show-missing
+'''
+
+[tasks.test]
+description = "Run the test suite with coverage"
+quiet = true
+depends_post = ["coverage"]
+usage = """
+arg "[pytest_args]" var=#true help="Extra arguments passed to pytest"
+"""
+run = '''#!/usr/bin/env bash
+uv run pytest tests -c pyproject.toml --color=yes -vv \
+  --cov --cov-config=pyproject.toml \
+{%- if pytest_xdist %}
+  -n auto \
+{%- endif %}
+  ${usage_pytest_args:-}
+'''
+{% if tox %}
+[tasks.tox]
+description = "Run the test suite across multiple Python versions"
+quiet = true
+depends_post = ["coverage"]
+run = "uv run tox run-parallel"
+{% endif %}
+
+# --- Dependency Management ---------------------------------------------------
+
+[tasks.upgrade]
+description = "Upgrade all dependencies to latest compatible versions"
+quiet = true
+run = "uv lock --upgrade"
+
+[tasks.audit]
+description = "Check dependencies for known vulnerabilities"
+quiet = true
+run = "uv audit"
+
+# --- Pre-commit --------------------------------------------------------------
+
+[tasks.pre-commit]
+description = "Run all pre-commit hooks on all files"
+quiet = true
+run = "uv run pre-commit run -a"

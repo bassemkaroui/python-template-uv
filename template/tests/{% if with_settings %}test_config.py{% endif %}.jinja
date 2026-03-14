@@ -1,0 +1,22 @@
+import pytest
+
+from {{ project_slug }}.config import Settings
+
+
+class TestSettings:
+    @staticmethod
+    def test_default_values() -> None:
+        s = Settings()
+        assert s.APP_NAME == "{{ project_name }}"
+        assert s.DEBUG is False
+        assert s.LOG_LEVEL == "INFO"
+
+    @staticmethod
+    def test_env_override(monkeypatch: pytest.MonkeyPatch) -> None:
+        monkeypatch.setenv("APP_NAME", "test-app")
+        monkeypatch.setenv("DEBUG", "true")
+        monkeypatch.setenv("LOG_LEVEL", "DEBUG")
+        s = Settings()
+        assert s.APP_NAME == "test-app"
+        assert s.DEBUG is True
+        assert s.LOG_LEVEL == "DEBUG"

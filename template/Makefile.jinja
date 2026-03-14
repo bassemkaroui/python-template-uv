@@ -1,59 +1,64 @@
 # This Makefile is just here to allow auto-completion in the terminal.
 
 actions = \
+	audit \
 	build \
-	check \
-	check-api \
-	check-docs \
+	check-all \
 	check-quality \
+	check-security \
 	check-types \
 	clean \
-	clean_cache \
+	clean-cache \
 	coverage \
+	{%- if with_doppler %}
+	dc \
+	doppler-create-config \
+	doppler-create-token \
+	doppler-set-token \
+	doppler-delete-config \
+	doppler-upload-secrets \
+	{%- endif %}
 	{%- if dockerfile %}
 	docker-build \
+	docker-shell \
 	docker-start \
 	docker-stop \
-	docker-exec-check \
-	docker-exec-check-api \
-	docker-exec-check-docs \
-	docker-exec-check-quality \
-	docker-exec-check-types \
-	docker-exec-coverage \
-	docker-exec-docs \
-	docker-exec-test \
-	{%- if tox %}
-	docker-exec-tox \
 	{%- endif %}
-	{%- endif %}
-	docs \
+	docs-check \
+	docs-serve \
 	{%- if repository_provider == 'github' %}
 	docs-deploy \
 	{%- endif %}
 	format \
+	pre-commit \
 	{%- if publish_to_pypi %}
 	publish \
 	{%- endif %}
 	{%- if with_conventional_commits %}
 	release \
 	{%- endif %}
-	setup \
+	setup-prod \
 	{%- if with_typer_cli %}
 	setup-cli \
 	{%- endif %}
 	setup-dev \
 	test{% if tox %}\
 	tox
-	{%- endif %}
+	{%- endif %}\
+	upgrade
 
+
+.PHONY: _check-mise
+_check-mise:
+	@command -v mise >/dev/null 2>&1 || { echo "Error: mise is not installed. See https://mise.jdx.dev/getting-started.html"; exit 1; }
 
 .PHONY: $(actions)
-$(actions):
-	@uv run duty "$@"
+$(actions): _check-mise
+	@mise run "$@"
 
 
 .PHONY: help
-help:
-	@uv run duty --list
+help: _check-mise
+	@mise tasks
 
 .DEFAULT_GOAL := help

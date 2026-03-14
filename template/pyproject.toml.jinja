@@ -32,10 +32,14 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
-{% include 'includes/dependencies.jinja' %}
+    {% if with_settings -%}
+    "pydantic-settings>=2.8.0",
+    {%- endif %}
+    {% if with_typer_cli -%}
+    "typer>=0.15.2",
+    {%- endif %}
 ]
 
-{% include 'includes/pytorch_indexes.jinja' %}
 {% if repository_provider == 'github' -%}
 [project.urls]
 Homepage = "{{ homepage }}"
@@ -61,6 +65,7 @@ dev = [
     {%- endif %}
     "mypy>=1.15.0",
     "ruff>=0.11.5",
+    "bandit[toml]>=1.8.3",
     {%- if with_conventional_commits %}
     "commitizen>=4.6.0",
     "cz-conventional-gitmoji>=0.7.0",
@@ -73,8 +78,6 @@ dev = [
     "griffe-typingdoc>=0.2.8",
     "griffe>=1.7.2",
     "ipython>=8.35.0",
-    "duty>=1.6.0",
-    {% include 'includes/extra_dev_dependencies.jinja' %}
 ]
 
 {% if with_conventional_commits -%}
@@ -97,6 +100,9 @@ gpg_sign = true
 
 [tool.mypy]
 files = ["src"]
+{% if with_settings -%}
+plugins = ["pydantic.mypy"]
+{%- endif %}
 check_untyped_defs = true
 disallow_untyped_defs = true
 # disallow_any_unimported = true
