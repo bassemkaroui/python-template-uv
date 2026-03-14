@@ -1,3 +1,87 @@
+## 0.3.0 (2026-03-14)
+
+### ✨ Features
+
+- replace duties.py with mise and add settings/config support
+- use 'uv_build' as a build backend instead of hatchling
+- modify `Dockerfile` and split `compose.yaml` into `compose.yaml` and `compose.override.yaml`
+- add support for GitHub Actions
+
+### 🐛🚑️ Fixes
+
+- **ci**: harden GitHub Actions workflows for production readiness
+- substitute '-' in tasks names to ':' so that mise understand them
+- add mise trust in 'copier.yaml' _tasks
+- add torch as a dep when choosing newer version of CUDA
+
+### build
+
+- **deps**: update pre-commit hook pre-commit/pre-commit-hooks to v6
+- **deps**: update pre-commit hook pre-commit/pre-commit-hooks to v6
+- **deps**: update actions/checkout action to v5
+- **deps**: update actions/checkout action to v5
+- **deps**: update dependency copier to v9.10.2
+- **deps**: update dependency copier to v9.10.2
+- **deps**: update actions/setup-python action to v6
+- **deps**: update actions/setup-python action to v6
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.9.1
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.9.1
+- **deps**: update softprops/action-gh-release digest to aec2ec5
+- **deps**: update softprops/action-gh-release digest to aec2ec5
+- **deps**: lock file maintenance
+- **deps**: lock file maintenance
+- **deps**: update astral-sh/setup-uv action to v7
+- **deps**: update astral-sh/setup-uv action to v7
+- **deps**: update dependency copier-templates-extensions to v0.3.2
+- **deps**: update dependency copier-templates-extensions to v0.3.2
+- **deps**: update astral-sh/setup-uv digest to e92bafb
+- **deps**: update astral-sh/setup-uv digest to e92bafb
+- **deps**: update dependency copier to v9.9.0
+- **deps**: update dependency copier to v9.9.0
+- **deps**: lock file maintenance
+- **deps**: lock file maintenance
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.8.3
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.8.3
+- **deps**: update softprops/action-gh-release digest to 72f2c25
+- **deps**: update softprops/action-gh-release digest to 72f2c25
+- **deps**: update astral-sh/setup-uv digest to bd01e18
+- **deps**: update astral-sh/setup-uv digest to bd01e18
+- **deps**: lock file maintenance
+- **deps**: lock file maintenance
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.8.2
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.8.2
+- **deps**: update astral-sh/setup-uv digest to f0ec1fc
+- **deps**: update astral-sh/setup-uv digest to f0ec1fc
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.8.0
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.8.0
+- **deps**: update peaceiris/actions-gh-pages digest to 4f9cc66
+- **deps**: update peaceiris/actions-gh-pages digest to 4f9cc66
+- **deps**: pin bassemkaroui/docker-action-pr-giphy-comment action to f4e007d
+- **deps**: pin bassemkaroui/docker-action-pr-giphy-comment action to f4e007d
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.7.1
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.7.1
+
+### 📌➕⬇️➖⬆️ Dependencies
+
+- **template**: add support for newer version of CUDA
+- **template**: add some dependencies to the template
+- **template**: add support for `pytest-benchmark`
+- add some backend dependencies for the template
+
+### 🔧🔨📦️ Configuration, Scripts, Packages
+
+- **pre-commit**: add 'uv-export' pre-commit to the template and bump all pre-commit versions
+- **template**: add support for `.editorconfig` and format files accordingly
+- **Renovate**: add support for dependencies in the `template` directory
+- **copier.yaml**: add some initialization tasks after creating a new project
+- **pyproject.toml**: add some linting rules to ruff and configure pyright as an LSP
+
+### 🩹 fix-simple
+
+- **Renovate**: add a custom regex manager for pre-commit hooks in Jinja template
+- **Renovate**: add a custom regex manager for pre-commit hooks in Jinja template
+- fix the CI badge in the `README.md.jinja`
+
 ## 0.2.0 (2025-05-13)
 
 ### ✨ Features
