@@ -7,7 +7,7 @@ actions = \
 	check-quality \
 	check-security \
 	check-types \
-	clean \
+	clean-all \
 	clean-cache \
 	coverage \
 	{%- if with_doppler %}
@@ -30,7 +30,6 @@ actions = \
 	docs-deploy \
 	{%- endif %}
 	format \
-	pre-commit \
 	{%- if publish_to_pypi %}
 	publish \
 	{%- endif %}
@@ -54,7 +53,11 @@ _check-mise:
 
 .PHONY: $(actions)
 $(actions): _check-mise
-	@mise run "$@"
+	@mise run "$(subst -,:,$@)"
+
+.PHONY: pre-commit
+pre-commit: _check-mise
+	@mise run "pre-commit"
 
 
 .PHONY: help

@@ -13,7 +13,7 @@ description = "Set up the development environment"
 quiet = true
 run = ["uv sync", "uv run pre-commit install -f"]
 {% if with_typer_cli %}
-[tasks.setup-cli]
+[tasks."setup:cli"]
 description = "Install the project CLI globally via uv"
 run = "uv tool install ."
 {% endif %}
@@ -268,7 +268,7 @@ uv publish
 
 # --- Cleanup -----------------------------------------------------------------
 
-[tasks.clean-cache]
+[tasks."clean:cache"]
 description = "Delete cache files"
 quiet = true
 run = '''
@@ -276,10 +276,10 @@ find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 rm -rf .cache .pytest_cache .mypy_cache .ruff_cache
 '''
 
-[tasks.clean]
+[tasks."clean:all"]
 description = "Delete build artifacts"
 quiet = true
-depends = ["clean-cache"]
+depends = ["clean:cache"]
 run = "rm -rf build dist htmlcov site .coverage* coverage.xml"
 {% if with_conventional_commits %}
 
@@ -326,7 +326,7 @@ else
 fi
 
 # Post-release tasks
-mise run clean
+mise run clean:all
 mise run build
 {%- if publish_to_pypi %}
 mise run publish

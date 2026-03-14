@@ -130,7 +130,7 @@ check                      Check it all!
 docs-check                 Check if the documentation builds correctly.
 check-quality              Run linters and format checks.
 check-types                Run static type checks.
-clean                      Delete build artifacts.
+clean-all                  Delete build artifacts.
 clean-cache                Remove cache files.
 coverage                   Generate coverage reports (text, HTML, XML).
 docker-build               Build Docker images.
