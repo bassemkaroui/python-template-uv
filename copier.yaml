@@ -14,6 +14,24 @@ _tasks:
   - "pre-commit run -a || true"
   - "git add -A"
   - "pre-commit run -a"
+  - >-
+    {% if repository_provider == 'github' %}
+    echo '' &&
+    echo '========================================================' &&
+    echo '  ACTION REQUIRED: Set up the following repo secrets' &&
+    echo '========================================================' &&
+    echo '' &&
+    echo '  - GIPHY_API_KEY  : needed for PR thank-you comments' &&
+    {% if dependency_updater == 'renovate' %}
+    echo '  - RENOVATE_TOKEN : needed for self-hosted Renovate' &&
+    {% endif %}
+    echo '' &&
+    echo '  Run "gh secret set <SECRET_NAME>" or see README.md' &&
+    echo '  for full setup instructions.' &&
+    echo ''
+    {% else %}
+    true
+    {% endif %}
 
 project_name:
   type: str
@@ -90,11 +108,15 @@ documentation:
     https://{{ author_github_handle }}.github.io/{{ project_name }}
     {%- endif %}
 
-with_dependabot:
-  type: bool
+dependency_updater:
+  type: str
   when: "{{ repository_provider == 'github' }}"
-  help: Do you want to enable Dependabot for automated dependency updates?
-  default: false
+  help: Which dependency update tool do you want to use?
+  default: renovate
+  choices:
+    - none
+    - dependabot
+    - renovate
 
 copyright_license:
   type: str

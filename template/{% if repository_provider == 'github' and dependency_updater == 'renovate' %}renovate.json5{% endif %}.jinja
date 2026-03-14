@@ -1,0 +1,47 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices",
+    ":enablePreCommit",
+    ":maintainLockFilesMonthly",
+{%- if with_conventional_commits %}
+    ":semanticCommitTypeAll(build)",
+{%- endif %}
+    "schedule:nonOfficeHours"
+  ],
+
+  // Disable pyenv manager — .python-version is managed by the template/mise
+  "pyenv": {
+    "enabled": false
+  },
+
+  // Rate limits to avoid PR noise
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+
+  "packageRules": [
+    {
+      "description": "Group and automerge non-major dev dependency updates",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "groupName": "non-major dev dependencies",
+      "automerge": true
+    },
+    {
+      "description": "Group and automerge patch production dependency updates",
+      "matchUpdateTypes": ["patch", "digest"],
+      "groupName": "patch production dependencies",
+      "automerge": true
+    },
+    {
+      "description": "Group pre-commit hook updates",
+      "matchManagers": ["pre-commit"],
+      "groupName": "pre-commit hooks"
+    },
+    {
+      "description": "Group GitHub Actions updates",
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions"
+    }
+  ]
+}

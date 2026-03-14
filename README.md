@@ -70,7 +70,18 @@ A modern, batteries‑included [Copier](https://github.com/copier-org/copier) te
         - **Docs Deployment**: Deploys MkDocs documentation to GitHub Pages.
         - **Package Publishing** (optional): Publishes the package to PyPI if `publish_to_pypi` is enabled and `PYPI_TOKEN` is set.
 
-    - **Dependabot** (`dependabot.yml`): Enabled via the `with_dependabot` template variable. Automatically opens weekly PRs to keep GitHub Actions dependencies up to date.
+    - **Dependency Updates** (optional): Choose between Dependabot or self-hosted Renovate via the `dependency_updater` template variable.
+        - **Dependabot** (`dependabot.yml`): Opens weekly PRs to keep GitHub Actions dependencies up to date.
+        - **Renovate** (`renovate.yaml` + `renovate.json5`): Self-hosted via GitHub Actions. Updates all dependencies (Python packages, pre-commit hooks, GitHub Actions, lock files) with smart grouping and automerge.
+          Requires a `RENOVATE_TOKEN` repository secret containing a fine-grained PAT. To create one:
+            1. Go to GitHub **Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token**
+            2. Set a token name, expiration, and under **Repository access** select the target repo
+            3. Under **Permissions**, grant: `Contents: Read and write`, `Pull requests: Read and write`, `Workflows: Read and write`, and `Issues: Read-only`
+            4. Click **Generate token** and copy it
+
+          Then add it to your repository:
+            - **CLI**: `gh secret set RENOVATE_TOKEN` and paste the token when prompted
+            - **Web UI**: Go to repo **Settings → Secrets and variables → Actions → New repository secret**, name it `RENOVATE_TOKEN`, and paste the token
 
     These workflows are generated into `.github/workflows/` in the scaffolded project. You can customize them further as needed.
 
@@ -178,7 +189,7 @@ When running `copier`, you’ll be prompted for:
 | `with_conventional_commits` | Enforce Conventional Commits?                              | `true`                            |
 | `cz_gitmoji`                | Include emojis in commit messages?                         | `true`                            |
 | `dockerfile`                | Generate Dockerfile and Compose file?                      | `true`                            |
-| `with_dependabot`           | Enable Dependabot for automated dependency updates?        | `true`                            |
+| `dependency_updater`        | Dependency update tool (`none`, `dependabot`, or `renovate`) | `renovate`                      |
 | `gpus`                      | Enable GPU support in Docker builds?                       | `false`                           |
 
 > See the full list in [copier.yaml](https://github.com/bassemkaroui/python-template-uv/blob/main/copier.yaml).
