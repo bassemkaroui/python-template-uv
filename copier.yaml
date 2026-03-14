@@ -90,6 +90,12 @@ documentation:
     https://{{ author_github_handle }}.github.io/{{ project_name }}
     {%- endif %}
 
+with_dependabot:
+  type: bool
+  when: "{{ repository_provider == 'github' }}"
+  help: Do you want to enable Dependabot for automated dependency updates?
+  default: false
+
 copyright_license:
   type: str
   help: Choose the project's license (e.g. "MIT", "GPL-3.0").

@@ -46,7 +46,7 @@ A modern, batteries‑included [Copier](https://github.com/copier-org/copier) te
     - Release new versions ➜ `make release`
 
 - **Docker & Docker Compose**
-    - Generate `Dockerfile` + `compose.yml` for local development and deployment (GPU support)
+    - Generate `Dockerfile` + `compose.yaml` for deployment and `compose.override.yaml` for development overrides (hot-reload, exposed ports, GPU support)
     - Docker targets: `make docker-build`, `make docker-start`, `make docker-stop`
 
 - **Optional features**
@@ -58,7 +58,10 @@ A modern, batteries‑included [Copier](https://github.com/copier-org/copier) te
 - **CI/CD Workflows**
 
     This template includes GitHub Actions workflows for continuous integration, testing, and release automation:
-    - **PR Commenting** (`pr-thank-you.yaml`): Posts a fun GIPHY comment on new pull requests using [`docker-action-pr-giphy-comment`](https://github.com/bassemkaroui/docker-action-pr-giphy-comment)
+    - **PR Commenting** (`pr-thank-you.yaml`): Posts a fun GIPHY comment on new pull requests using [`docker-action-pr-giphy-comment`](https://github.com/bassemkaroui/docker-action-pr-giphy-comment).
+      Requires a `GIPHY_API_KEY` repository secret. To obtain one, sign up at [GIPHY Developers](https://developers.giphy.com/), create an app, and copy the API key. Then add it to your repository:
+        - **CLI**: `gh secret set GIPHY_API_KEY` and paste the key when prompted
+        - **Web UI**: Go to repo **Settings → Secrets and variables → Actions → New repository secret**, name it `GIPHY_API_KEY`, and paste the key
 
     - **CI/CD Pipeline** (`main.yaml.jinja`):
         - **Checks**: Linting (Ruff), type checking (Mypy), documentation build.
@@ -66,6 +69,8 @@ A modern, batteries‑included [Copier](https://github.com/copier-org/copier) te
         - **Releases**: Automatically publishes releases when a Git tag is pushed.
         - **Docs Deployment**: Deploys MkDocs documentation to GitHub Pages.
         - **Package Publishing** (optional): Publishes the package to PyPI if `publish_to_pypi` is enabled and `PYPI_TOKEN` is set.
+
+    - **Dependabot** (`dependabot.yml`): Enabled via the `with_dependabot` template variable. Automatically opens weekly PRs to keep GitHub Actions dependencies up to date.
 
     These workflows are generated into `.github/workflows/` in the scaffolded project. You can customize them further as needed.
 
@@ -173,6 +178,7 @@ When running `copier`, you’ll be prompted for:
 | `with_conventional_commits` | Enforce Conventional Commits?                              | `true`                            |
 | `cz_gitmoji`                | Include emojis in commit messages?                         | `true`                            |
 | `dockerfile`                | Generate Dockerfile and Compose file?                      | `true`                            |
+| `with_dependabot`           | Enable Dependabot for automated dependency updates?        | `true`                            |
 | `gpus`                      | Enable GPU support in Docker builds?                       | `false`                           |
 
 > See the full list in [copier.yaml](https://github.com/bassemkaroui/python-template-uv/blob/main/copier.yaml).
