@@ -8,6 +8,7 @@ _jinja_extensions:
 _tasks:
   - "git init"
   - "mkdir scripts"
+  - "mise trust"
   - "make setup-dev"
   - "git add -A"
   - "pre-commit run -a || true"
