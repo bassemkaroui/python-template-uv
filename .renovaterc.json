@@ -87,7 +87,7 @@
   "github-actions": {
     "managerFilePatterns": [
       "/^template/.+\\.github.+/actions/.*\\.ya?ml(?:\\.jinja)?(?:\\{% endif %\\})?$/",
-      "/^template/.+\\.github.+/workflows/.*\\.ya?ml(?:\\.jinja)?(?:\\{% endif %\\})?$/"
+      "/^template/.+\\.github.+/workflows/.*\\.ya?ml(?:\\.jinja)?(?:\\{% endif %\\})?(?:\\.jinja)?$/"
     ]
   }
 }
