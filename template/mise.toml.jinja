@@ -223,12 +223,14 @@ run = "uv run bandit -r src -c pyproject.toml"
 [tasks."docs:check"]
 description = "Check if the documentation builds correctly"
 quiet = true
-run = "uv run mkdocs build --strict --verbose"
+usage = 'flag "--verbose"'
+run = "uv run mkdocs build --strict ${usage_verbose:+--verbose}"
 
 [tasks."docs:serve"]
 description = "Serve the documentation locally (localhost:8080)"
 quiet = true
-run = "uv run mkdocs serve --dev-addr 127.0.0.1:8080"
+usage = 'flag "--port <port>" default="8080"'
+run = "uv run mkdocs serve --dev-addr 127.0.0.1:${usage_port?}"
 {% if repository_provider == 'github' %}
 [tasks."docs:deploy"]
 description = "Deploy the documentation to GitHub Pages"

@@ -18,10 +18,17 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
+    "cairosvg>=2.7",
     "commitizen>=4.5.1",
     "copier>=9.6.0",
     "copier-templates-extensions>=0.3.1",
     "cz-conventional-gitmoji>=0.7.0",
+    "markdown-callouts>=0.4",
+    "mkdocs>=1.6,<2.0.0",
+    "mkdocs-git-revision-date-localized-plugin>=1.4",
+    "mkdocs-material>=9.6",
+    "mkdocs-minify-plugin>=0.8",
+    "pillow>=10.0",
     "pre-commit>=4.2.0",
     "ruff>=0.11.5",
 ]

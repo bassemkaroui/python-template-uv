@@ -1,0 +1,18 @@
+# --- Documentation -----------------------------------------------------------
+
+[tasks."docs:check"]
+description = "Check if the documentation builds correctly"
+quiet = true
+usage = 'flag "--verbose"'
+run = "uv run mkdocs build --strict ${usage_verbose:+--verbose}"
+
+[tasks."docs:serve"]
+description = "Serve the documentation locally (localhost:8080)"
+quiet = true
+usage = 'flag "--port <port>" default="8080"'
+run = "uv run mkdocs serve --dev-addr 127.0.0.1:${usage_port?}"
+
+[tasks."docs:deploy"]
+description = "Deploy the documentation to GitHub Pages"
+quiet = true
+run = "DEPLOY=true uv run mkdocs gh-deploy --force"
