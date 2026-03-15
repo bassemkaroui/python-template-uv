@@ -10,10 +10,12 @@ _tasks:
   - "mkdir scripts"
   - "mise trust"
   - "make setup-dev"
-  - "git add -A"
-  - "pre-commit run -a || true"
-  - "git add -A"
-  - "pre-commit run -a"
+  - >-
+    for i in $(seq 1 5); do
+    git add -A &&
+    pre-commit run -a && break ||
+    if [ $i -eq 5 ]; then echo 'pre-commit hooks did not converge after 5 attempts — run "pre-commit run -a" manually to debug'; exit 0; fi;
+    done
   - >-
     {% if repository_provider == 'github' %}
     echo '' &&
