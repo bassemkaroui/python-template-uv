@@ -2,7 +2,7 @@
 
 ## Scaffold a New Project
 
-/// tab | Using uvx (no install needed)
+/// tab | :simple-uv: Using uvx (no install needed)
 
 ```bash
 uvx --with copier-templates-extensions copier copy \
@@ -11,7 +11,7 @@ uvx --with copier-templates-extensions copier copy \
 
 ///
 
-/// tab | Using installed Copier
+/// tab | :material-package: Using installed Copier
 
 ```bash
 # Install Copier globally (one-time)
@@ -24,13 +24,15 @@ copier copy --trust gh:bassemkaroui/python-template-uv project_name
 ///
 
 !!! note "Why `--trust`?"
-The template runs post-generation tasks (`git init`, `make setup-dev`, etc.) defined in `copier.yaml`, which requires the `--trust` flag.
+    The template runs post-generation tasks (`git init`, `make setup-dev`, etc.) defined in `copier.yaml`, which requires the `--trust` flag.
 
-!!! tip "Additional flags" - Add `--prereleases` to include pre-release template versions - Add `--vcs-ref=HEAD` to use the latest commit instead of the latest release
+!!! tip "Additional flags"
+    - Add `--prereleases` to include pre-release template versions
+    - Add `--vcs-ref=HEAD` to use the latest commit instead of the latest release
 
 ## Set Up Your Project
 
-/// tab | make
+/// tab | :simple-make: make
 
 ```bash
 # Enter your project
@@ -46,7 +48,7 @@ make setup-cli
 
 ///
 
-/// tab | mise
+/// tab | :material-wrench: mise
 
 ```bash
 # Enter your project
@@ -64,7 +66,7 @@ mise run setup:cli
 
 ## Verify Everything Works
 
-/// tab | make
+/// tab | :simple-make: make
 
 ```bash
 # Run all checks: lint, types, docs build
@@ -73,7 +75,7 @@ make check-all
 
 ///
 
-/// tab | mise
+/// tab | :material-wrench: mise
 
 ```bash
 # Run all checks: lint, types, docs build

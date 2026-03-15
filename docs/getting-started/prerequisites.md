@@ -15,14 +15,14 @@ Before using this template, make sure you have the following tools installed:
 
 ## Quick Install
 
-/// tab | macOS (Homebrew)
+/// tab | :fontawesome-brands-apple: macOS (Homebrew)
 ```bash
 brew install python uv mise pre-commit
 uv tool install copier --with copier-templates-extensions
 ```
 ///
 
-/// tab | Linux
+/// tab | :fontawesome-brands-linux: Linux
 ```bash
 # uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -38,7 +38,7 @@ uv tool install copier --with copier-templates-extensions
 ```
 ///
 
-/// tab | Windows
+/// tab | :fontawesome-brands-windows: Windows
 ```powershell
 # uv
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"

@@ -230,7 +230,7 @@ run = "uv run mkdocs build --strict ${usage_verbose:+--verbose}"
 description = "Serve the documentation locally (localhost:8080)"
 quiet = true
 usage = 'flag "--port <port>" default="8080"'
-run = "uv run mkdocs serve --dev-addr 127.0.0.1:${usage_port?}"
+run = "uv run mkdocs serve --dev-addr 127.0.0.1:${usage_port?} --livereload"
 {% if repository_provider == 'github' %}
 [tasks."docs:deploy"]
 description = "Deploy the documentation to GitHub Pages"

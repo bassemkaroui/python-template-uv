@@ -4,17 +4,26 @@ Project tasks are defined in a [`mise.toml`](https://mise.jdx.dev/) file. A `Mak
 
 Run any task with:
 
+/// tab | :simple-make: make
+
 ```bash
 make <task>
-# or directly:
+```
+
+///
+
+/// tab | :material-wrench: mise
+
+```bash
 mise run <task>
 ```
 
-> [!TIP]
-> Prefer `mise run` over `make` when running tasks directly:
->
-> - **Auto-completion**: Run `make mise-setup-completions` to install shell completions for mise, giving you tab-completion for all tasks.
-> - **Flags & arguments**: mise tasks can accept flags and positional arguments (e.g. `mise run docker-build --dev`, `mise run test -- -k test_foo`), which is not possible through `make`.
+///
+
+!!! tip "Prefer `mise run` over `make` when running tasks directly"
+
+    - **Auto-completion**: Run `make mise-setup-completions` to install shell completions for mise, giving you tab-completion for all tasks.
+    - **Flags & arguments**: mise tasks can accept flags and positional arguments (e.g. `mise run docker-build --dev`, `mise run test -- -k test_foo`), which is not possible through `make`.
 
 ## Available Tasks
 

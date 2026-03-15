@@ -6,7 +6,7 @@ The template sets up a comprehensive code quality pipeline that runs automatical
 
 [Ruff](https://github.com/astral-sh/ruff) handles both **formatting** and **linting** in a single, fast tool.
 
-/// tab | make
+/// tab | :simple-make: make
 
 ```bash
 # Auto-format code
@@ -18,7 +18,7 @@ make check-quality
 
 ///
 
-/// tab | mise
+/// tab | :material-wrench: mise
 
 ```bash
 # Auto-format code
@@ -36,7 +36,7 @@ Ruff is configured in `pyproject.toml` with sensible defaults. It replaces Black
 
 [Mypy](https://github.com/python/mypy) performs static type checking.
 
-/// tab | make
+/// tab | :simple-make: make
 
 ```bash
 make check-types
@@ -44,7 +44,7 @@ make check-types
 
 ///
 
-/// tab | mise
+/// tab | :material-wrench: mise
 
 ```bash
 mise run check:types
@@ -74,7 +74,7 @@ pre-commit install
 
 ## Running All Checks
 
-/// tab | make
+/// tab | :simple-make: make
 
 ```bash
 # Run everything: lint, types, docs build
@@ -83,7 +83,7 @@ make check-all
 
 ///
 
-/// tab | mise
+/// tab | :material-wrench: mise
 
 ```bash
 # Run everything: lint, types, docs build

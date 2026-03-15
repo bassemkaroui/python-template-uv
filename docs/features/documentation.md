@@ -11,7 +11,7 @@ Generated projects include a fully configured [MkDocs](https://github.com/mkdocs
 
 ## Local Development
 
-/// tab | make
+/// tab | :simple-make: make
 
 ```bash
 # Serve docs with live reload (localhost:8080)
@@ -23,7 +23,7 @@ make docs-check
 
 ///
 
-/// tab | mise
+/// tab | :material-wrench: mise
 
 ```bash
 # Serve docs with live reload (localhost:8080)
@@ -37,7 +37,7 @@ mise run docs:check
 
 ## Deployment
 
-/// tab | make
+/// tab | :simple-make: make
 
 ```bash
 # Deploy to GitHub Pages
@@ -46,7 +46,7 @@ make docs-deploy
 
 ///
 
-/// tab | mise
+/// tab | :material-wrench: mise
 
 ```bash
 # Deploy to GitHub Pages

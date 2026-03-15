@@ -12,7 +12,7 @@ When `dockerfile: true` (the default), the template generates Docker configurati
 
 ## Commands
 
-/// tab | make
+/// tab | :simple-make: make
 
 ```bash
 # Build Docker images
@@ -27,7 +27,7 @@ make docker-stop
 
 ///
 
-/// tab | mise
+/// tab | :material-wrench: mise
 
 ```bash
 # Build Docker images
