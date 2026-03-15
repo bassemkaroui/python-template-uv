@@ -73,7 +73,7 @@ A modern, batteries‑included [Copier](https://github.com/copier-org/copier) te
     - **Dependency Updates** (optional): Choose between Dependabot or self-hosted Renovate via the `dependency_updater` template variable.
         - **Dependabot** (`dependabot.yml`): Opens weekly PRs to keep GitHub Actions dependencies up to date.
         - **Renovate** (`renovate.yaml` + `renovate.json5`): Self-hosted via GitHub Actions. Updates all dependencies (Python packages, pre-commit hooks, GitHub Actions, lock files) with smart grouping and automerge.
-          Supports PAT or GitHub App authentication via the `renovate_auth_method` variable. See the [Renovate setup guide](docs/renovate-setup.md) for detailed instructions.
+          Supports PAT or GitHub App authentication via the `renovate_auth_method` variable. See the [Renovate setup guide](renovate-setup.md) for detailed instructions.
 
     These workflows are generated into `.github/workflows/` in the scaffolded project. You can customize them further as needed.
 

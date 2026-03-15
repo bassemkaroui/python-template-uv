@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  {% if page and page.meta and page.meta.title == "python-template-uv" %}
+  <style>
+    .md-header { background: transparent; }
+    .md-main__inner { margin-top: 0; }
+  </style>
+  {% endif %}
+{% endblock %}
