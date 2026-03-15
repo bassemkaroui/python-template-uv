@@ -22,8 +22,11 @@ _tasks:
     echo '========================================================' &&
     echo '' &&
     echo '  - GIPHY_API_KEY  : needed for PR thank-you comments' &&
-    {% if dependency_updater == 'renovate' %}
-    echo '  - RENOVATE_TOKEN : needed for self-hosted Renovate' &&
+    {% if dependency_updater == 'renovate' and renovate_auth_method == 'pat' %}
+    echo '  - RENOVATE_TOKEN          : needed for self-hosted Renovate' &&
+    {% elif dependency_updater == 'renovate' and renovate_auth_method == 'github_app' %}
+    echo '  - RENOVATE_APP_ID         : needed for self-hosted Renovate' &&
+    echo '  - RENOVATE_APP_PRIVATE_KEY: needed for self-hosted Renovate' &&
     {% endif %}
     echo '' &&
     echo '  Run "gh secret set <SECRET_NAME>" or see README.md' &&
@@ -117,6 +120,15 @@ dependency_updater:
     - none
     - dependabot
     - renovate
+
+renovate_auth_method:
+  type: str
+  when: "{{ repository_provider == 'github' and dependency_updater == 'renovate' }}"
+  help: Which authentication method do you want to use for self-hosted Renovate?
+  default: pat
+  choices:
+    - pat
+    - github_app
 
 copyright_license:
   type: str

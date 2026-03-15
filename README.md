@@ -73,15 +73,7 @@ A modern, batteries‑included [Copier](https://github.com/copier-org/copier) te
     - **Dependency Updates** (optional): Choose between Dependabot or self-hosted Renovate via the `dependency_updater` template variable.
         - **Dependabot** (`dependabot.yml`): Opens weekly PRs to keep GitHub Actions dependencies up to date.
         - **Renovate** (`renovate.yaml` + `renovate.json5`): Self-hosted via GitHub Actions. Updates all dependencies (Python packages, pre-commit hooks, GitHub Actions, lock files) with smart grouping and automerge.
-          Requires a `RENOVATE_TOKEN` repository secret containing a fine-grained PAT. To create one:
-            1. Go to GitHub **Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token**
-            2. Set a token name, expiration, and under **Repository access** select the target repo
-            3. Under **Permissions**, grant: `Contents: Read and write`, `Pull requests: Read and write`, `Workflows: Read and write`, and `Issues: Read-only`
-            4. Click **Generate token** and copy it
-
-          Then add it to your repository:
-            - **CLI**: `gh secret set RENOVATE_TOKEN` and paste the token when prompted
-            - **Web UI**: Go to repo **Settings → Secrets and variables → Actions → New repository secret**, name it `RENOVATE_TOKEN`, and paste the token
+          Supports PAT or GitHub App authentication via the `renovate_auth_method` variable. See the [Renovate setup guide](docs/renovate-setup.md) for detailed instructions.
 
     These workflows are generated into `.github/workflows/` in the scaffolded project. You can customize them further as needed.
 
@@ -170,27 +162,28 @@ For the full list and details, see [mise.toml](https://github.com/bassemkaroui/p
 
 When running `copier`, you’ll be prompted for:
 
-| Variable                    | Description                                                | Default                           |
-| --------------------------- | ---------------------------------------------------------- | --------------------------------- |
-| `project_name`              | Your project’s **name** (lowercase, letters/digits/dashes) | _—_                               |
-| `project_description`       | A short summary of what your project does                  | _—_                               |
-| `author_fullname`           | Your full name                                             | from `git`                        |
-| `author_email`              | Your email address                                         | from `git`                        |
-| `repository_provider`       | Where you host your repo (`github` or `other`)             | `github`                          |
-| `homepage`                  | Project homepage URL                                       | `https://<user>.github.io/<proj>` |
-| `python_version`            | Default Python interpreter for development                 | `3.12`                            |
-| `min_python_version`        | Minimum supported Python version                           | `3.10`                            |
-| `with_typer_cli`            | Include a Typer CLI scaffold?                              | `false`                           |
-| `with_strict_typing`        | Enable strict typing (py.typed marker)?                    | `false`                           |
-| `with_settings`             | Include Pydantic Settings for configuration?               | `true`                            |
-| `with_doppler`              | Add Doppler integration for secrets management?            | `false`                           |
-| `tox`                       | Include Tox configuration?                                 | `true`                            |
-| `coverage_threshold`        | Minimum test coverage %                                    | `100`                             |
-| `with_conventional_commits` | Enforce Conventional Commits?                              | `true`                            |
-| `cz_gitmoji`                | Include emojis in commit messages?                         | `true`                            |
-| `dockerfile`                | Generate Dockerfile and Compose file?                      | `true`                            |
-| `dependency_updater`        | Dependency update tool (`none`, `dependabot`, or `renovate`) | `renovate`                      |
-| `gpus`                      | Enable GPU support in Docker builds?                       | `false`                           |
+| Variable                    | Description                                                  | Default                           |
+| --------------------------- | ------------------------------------------------------------ | --------------------------------- |
+| `project_name`              | Your project’s **name** (lowercase, letters/digits/dashes)   | _—_                               |
+| `project_description`       | A short summary of what your project does                    | _—_                               |
+| `author_fullname`           | Your full name                                               | from `git`                        |
+| `author_email`              | Your email address                                           | from `git`                        |
+| `repository_provider`       | Where you host your repo (`github` or `other`)               | `github`                          |
+| `homepage`                  | Project homepage URL                                         | `https://<user>.github.io/<proj>` |
+| `python_version`            | Default Python interpreter for development                   | `3.12`                            |
+| `min_python_version`        | Minimum supported Python version                             | `3.10`                            |
+| `with_typer_cli`            | Include a Typer CLI scaffold?                                | `false`                           |
+| `with_strict_typing`        | Enable strict typing (py.typed marker)?                      | `false`                           |
+| `with_settings`             | Include Pydantic Settings for configuration?                 | `true`                            |
+| `with_doppler`              | Add Doppler integration for secrets management?              | `false`                           |
+| `tox`                       | Include Tox configuration?                                   | `true`                            |
+| `coverage_threshold`        | Minimum test coverage %                                      | `100`                             |
+| `with_conventional_commits` | Enforce Conventional Commits?                                | `true`                            |
+| `cz_gitmoji`                | Include emojis in commit messages?                           | `true`                            |
+| `dockerfile`                | Generate Dockerfile and Compose file?                        | `true`                            |
+| `dependency_updater`        | Dependency update tool (`none`, `dependabot`, or `renovate`) | `renovate`                        |
+| `renovate_auth_method`      | Renovate auth method (`pat` or `github_app`)                 | `pat`                             |
+| `gpus`                      | Enable GPU support in Docker builds?                         | `false`                           |
 
 > See the full list in [copier.yaml](https://github.com/bassemkaroui/python-template-uv/blob/main/copier.yaml).
 
