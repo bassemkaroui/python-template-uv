@@ -1,47 +1,81 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:best-practices",
-    ":enablePreCommit",
-    ":maintainLockFilesMonthly",
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:best-practices',
+    ':enablePreCommit',
+    ':maintainLockFilesMonthly',
 {%- if with_conventional_commits %}
-    ":semanticCommitTypeAll(build)",
+    ':semanticCommitTypeAll(build)',
 {%- endif %}
-    "schedule:nonOfficeHours"
+    'schedule:nonOfficeHours',
   ],
-
-  // Disable pyenv manager — .python-version is managed by the template/mise
-  "pyenv": {
-    "enabled": false
+  pyenv: {
+    enabled: false,
   },
-
-  // Rate limits to avoid PR noise
-  "prConcurrentLimit": 5,
-  "prHourlyLimit": 2,
-
-  "packageRules": [
+{%- if renovate_auth_method == 'github_app' %}
+  platformCommit: 'enabled',
+{%- endif %}
+  prConcurrentLimit: 5,
+  prHourlyLimit: 5,
+  customManagers: [
     {
-      "description": "Group and automerge non-major dev dependency updates",
-      "matchDepTypes": ["devDependencies"],
-      "matchUpdateTypes": ["minor", "patch", "digest"],
-      "groupName": "non-major dev dependencies",
-      "automerge": true
+      customType: 'regex',
+      managerFilePatterns: [
+        '/\\.github/workflows/.+\\.ya?ml$/',
+      ],
+      matchStrings: [
+        '\\s*RENOVATE_VERSION:\\s*(?<currentValue>\\S+)\\s*#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>[^\\s]+)',
+      ],
+      versioningTemplate: 'docker',
+    },
+  ],
+  packageRules: [
+    {
+      description: 'Group and automerge non-major dev dependency updates',
+      matchDepTypes: [
+        'devDependencies',
+      ],
+      matchUpdateTypes: [
+        'minor',
+        'patch',
+        'digest',
+      ],
+      groupName: 'non-major dev dependencies',
+      automerge: true,
     },
     {
-      "description": "Group and automerge patch production dependency updates",
-      "matchUpdateTypes": ["patch", "digest"],
-      "groupName": "patch production dependencies",
-      "automerge": true
+      description: 'Group and automerge patch production dependency updates',
+      matchUpdateTypes: [
+        'patch',
+        'digest',
+      ],
+      groupName: 'patch production dependencies',
+      automerge: true,
     },
     {
-      "description": "Group pre-commit hook updates",
-      "matchManagers": ["pre-commit"],
-      "groupName": "pre-commit hooks"
+      description: 'Group pre-commit hook updates',
+      matchManagers: [
+        'pre-commit',
+      ],
+      groupName: 'pre-commit hooks',
     },
     {
-      "description": "Group GitHub Actions updates",
-      "matchManagers": ["github-actions"],
-      "groupName": "GitHub Actions"
-    }
-  ]
+      description: 'Group GitHub Actions updates',
+      matchManagers: [
+        'github-actions',
+      ],
+      groupName: 'GitHub Actions',
+    },
+    {
+      description: 'Disable Python base image version updates in Dockerfile',
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        'python',
+        'ghcr.io/astral-sh/uv',
+      ],
+      enabled: false,
+    },
+  ],
 }

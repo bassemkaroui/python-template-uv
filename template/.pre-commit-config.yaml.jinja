@@ -13,7 +13,7 @@ default_stages:
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: "v6.0.0"
+    rev: v6.0.0
     hooks:
       - id: check-case-conflict
       - id: check-merge-conflict
@@ -56,7 +56,7 @@ repos:
   {%- endif %}
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.15.6"
+    rev: v0.15.6
     hooks:
       - id: ruff
         args: [--exit-non-zero-on-fix]
@@ -67,14 +67,6 @@ repos:
     hooks:
       - id: uv-sync
         args: ["--locked"]
-        stages:
-          - post-checkout
-          - post-merge
-          - post-rewrite
-          {%- if with_conventional_commits %}
-          - pre-push
-          {%- endif %}
-      - id: uv-export
         stages:
           - post-checkout
           - post-merge
