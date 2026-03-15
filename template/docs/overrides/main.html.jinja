@@ -1,0 +1,12 @@
+{% raw %}{% extends "base.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  {% if page and page.meta and page.meta.title == "{% endraw %}{{ project_name }}{% raw %}" %}
+  <style>
+    .md-header { background: transparent; }
+    .md-main__inner { margin-top: 0; }
+  </style>
+  {% endif %}
+{% endblock %}
+{% endraw %}

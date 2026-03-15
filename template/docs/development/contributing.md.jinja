@@ -1,0 +1,110 @@
+# Contributing
+
+## Development Workflow
+
+1. Fork and clone the repository
+2. Create a new branch for your feature or fix
+3. Install development dependencies: `make setup-dev`
+4. Make your changes
+5. Run checks before committing: `make check`
+6. Submit a pull request
+
+## Code Quality
+
+This project uses the following tools to maintain code quality:
+
+- **[Ruff](https://docs.astral.sh/ruff/)** — Linting and formatting
+- **[Mypy](https://mypy-lang.org/)** — Static type checking
+- **[pre-commit](https://pre-commit.com/)** — Git hooks to enforce checks before each commit
+
+Run all checks:
+
+/// tab | make
+```bash
+make check
+```
+///
+
+/// tab | mise
+```bash
+mise run check
+```
+///
+
+Format code:
+
+/// tab | make
+```bash
+make format
+```
+///
+
+/// tab | mise
+```bash
+mise run format
+```
+///
+
+## Testing
+
+Run the test suite with coverage:
+
+/// tab | make
+```bash
+make test
+```
+///
+
+/// tab | mise
+```bash
+mise run test
+```
+///
+
+Tests require a minimum coverage threshold of **{{ coverage_threshold }}%**.
+{% if with_conventional_commits %}
+## Commit Conventions
+
+This project follows [Conventional Commits](https://www.conventionalcommits.org/).
+{%- if cz_gitmoji %} Commits also use [Gitmoji](https://gitmoji.dev/) prefixes for visual categorization.{% endif %}
+
+Examples:
+
+```
+{% if cz_gitmoji -%}
+✨ feat: add new feature
+🐛 fix: resolve bug in parser
+📝 docs: update API documentation
+{%- else -%}
+feat: add new feature
+fix: resolve bug in parser
+docs: update API documentation
+{%- endif %}
+```
+
+[Commitizen](https://commitizen-tools.github.io/commitizen/) is configured to help you write correctly formatted commit messages.
+{% endif %}
+## Documentation
+
+Documentation is built with [MkDocs](https://www.mkdocs.org/) and [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
+
+To serve docs locally:
+
+/// tab | make
+```bash
+make docs-serve
+```
+///
+
+/// tab | mise
+```bash
+mise run docs-serve
+```
+///
+
+API documentation is auto-generated from docstrings using [mkdocstrings](https://mkdocstrings.github.io/).
+{% if copyright_license != "No License" %}
+## License
+
+By contributing, you agree that your contributions will be licensed under the **{{ copyright_license }}**.
+{% endif %}

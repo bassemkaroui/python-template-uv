@@ -1,0 +1,92 @@
+# Development Setup
+
+## Prerequisites
+
+- Python {{ min_python_version }} or higher
+- [uv](https://docs.astral.sh/uv/)
+- [mise](https://mise.jdx.dev/)
+- [make](https://www.gnu.org/software/make/) (optional, wraps mise tasks)
+{%- if dockerfile %}
+- [Docker](https://www.docker.com/) (optional, for containerized development)
+{%- endif %}
+{%- if with_doppler %}
+- [Doppler](https://www.doppler.com/) (for secrets management)
+{%- endif %}
+
+## Getting Started
+
+Clone the repository and install dependencies:
+
+```bash
+git clone {{ repository }}
+cd {{ project_name }}
+```
+
+/// tab | make
+```bash
+make setup-dev
+```
+///
+
+/// tab | mise
+```bash
+mise run setup-dev
+```
+///
+
+## Common Tasks
+
+| Task | make | mise |
+|------|------|------|
+| Run tests | `make test` | `mise run test` |
+| Run linting & type checks | `make check` | `mise run check` |
+| Format code | `make format` | `mise run format` |
+| Serve docs locally | `make docs-serve` | `mise run docs-serve` |
+| Build the package | `make build` | `mise run build` |
+{% if dockerfile %}
+## Docker
+
+Build and run with Docker Compose:
+
+/// tab | Development
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+```
+///
+
+/// tab | Production
+```bash
+docker compose up --build
+```
+///
+{% endif %}
+{%- if with_doppler %}
+
+## Secrets Management
+
+This project uses [Doppler](https://www.doppler.com/) for secrets management.
+
+```bash
+doppler setup
+```
+
+Once configured, secrets are automatically injected into your environment when running tasks through mise.
+{% endif %}
+{%- if tox %}
+
+## Multi-Version Testing
+
+This project uses [Tox](https://tox.wiki/) to test against multiple Python versions:
+
+/// tab | make
+```bash
+make tox
+```
+///
+
+/// tab | mise
+```bash
+mise run tox
+```
+///
+{% endif %}

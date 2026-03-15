@@ -1,167 +1,89 @@
-# {{ project_name }}
+---
+template: main.html
+title: {{ project_name }}
+hide:
+  - navigation
+  - toc
+---
 
-[![Release](https://img.shields.io/github/v/release/{{ author_github_handle }}/{{ project_name }})](https://img.shields.io/github/v/release/{{ author_github_handle }}/{{ project_name }})
-[![Build status](https://img.shields.io/github/actions/workflow/status/{{ author_github_handle }}/{{ project_name }}/main.yml?branch=main)](https://github.com/{{ author_github_handle }}/{{ project_name }}/actions/workflows/main.yml?query=branch%3Amain)
-[![Commit activity](https://img.shields.io/github/commit-activity/m/{{ author_github_handle }}/{{ project_name }})](https://img.shields.io/github/commit-activity/m/{{ author_github_handle }}/{{ project_name }})
-[![License](https://img.shields.io/github/license/{{ author_github_handle }}/{{ project_name }})](https://img.shields.io/github/license/{{ author_github_handle }}/{{ project_name }})
+<style>
+  .md-typeset h1 { display: none; }
+</style>
+
+<div class="hero" markdown>
+
+<div class="hero-content" markdown>
+
+# {{ project_name }} :material-language-python:{ .hero-icon }
 
 {{ project_description }}
 
-# Installation
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+[![Python Versions](https://img.shields.io/badge/python-{% for minor in range(min_python_version.split('.')[1]|int, 14) %}3.{{ minor }}{% if not loop.last %}%20|%20{% endif %}{% endfor %}-blue.svg)]()
+{%- if publish_to_pypi %}
+[![PyPI](https://img.shields.io/pypi/v/{{ project_name }})](https://pypi.org/project/{{ project_name }}/)
+{%- endif %}
+{%- if repository_provider == 'github' %}
+[![CI/CD Pipeline](https://github.com/{{ author_github_handle }}/{{ project_name }}/actions/workflows/main.yaml/badge.svg?branch=main)](https://github.com/{{ author_github_handle }}/{{ project_name }}/actions/workflows/main.yaml?branch=main)
+[![GitHub](https://img.shields.io/github/license/{{ author_github_handle }}/{{ project_name }})](https://github.com/{{ author_github_handle }}/{{ project_name }}/blob/main/LICENSE)
+{%- endif %}
 
-Griffe is a Python package, so you can install it with your favorite Python package installer or dependency manager.
+[Get Started](getting-started/installation.md){ .md-button .md-button--primary }
+[API Reference](modules.md){ .md-button }
 
-TIP: **[Griffe Insiders](modules.md), a version with more features, is also available to sponsors :octicons-heart-fill-24:{ .heart .pulse }**
+</div>
 
+</div>
 
-TIP: [Griffe Insiders](modules.md), a version with more features, is also available to sponsors :octicons-heart-fill-24:{ .heart .pulse }
+<div class="grid cards" markdown>
 
-> INFO: some info
->
-> > WARNING: a warning
+-   :material-download:{ .lg .middle } **Easy Installation**
 
-> IMPORTANT:
-> **hi**
+    ---
 
-> INFO:
-> **hi** there
+    Install from PyPI with pip or uv, or clone the repository for development. Get up and running in minutes.
 
-INFO:
-**hi** there
+    [:octicons-arrow-right-24: Installation](getting-started/installation.md)
 
-INFO: **hi** there
+-   :material-check-decagram:{ .lg .middle } **Quality & Standards**
 
-NOTE: some note
+    ---
 
-CAUTION: some caution
+    Ruff for formatting and linting, Mypy for type checking, and pre-commit hooks to enforce standards on every commit.
 
-DANGER: a danger
+    [:octicons-arrow-right-24: Contributing](development/contributing.md)
 
-ERROR: an error
+-   :material-test-tube:{ .lg .middle } **Testing & Coverage**
 
-SUCCESS: a success
+    ---
 
-QUESTION: a question
+    pytest with coverage reporting and optional multi-version testing with Tox.
 
-TODO: a todo
+    [:octicons-arrow-right-24: Development setup](development/setup.md)
 
-## Install as a tool & library
+-   :material-file-document:{ .lg .middle } **API Documentation**
 
-=== ":simple-python: pip"
-    ```bash
-    pip install griffe
-    ```
+    ---
 
-    <div class="result" markdown>
+    Auto-generated API docs with mkdocstrings. Browse the full API reference for all modules.
 
-    [pip](https://pip.pypa.io/en/stable/) is the main package installer for Python.
+    [:octicons-arrow-right-24: API Reference](modules.md)
+{% if with_typer_cli %}
+-   :material-console:{ .lg .middle } **CLI Interface**
 
-    </div>
+    ---
 
-=== ":simple-pdm: pdm"
-    ```bash
-    pdm add griffe
-    ```
+    Built-in command-line interface powered by Typer. Run `{{ cli_name }} --help` to get started.
 
-    <div class="result" markdown>
+    [:octicons-arrow-right-24: Usage](getting-started/usage.md)
+{% endif %}
+{%- if dockerfile %}
+-   :material-docker:{ .lg .middle } **Docker Ready**
 
-    [PDM](https://pdm-project.org/en/latest/) is an all-in-one solution for Python project management.
+    ---
 
-    </div>
+    Production Dockerfile with compose files and development overrides out of the box.
 
-=== ":simple-poetry: poetry"
-    ```bash
-    poetry add griffe
-    ```
-
-    <div class="result" markdown>
-
-    [Poetry](https://python-poetry.org/) is an all-in-one solution for Python project management.
-
-    </div>
-
-=== ":simple-rye: rye"
-    ```bash
-    rye add griffe
-    ```
-
-    <div class="result" markdown>
-
-    [Rye](https://rye.astral.sh/) is an all-in-one solution for Python project management, written in Rust.
-
-    </div>
-
-=== ":simple-astral: uv"
-    ```bash
-    uv add griffe
-    ```
-
-    <div class="result" markdown>
-
-    [uv](https://docs.astral.sh/uv/) is an extremely fast Python package and project manager, written in Rust.
-
-    </div>
-## Code Annotation Examples
-
-### Codeblocks
-
-Some `code` goes here.
-
-### Plain codeblock
-
-A plain codeblock:
-
-```
-Some code here
-def myfunction()
-// some comment
-```
-
-#### Code for a specific language
-
-Some more code with the `py` at the start:
-
-``` py
-import tensorflow as tf
-def whatever()
-```
-
-#### With a title
-
-``` py title="bubble_sort.py"
-def bubble_sort(items):
-    for i in range(len(items)):
-        for j in range(len(items) - 1 - i):
-            if items[j] > items[j + 1]:
-                items[j], items[j + 1] = items[j + 1], items[j]
-```
-
-#### With line numbers
-
-``` py linenums="1"
-def bubble_sort(items):
-    for i in range(len(items)):
-        for j in range(len(items) - 1 - i):
-            if items[j] > items[j + 1]:
-                items[j], items[j + 1] = items[j + 1], items[j]
-```
-
-#### Highlighting lines
-
-``` py hl_lines="2 3"
-def bubble_sort(items: list[int]) -> None:
-    for i in range(len(items)):
-        for j in range(len(items) - 1 - i):
-            if items[j] > items[j + 1]:
-                items[j], items[j + 1] = items[j + 1], items[j]
-```
-
-## Icons and Emojs
-
-:smile:
-
-:fontawesome-regular-face-laugh-wink:
-
-:fontawesome-brands-twitter:{ .twitter }
-
-:octicons-heart-fill-24:{ .heart }
+    [:octicons-arrow-right-24: Development setup](development/setup.md)
+{% endif %}
+</div>

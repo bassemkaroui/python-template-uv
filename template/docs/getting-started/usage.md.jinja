@@ -1,0 +1,35 @@
+# Usage
+
+## Basic Usage
+
+```python
+import {{ project_slug }}
+```
+{% if with_typer_cli %}
+## CLI
+
+{{ project_name }} comes with a command-line interface built with [Typer](https://typer.tiangolo.com/).
+
+```bash
+{{ cli_name }} --help
+```
+
+This will display all available commands and options.
+{% endif %}
+{%- if with_settings %}
+
+## Configuration
+
+{{ project_name }} uses [Pydantic Settings](https://docs.pydantic.dev/latest/concepts/pydantic_settings/) for configuration management. Settings can be configured via:
+
+- Environment variables
+- `.env` files
+- Command-line arguments
+
+Refer to the [API Reference](../modules.md) for available configuration options.
+{% endif %}
+
+## Next Steps
+
+- Browse the [API Reference](../modules.md) for detailed documentation of all modules
+- Check the [Development Setup](../development/setup.md) guide to contribute

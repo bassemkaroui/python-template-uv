@@ -1,0 +1,90 @@
+# Installation
+
+## Requirements
+
+- Python {{ min_python_version }} or higher
+- [uv](https://docs.astral.sh/uv/) (recommended) or pip
+{% if publish_to_pypi %}
+## Install from PyPI
+
+/// tab | uv
+```bash
+uv add {{ project_name }}
+```
+///
+
+/// tab | pip
+```bash
+pip install {{ project_name }}
+```
+///
+{% endif %}
+{%- if repository_provider == 'github' %}
+## Install from Source
+
+You can install directly from GitHub:
+
+/// tab | uv
+```bash
+uv add git+{{ repository }}
+```
+///
+
+/// tab | pip
+```bash
+pip install git+{{ repository }}
+```
+///
+
+Or clone the repository:
+
+```bash
+git clone {{ repository }}
+cd {{ project_name }}
+```
+{% endif %}
+
+## Install for Development
+
+Clone the repository and set up the development environment:
+
+/// tab | make
+```bash
+make setup-dev
+```
+///
+
+/// tab | mise
+```bash
+mise run setup-dev
+```
+///
+
+This will install all dependencies (including dev dependencies) and set up pre-commit hooks.
+
+!!! note
+    This project requires both [`mise`](https://mise.jdx.dev/) and [`uv`](https://docs.astral.sh/uv/) to be installed.
+    `make` tasks proxy through `mise run`, which in turn invokes `uv` and other tools.
+{% if with_typer_cli %}
+## CLI Installation
+
+To make the CLI available globally (without needing to activate the virtual environment every time):
+
+/// tab | make
+```bash
+make setup-cli
+```
+///
+
+/// tab | mise
+```bash
+mise run setup-cli
+```
+///
+
+After installation, you can run the CLI with:
+
+```bash
+{{ cli_name }} --help
+```
+{% endif %}

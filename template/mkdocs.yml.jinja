@@ -14,7 +14,13 @@ copyright: Maintained by <a href="https://github.com/{{ author_github_handle }}"
 
 nav:
   - Home: index.md
-  - Modules: modules.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Usage: getting-started/usage.md
+  - API Reference: modules.md
+  - Development:
+      - Setup: development/setup.md
+      - Contributing: development/contributing.md
 plugins:
   - search
   - mkdocstrings:
@@ -45,6 +51,7 @@ plugins:
 
 theme:
   name: material
+  custom_dir: docs/overrides
   features:
     - navigation.footer
     - navigation.indexes
