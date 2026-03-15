@@ -72,12 +72,22 @@
       "managerFilePatterns": [
         "/^template/\\.pre-commit-config\\.ya?ml(?:\\.jinja)?$/"
       ]
+    },
+    {
+      "description": "Update versions annotated with renovate comments in workflow templates",
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^template/.+\\.github.+/workflows/.*$/"
+      ],
+      "matchStrings": [
+        "\\s+[A-Z_]+:\\s+(?<currentValue>[\\d.]+)\\s+#\\s*renovate:\\s*datasource=(?<datasource>[^\\s]+)\\s+depName=(?<depName>[^\\s]+)"
+      ]
     }
   ],
   "github-actions": {
     "managerFilePatterns": [
-      "/^template/.+\\.github.+/actions/.*\\.ya?ml(?:\\.jinja)?$/",
-      "/^template/.+\\.github.+/workflows/.*\\.ya?ml(?:\\.jinja)?$/"
+      "/^template/.+\\.github.+/actions/.*\\.ya?ml(?:\\.jinja)?(?:\\{% endif %\\})?$/",
+      "/^template/.+\\.github.+/workflows/.*\\.ya?ml(?:\\.jinja)?(?:\\{% endif %\\})?$/"
     ]
   }
 }
