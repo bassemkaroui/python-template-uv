@@ -41,10 +41,10 @@ GitHub-native solution. Opens weekly PRs to keep GitHub Actions dependencies up 
 
 ## Required Secrets
 
-| Secret | Required For | How to Set |
-|--------|-------------|------------|
-| `GIPHY_API_KEY` | PR thank-you comments | `gh secret set GIPHY_API_KEY` |
-| `PYPI_TOKEN` | PyPI publishing (if enabled) | `gh secret set PYPI_TOKEN` |
-| `RENOVATE_TOKEN` | Renovate with PAT auth | `gh secret set RENOVATE_TOKEN` |
-| `RENOVATE_APP_ID` | Renovate with GitHub App auth | `gh secret set RENOVATE_APP_ID` |
-| `RENOVATE_APP_PRIVATE_KEY` | Renovate with GitHub App auth | `gh secret set RENOVATE_APP_PRIVATE_KEY` |
+| Secret                     | Required For                  | How to Set                                                         |
+| -------------------------- | ----------------------------- | ------------------------------------------------------------------ |
+| `GIPHY_API_KEY`            | PR thank-you comments         | `gh secret set GIPHY_API_KEY`                                      |
+| `PYPI_TOKEN`               | PyPI publishing (if enabled)  | `gh secret set PYPI_TOKEN`                                         |
+| `RENOVATE_TOKEN`           | Renovate with PAT auth        | `gh secret set RENOVATE_TOKEN`                                     |
+| `RENOVATE_APP_ID`          | Renovate with GitHub App auth | `gh secret set RENOVATE_APP_ID`                                    |
+| `RENOVATE_APP_PRIVATE_KEY` | Renovate with GitHub App auth | `gh secret set RENOVATE_APP_PRIVATE_KEY < path/to/private-key.pem` |

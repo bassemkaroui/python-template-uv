@@ -11,6 +11,8 @@ Generated projects include a fully configured [MkDocs](https://github.com/mkdocs
 
 ## Local Development
 
+/// tab | make
+
 ```bash
 # Serve docs with live reload (localhost:8080)
 make docs-serve
@@ -19,12 +21,39 @@ make docs-serve
 make docs-check
 ```
 
+///
+
+/// tab | mise
+
+```bash
+# Serve docs with live reload (localhost:8080)
+mise run docs:serve
+
+# Check that docs build without errors
+mise run docs:check
+```
+
+///
+
 ## Deployment
+
+/// tab | make
 
 ```bash
 # Deploy to GitHub Pages
 make docs-deploy
 ```
+
+///
+
+/// tab | mise
+
+```bash
+# Deploy to GitHub Pages
+mise run docs:deploy
+```
+
+///
 
 The CI/CD pipeline also deploys docs automatically on pushes to `main`.
 

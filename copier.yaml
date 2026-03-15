@@ -23,7 +23,7 @@ _tasks:
     echo '  ACTION REQUIRED: Set up the following repo secrets' &&
     echo '========================================================' &&
     echo '' &&
-    echo '  - GIPHY_API_KEY  : needed for PR thank-you comments' &&
+    echo '  - GIPHY_API_KEY           : needed for PR thank-you comments' &&
     {% if dependency_updater == 'renovate' and renovate_auth_method == 'pat' %}
     echo '  - RENOVATE_TOKEN          : needed for self-hosted Renovate' &&
     {% elif dependency_updater == 'renovate' and renovate_auth_method == 'github_app' %}

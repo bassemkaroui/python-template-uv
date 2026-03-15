@@ -10,10 +10,23 @@ Scaffolds a [Typer](https://typer.tiangolo.com/) CLI application with:
 - CLI module with a sample command
 - Customizable CLI name via the `cli_name` variable
 
+/// tab | make
+
 ```bash
 # Install CLI globally after generation
 make setup-cli
 ```
+
+///
+
+/// tab | mise
+
+```bash
+# Install CLI globally after generation
+mise run setup:cli
+```
+
+///
 
 ## Strict Typing (`with_strict_typing`)
 

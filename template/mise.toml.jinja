@@ -201,7 +201,7 @@ run = 'doppler secrets upload .env'
 [tasks."check:all"]
 description = "Run all quality checks"
 quiet = true
-depends = ["check:quality", "check:types"]
+depends = ["check:quality", "check:types", "docs:check"]
 
 [tasks."check:quality"]
 description = "Check the code quality with Ruff"
@@ -279,7 +279,7 @@ rm -rf .cache .pytest_cache .mypy_cache .ruff_cache
 '''
 
 [tasks."clean:all"]
-description = "Delete build artifacts"
+description = "Delete build artifacts and cache files"
 quiet = true
 depends = ["clean:cache"]
 run = "rm -rf build dist htmlcov site .coverage* coverage.xml"
@@ -397,3 +397,42 @@ run = "uv audit"
 description = "Run all pre-commit hooks on all files"
 quiet = true
 run = "uv run pre-commit run -a"
+
+# --- Mise --------------------------------------------------------------------
+
+[tasks."mise:setup-completions"]
+description = "Install mise shell completions for the current shell"
+raw = true
+quiet = true
+run = """
+mise install usage@latest > /dev/null
+cd ~ && mise use usage > /dev/null
+cd - > /dev/null
+
+SHELL_NAME="$(basename "$SHELL")"
+case "$SHELL_NAME" in
+  zsh)
+    if groups | grep -qw sudo; then
+      mise completion zsh | sudo tee /usr/local/share/zsh/site-functions/_mise > /dev/null
+    else
+      echo 'eval "$(mise completion zsh)"' >> ~/.zshrc
+    fi
+    ;;
+  bash)
+    mkdir -p ~/.local/share/bash-completion/completions
+    mise completion bash --include-bash-completion-lib > ~/.local/share/bash-completion/completions/mise
+    ;;
+  fish)
+    mkdir -p ~/.config/fish/completions
+    mise completion fish > ~/.config/fish/completions/mise.fish
+    ;;
+  powershell|pwsh)
+    mise completion powershell >> $PROFILE
+    ;;
+  *)
+    echo "Unsupported shell: $SHELL_NAME"
+    exit 1
+    ;;
+esac
+echo "\\033[32mMise completions installed for $SHELL_NAME. Restart your shell to activate.\\033[0m"
+"""

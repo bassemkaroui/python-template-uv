@@ -3,30 +3,34 @@
 ## Scaffold a New Project
 
 /// tab | Using uvx (no install needed)
+
 ```bash
 uvx --with copier-templates-extensions copier copy \
-  --trust gh:bassemkaroui/python-template-uv /path/to/my-project
+  --trust gh:bassemkaroui/python-template-uv project_name
 ```
+
 ///
 
 /// tab | Using installed Copier
+
 ```bash
 # Install Copier globally (one-time)
 uv tool install copier --with copier-templates-extensions
 
 # Generate a project
-copier copy --trust gh:bassemkaroui/python-template-uv /path/to/my-project
+copier copy --trust gh:bassemkaroui/python-template-uv project_name
 ```
+
 ///
 
 !!! note "Why `--trust`?"
-    The template runs post-generation tasks (`git init`, `make setup-dev`, etc.) defined in `copier.yaml`, which requires the `--trust` flag.
+The template runs post-generation tasks (`git init`, `make setup-dev`, etc.) defined in `copier.yaml`, which requires the `--trust` flag.
 
-!!! tip "Additional flags"
-    - Add `--prereleases` to include pre-release template versions
-    - Add `--vcs-ref=HEAD` to use the latest commit instead of the latest release
+!!! tip "Additional flags" - Add `--prereleases` to include pre-release template versions - Add `--vcs-ref=HEAD` to use the latest commit instead of the latest release
 
 ## Set Up Your Project
+
+/// tab | make
 
 ```bash
 # Enter your project
@@ -40,12 +44,43 @@ make setup-dev
 make setup-cli
 ```
 
+///
+
+/// tab | mise
+
+```bash
+# Enter your project
+cd /path/to/my-project
+
+# Development environment and hooks are set up automatically by copier.
+# If you need to re-run setup:
+mise run setup:dev
+
+# (Optional) Install your CLI globally via uv
+mise run setup:cli
+```
+
+///
+
 ## Verify Everything Works
+
+/// tab | make
 
 ```bash
 # Run all checks: lint, types, docs build
 make check-all
 ```
+
+///
+
+/// tab | mise
+
+```bash
+# Run all checks: lint, types, docs build
+mise run check:all
+```
+
+///
 
 ## What Happens During Generation
 

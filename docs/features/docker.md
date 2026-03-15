@@ -12,6 +12,8 @@ When `dockerfile: true` (the default), the template generates Docker configurati
 
 ## Commands
 
+/// tab | make
+
 ```bash
 # Build Docker images
 make docker-build
@@ -22,6 +24,23 @@ make docker-start
 # Stop and remove services
 make docker-stop
 ```
+
+///
+
+/// tab | mise
+
+```bash
+# Build Docker images
+mise run docker:build
+
+# Start services
+mise run docker:start
+
+# Stop and remove services
+mise run docker:stop
+```
+
+///
 
 ## GPU Support
 
