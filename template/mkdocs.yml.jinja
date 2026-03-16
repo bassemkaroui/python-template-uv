@@ -20,6 +20,10 @@ nav:
   - API Reference: modules.md
   - Development:
       - Setup: development/setup.md
+      - Task Runner: development/task-runner.md
+      {%- if repository_provider == 'github' %}
+      - CI/CD Pipeline: development/ci-cd.md
+      {%- endif %}
       - Contributing: development/contributing.md
 plugins:
   - search

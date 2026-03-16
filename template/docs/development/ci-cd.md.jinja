@@ -1,0 +1,106 @@
+{%- if repository_provider == 'github' %}
+# CI/CD Pipeline
+
+## Overview
+
+CI/CD runs on [GitHub Actions](https://docs.github.com/en/actions) with the workflow defined at `.github/workflows/main.yaml`. A custom composite action at `.github/actions/setup-env/` handles uv, mise, and Python setup across all jobs.
+
+Concurrency is managed per workflow + ref — pushing a new commit cancels any in-progress run for the same branch.
+
+## Triggers
+
+| Event | Jobs |
+|-------|------|
+| Push to `main` | checks, tests |
+| Push tag | checks, tests, release, deploy-docs{% if publish_to_pypi %}, publish-package{% endif %} |
+| Pull request | checks, tests |
+| `workflow_dispatch` | checks, tests, deploy-docs{% if publish_to_pypi %}, publish-package{% endif %} |
+
+## Jobs
+
+### checks
+
+Runs on `ubuntu-latest` with a 15-minute timeout.
+
+1. Lint with Ruff (`make check-quality`)
+2. Type-check with Mypy (`make check-types`)
+3. Build docs in strict mode (`make docs-check`)
+
+### tests
+
+Runs a matrix across Python {{ min_python_version }}–3.13 on `ubuntu-latest` (15-minute timeout, `fail-fast: false`).
+
+- Executes `make test` for each Python version
+- Uploads coverage reports (HTML + XML) for the primary version ({{ python_version }})
+
+### release
+
+**Tag pushes only.** Depends on `checks` + `tests`.
+
+1. Generates changelog with [commitizen](https://commitizen-tools.github.io/commitizen/)
+2. Detects prereleases (tags containing `a`, `b`, or `rc`)
+3. Creates a GitHub Release with the generated notes
+
+### deploy-docs
+
+**Tag pushes + `workflow_dispatch`.** Depends on `checks` + `tests`.
+
+Builds MkDocs and deploys to GitHub Pages via [`peaceiris/actions-gh-pages`](https://github.com/peaceiris/actions-gh-pages).
+{%- if publish_to_pypi %}
+
+### publish-package
+
+**Tag pushes + `workflow_dispatch`.** Depends on `checks` + `tests`.
+
+Builds with `uv build` and publishes with `uv publish`. Skips gracefully if the `PYPI_TOKEN` secret is not set.
+{%- endif %}
+
+## Required Secrets
+
+| Secret | Used by | Notes |
+|--------|---------|-------|
+| `GITHUB_TOKEN` | deploy-docs | Auto-provided by GitHub |
+{%- if publish_to_pypi %}
+| `PYPI_TOKEN` | publish-package | Optional — job skips if unset |
+{%- endif %}
+{%- if dependency_updater == 'renovate' and renovate_auth_method == 'github_app' %}
+| `RENOVATE_APP_ID` | renovate | GitHub App ID for Renovate |
+| `RENOVATE_APP_PRIVATE_KEY` | renovate | GitHub App private key |
+{%- elif dependency_updater == 'renovate' %}
+| `RENOVATE_TOKEN` | renovate | Personal access token for Renovate |
+{%- endif %}
+
+## The Setup Action
+
+`.github/actions/setup-env/action.yaml` is a composite action used by every job. It:
+
+1. Installs [uv](https://docs.astral.sh/uv/) with caching enabled
+2. Installs [mise](https://mise.jdx.dev/)
+3. Sets up the requested Python version (accepts `python-version` or `python-version-file`)
+{% if dependency_updater == 'renovate' %}
+
+## Dependency Updates (Renovate)
+
+[Renovate](https://docs.renovatebot.com/) is configured via `renovate.json5` and runs as a GitHub Actions workflow (`.github/workflows/renovate.yaml`). It runs on weekdays at 20:00 UTC and weekends at 09:00 UTC.
+
+A Dependency Dashboard issue is created in the repository for visibility and manual control.
+{%- elif dependency_updater == 'dependabot' %}
+
+## Dependency Updates (Dependabot)
+
+[Dependabot](https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically) is configured via `.github/dependabot.yml`. It checks for GitHub Actions updates on a weekly schedule.
+{%- endif %}
+
+## Other Workflows
+
+- **`pr-thank-you.yaml`** — Posts a Giphy reaction comment on newly opened pull requests.
+{%- if with_conventional_commits %}
+
+## Release Flow
+
+1. Make commits following the [Conventional Commits](https://www.conventionalcommits.org/) format
+2. Run `make release` locally — this bumps the version via commitizen, pushes commits and tags
+3. The tag push triggers CI: **checks** → **tests** → **release** + **deploy-docs**{% if publish_to_pypi %} + **publish-package**{% endif %}
+4. Preview first with `make release -- --dry-run`
+{%- endif %}
+{%- endif %}

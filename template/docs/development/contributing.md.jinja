@@ -21,13 +21,13 @@ Run all checks:
 
 /// tab | make
 ```bash
-make check
+make check-all
 ```
 ///
 
 /// tab | mise
 ```bash
-mise run check
+mise run check:all
 ```
 ///
 
@@ -98,11 +98,14 @@ make docs-serve
 
 /// tab | mise
 ```bash
-mise run docs-serve
+mise run docs:serve
 ```
 ///
 
 API documentation is auto-generated from docstrings using [mkdocstrings](https://mkdocstrings.github.io/).
+{%- if repository_provider == 'github' %}
+For deployment details, see the [CI/CD Pipeline](ci-cd.md) page.
+{%- endif %}
 {% if copyright_license != "No License" %}
 ## License
 

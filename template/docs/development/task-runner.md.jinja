@@ -1,0 +1,181 @@
+# Task Runner
+
+## Overview
+
+This project uses [mise](https://mise.jdx.dev/) as its task runner. A thin `Makefile` wrapper provides shell completion and a familiar `make` interface. Both are interchangeable — use whichever you prefer.
+
+```bash
+make help     # list all tasks (default target)
+mise tasks    # same thing, via mise directly
+```
+
+## How It Works
+
+The Makefile proxies every target to mise by converting hyphens to colons:
+
+```
+make docker-build  →  mise run docker:build
+make check-all     →  mise run check:all
+```
+
+This is done via `$(subst -,:,$@)` in the Makefile. You never need to edit both files for existing tasks — the Makefile target list (`actions`) and the mise task definition are the only two places a task is registered.
+
+## Task Reference
+
+### Setup
+
+| Description | `make` | `mise` |
+|-------------|--------|--------|
+| Install production dependencies | `make setup-prod` | `mise run setup:prod` |
+| Install dev dependencies + pre-commit hooks | `make setup-dev` | `mise run setup:dev` |
+{%- if with_typer_cli %}
+| Install the CLI globally via uv | `make setup-cli` | `mise run setup:cli` |
+{%- endif %}
+
+### Quality Checks
+
+| Description | `make` | `mise` |
+|-------------|--------|--------|
+| Run all quality checks | `make check-all` | `mise run check:all` |
+| Lint with Ruff | `make check-quality` | `mise run check:quality` |
+| Type-check with Mypy | `make check-types` | `mise run check:types` |
+| Security analysis with Bandit | `make check-security` | `mise run check:security` |
+
+### Testing
+
+| Description | `make` | `mise` |
+|-------------|--------|--------|
+| Run tests with coverage | `make test` | `mise run test` |
+| Generate coverage reports | `make coverage` | `mise run coverage` |
+{%- if tox %}
+| Test across Python versions | `make tox` | `mise run tox` |
+{%- endif %}
+
+You can pass extra arguments to pytest:
+
+/// tab | make
+```bash
+make test -- -k "test_specific"
+```
+///
+
+/// tab | mise
+```bash
+mise run test -- -k "test_specific"
+```
+///
+
+### Formatting
+
+| Description | `make` | `mise` |
+|-------------|--------|--------|
+| Auto-format and fix code | `make format` | `mise run format` |
+
+### Documentation
+
+| Description | `make` | `mise` |
+|-------------|--------|--------|
+| Check docs build (strict) | `make docs-check` | `mise run docs:check` |
+| Serve docs locally | `make docs-serve` | `mise run docs:serve` |
+{%- if repository_provider == 'github' %}
+| Deploy docs to GitHub Pages | `make docs-deploy` | `mise run docs:deploy` |
+{%- endif %}
+
+### Build & Publish
+
+| Description | `make` | `mise` |
+|-------------|--------|--------|
+| Build source and wheel distributions | `make build` | `mise run build` |
+{%- if publish_to_pypi %}
+| Publish to PyPI | `make publish` | `mise run publish` |
+{%- endif %}
+{% if dockerfile %}
+
+### Docker
+
+| Description | `make` | `mise` |
+|-------------|--------|--------|
+| Build Docker images | `make docker-build` | `mise run docker:build` |
+| Start containers | `make docker-start` | `mise run docker:start` |
+| Stop containers | `make docker-stop` | `mise run docker:stop` |
+| Shell into a container | `make docker-shell` | `mise run docker:shell` |
+
+The `docker:build` and `docker:start` tasks accept `--dev` / `--prod` flags:
+
+```bash
+mise run docker:build --dev    # build with dev compose override
+mise run docker:start --prod   # start production containers
+```
+{% endif %}
+{%- if with_doppler %}
+
+### Doppler (Secrets Management)
+
+| Description | `make` | `mise` |
+|-------------|--------|--------|
+| Run docker compose with Doppler | `make dc` | `mise run dc` |
+| Create a branch config | `make doppler-create-config` | `mise run doppler:create-config` |
+| Create a service token | `make doppler-create-token` | `mise run doppler:create-token` |
+| Set a preexisting token | `make doppler-set-token` | `mise run doppler:set-token` |
+| Delete a branch config | `make doppler-delete-config` | `mise run doppler:delete-config` |
+| Upload .env to Doppler | `make doppler-upload-secrets` | `mise run doppler:upload-secrets` |
+{% endif %}
+
+### Dependency Management
+
+| Description | `make` | `mise` |
+|-------------|--------|--------|
+| Upgrade all dependencies | `make upgrade` | `mise run upgrade` |
+| Check for vulnerabilities | `make audit` | `mise run audit` |
+
+### Cleanup
+
+| Description | `make` | `mise` |
+|-------------|--------|--------|
+| Delete cache files | `make clean-cache` | `mise run clean:cache` |
+| Delete build artifacts and caches | `make clean-all` | `mise run clean:all` |
+{% if with_conventional_commits %}
+
+### Release
+
+| Description | `make` | `mise` |
+|-------------|--------|--------|
+| Run the full release process | `make release` | `mise run release` |
+
+Preview what a release would do without making changes:
+
+```bash
+mise run release --dry-run
+```
+{% endif %}
+
+### Utilities
+
+| Description | `make` | `mise` |
+|-------------|--------|--------|
+| Run pre-commit hooks on all files | `make pre-commit` | `mise run pre-commit` |
+| Install mise shell completions | `make mise-setup-completions` | `mise run mise:setup-completions` |
+
+## Adding New Tasks
+
+1. Define the task in `mise.toml` using the `[tasks."category:name"]` format:
+
+    ```toml
+    [tasks."mycat:mytask"]
+    description = "What this task does"
+    run = "echo hello"
+    ```
+
+2. Add the hyphenated target name to the `actions` list in `Makefile`:
+
+    ```makefile
+    actions = \
+        ...
+        mycat-mytask \
+        ...
+    ```
+
+Naming convention: colons (`:`) in mise, hyphens (`-`) in make.
+
+!!! tip
+    Run `mise run mise:setup-completions` to enable shell tab-completion for all mise tasks.

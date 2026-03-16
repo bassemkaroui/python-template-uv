@@ -30,7 +30,7 @@ make setup-dev
 
 /// tab | mise
 ```bash
-mise run setup-dev
+mise run setup:dev
 ```
 ///
 
@@ -39,10 +39,12 @@ mise run setup-dev
 | Task | make | mise |
 |------|------|------|
 | Run tests | `make test` | `mise run test` |
-| Run linting & type checks | `make check` | `mise run check` |
+| Run linting & type checks | `make check-all` | `mise run check:all` |
 | Format code | `make format` | `mise run format` |
-| Serve docs locally | `make docs-serve` | `mise run docs-serve` |
+| Serve docs locally | `make docs-serve` | `mise run docs:serve` |
 | Build the package | `make build` | `mise run build` |
+
+> For the full list of available tasks, see the [Task Runner](task-runner.md) guide.
 {% if dockerfile %}
 ## Docker
 

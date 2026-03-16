@@ -22,16 +22,35 @@
 {%- if with_conventional_commits %}
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 {%- endif %}
-{%- if repository_provider == 'github' %}
+{%- if documentation %}
 [![documentation](https://img.shields.io/badge/docs-mkdocs%20material-blue.svg?style=flat)]({{ documentation }})
 {%- endif %}
 
 </div>
 
+## Features
+
+- **Packaging:** `uv` for fast dependency management
+- **Task Runner:** `mise` for consistent cross-platform tasks
+- **Quality:** Ruff (lint + format), Mypy (type-checking), pre-commit hooks
+- **Testing:** pytest{%- if tox %}, Tox (multi-version){%- endif %}{%- if pytest_xdist %}, parallel test execution{%- endif %}
+- **Documentation:** MkDocs with Material theme, auto-generated API docs
+{%- if with_typer_cli %}
+- **CLI:** Typer-based command-line interface (`{{ cli_name }}`)
+{%- endif %}
+{%- if dockerfile %}
+- **Docker:** Production and development containers
+{%- endif %}
+{%- if with_conventional_commits %}
+- **Versioning:** Conventional Commits with automated changelog
+{%- endif %}
+{%- if publish_to_pypi %}
+- **Publishing:** Automated PyPI publishing via CI/CD
+{%- endif %}
+
 ## Installation
 
-{% if publish_to_pypi -%}
-You can install this package in several ways:
+{%- if publish_to_pypi %}
 
 ### From PyPI
 
@@ -46,14 +65,20 @@ You can install this package in several ways:
     ```bash
     uv add {{ project_name }}
     ```
+
+### From Source
+
+{%- elif repository_provider == 'github' %}
+
+### From Source
+
+{%- else %}
+
+To install the package, simply run:
+
 {%- endif %}
 
-{% if repository_provider == 'github' -%}
-{% if publish_to_pypi -%}
-### From Source
-{% else -%}
-You can install this package in several ways:
-{% endif %}
+{%- if repository_provider == 'github' %}
 
 - Directly from GitHub:
 
@@ -65,22 +90,12 @@ You can install this package in several ways:
 
     ```bash
     git clone {{ repository }}
-    cd my-package
+    cd {{ project_name }}
     ```
 
 Then, install the dependencies using Make:
 
-{% elif publish_to_pypi -%}
-### From Source
-{% else -%}
-To install the package, simply run:
-{% endif %}
-
-- For production dependencies:
-
-    ```bash
-    make setup
-    ```
+{%- endif %}
 
 - For development setup (includes dev dependencies and Git hooks):
 
@@ -88,11 +103,18 @@ To install the package, simply run:
     make setup-dev
     ```
 
+- For production dependencies only:
+
+    ```bash
+    make setup-prod
+    ```
+
 > [!note]
 > This project requires both [`mise`](https://mise.jdx.dev/) and [`uv`](https://docs.astral.sh/uv/) to be installed.
 > `make` tasks proxy through `mise run`, which in turn invokes `uv` and other tools.
 
-{% if with_typer_cli -%}
+{%- if with_typer_cli %}
+
 > [!tip]
 > To make the CLI available globally (without needing to activate the virtual environment every time), you can run:
 > ```bash
@@ -100,20 +122,36 @@ To install the package, simply run:
 > ```
 {%- endif %}
 
-> [!tip]
-> This quick guide should get you started, but for a complete overview of the project's features and usage, check out the original [python-template-uv](https://github.com/bassemkaroui/python-template-uv) template used to generate this repository.
-
-{% if not documentation -%}
 ## Documentation
 
-You can generate the project documentation locally by running:
+{%- if documentation %}
+
+Full documentation is available at [{{ documentation }}]({{ documentation }}).
+{%- else %}
+
+Generate the docs locally:
 
 ```bash
 make docs-serve
 ```
 
-This will build the documentation using MkDocs.
-Once generated, simply open the provided URL in your browser to explore it.
+This will build the documentation using MkDocs. Open the provided URL in your browser.
+{%- endif %}
+
+## Contributing
+
+{%- if documentation %}
+
+Contributions are welcome! Please read the [development setup]({{ documentation }}/development/setup/) and [contributing guidelines]({{ documentation }}/development/contributing/) before submitting a PR.
+{%- else %}
+
+Contributions are welcome! Please read the [development setup](docs/development/setup.md) and [contributing guidelines](CONTRIBUTING.md) before submitting a PR.
+{%- endif %}
+
+{%- if repository_provider == 'github' %}
+
+> [!note]
+> This project was scaffolded with [python-template-uv](https://github.com/bassemkaroui/python-template-uv).
 {%- endif %}
 
 {% if copyright_license != "No License" -%}
