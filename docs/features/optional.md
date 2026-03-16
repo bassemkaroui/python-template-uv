@@ -52,4 +52,4 @@ Adds [pytest-xdist](https://github.com/pytest-dev/pytest-xdist) for parallel tes
 
 Enforces the [Conventional Commits](https://www.conventionalcommits.org/) standard using [Commitizen](https://github.com/commitizen-tools/commitizen). Optionally includes [gitmoji](https://github.com/ljnsn/cz-conventional-gitmoji) for emoji-enhanced commit messages (`cz_gitmoji`).
 
-Enables automated changelog generation and semantic version bumping via `make release`.
+Enables automated changelog generation and semantic version bumping via `mise run release`.

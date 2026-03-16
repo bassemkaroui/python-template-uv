@@ -99,8 +99,8 @@ A Dependency Dashboard issue is created in the repository for visibility and man
 ## Release Flow
 
 1. Make commits following the [Conventional Commits](https://www.conventionalcommits.org/) format
-2. Run `make release` locally — this bumps the version via commitizen, pushes commits and tags
+2. Run `mise run release` locally — this bumps the version via commitizen, pushes commits and tags
 3. The tag push triggers CI: **checks** → **tests** → **release** + **deploy-docs**{% if publish_to_pypi %} + **publish-package**{% endif %}
-4. Preview first with `make release -- --dry-run`
+4. Preview first with `mise run release -- --dry-run`
 {%- endif %}
 {%- endif %}

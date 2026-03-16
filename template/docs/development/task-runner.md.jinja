@@ -53,17 +53,9 @@ This is done via `$(subst -,:,$@)` in the Makefile. You never need to edit both 
 
 You can pass extra arguments to pytest:
 
-/// tab | make
-```bash
-make test -- -k "test_specific"
-```
-///
-
-/// tab | mise
 ```bash
 mise run test -- -k "test_specific"
 ```
-///
 
 ### Formatting
 
@@ -103,8 +95,8 @@ mise run test -- -k "test_specific"
 The `docker:build` and `docker:start` tasks accept `--dev` / `--prod` flags:
 
 ```bash
-mise run docker:build --dev    # build with dev compose override
-mise run docker:start --prod   # start production containers
+mise run docker:build [--dev]    # build with dev compose override
+mise run docker:start --prod     # start production containers
 ```
 {% endif %}
 {%- if with_doppler %}

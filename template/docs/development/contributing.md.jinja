@@ -6,7 +6,7 @@
 2. Create a new branch for your feature or fix
 3. Install development dependencies: `make setup-dev`
 4. Make your changes
-5. Run checks before committing: `make check`
+5. Run checks before committing: `make check-all`
 6. Submit a pull request
 
 ## Code Quality
@@ -102,7 +102,7 @@ mise run docs:serve
 ```
 ///
 
-API documentation is auto-generated from docstrings using [mkdocstrings](https://mkdocstrings.github.io/).
+Documentation is auto-generated from docstrings using [mkdocstrings](https://mkdocstrings.github.io/).
 {%- if repository_provider == 'github' %}
 For deployment details, see the [CI/CD Pipeline](ci-cd.md) page.
 {%- endif %}

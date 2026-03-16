@@ -5,7 +5,7 @@ Generated projects include a fully configured [MkDocs](https://github.com/mkdocs
 ## What's Included
 
 - **MkDocs Material** theme with dark/light mode, search, and navigation features
-- **mkdocstrings** for auto-generated API documentation from docstrings
+- **mkdocstrings** for auto-generated documentation from docstrings
 - **Code highlighting** with copy buttons and annotations
 - **Admonitions**, tabbed content, and other Material extensions
 
@@ -62,12 +62,12 @@ The CI/CD pipeline also deploys docs automatically on pushes to `main`.
 ```
 docs/
   index.md          # Landing page
-  modules.md        # Auto-generated API reference
+  modules.md        # Auto-generated reference
   css/
     overrides.css   # Custom styling
 mkdocs.yml          # MkDocs configuration
 ```
 
-## API Documentation
+## Documentation
 
-The template uses [mkdocstrings](https://mkdocstrings.github.io/) with the Python handler to generate API docs from your source code docstrings. Simply document your modules and classes with docstrings, and they appear in the docs automatically.
+The template uses [mkdocstrings](https://mkdocstrings.github.io/) with the Python handler to generate docs from your source code docstrings. Simply document your modules and classes with docstrings, and they appear in the docs automatically.

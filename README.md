@@ -44,7 +44,7 @@ A modern, batteries‑included [Copier](https://github.com/copier-org/copier) te
 - **Release & changelog**
     - [Conventional Commits](https://www.conventionalcommits.org/) + [Commitizen](https://github.com/commitizen-tools/commitizen) + [gitmoji](https://github.com/ljnsn/cz-conventional-gitmoji)
     - Automated `CHANGELOG.md` updates
-    - Release new versions ➜ `make release`
+    - Release new versions ➜ `mise run release`
 
 - **Docker & Docker Compose**
     - Generate `Dockerfile` + `compose.yaml` for deployment and `compose.override.yaml` for development overrides (hot-reload, exposed ports, GPU support)
