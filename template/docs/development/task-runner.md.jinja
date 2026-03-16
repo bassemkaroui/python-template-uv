@@ -11,14 +11,21 @@ mise tasks    # same thing, via mise directly
 
 ## How It Works
 
-The Makefile proxies every target to mise by converting hyphens to colons:
+Most Makefile targets are proxied to mise by converting hyphens to colons:
 
 ```
 make docker-build  →  mise run docker:build
 make check-all     →  mise run check:all
 ```
 
-This is done via `$(subst -,:,$@)` in the Makefile. You never need to edit both files for existing tasks — the Makefile target list (`actions`) and the mise task definition are the only two places a task is registered.
+This is done via `$(subst -,:,$@)` in the Makefile for targets in the `actions` list.
+
+Multi-word targets where the mise task name retains a hyphen in the action part (e.g. `doppler:create-config`, `mise:setup-completions`) require explicit rules, since the generic substitution would incorrectly convert every hyphen:
+
+```
+make doppler-create-config  →  mise run doppler:create-config  (explicit rule)
+make mise-setup-completions →  mise run mise:setup-completions  (explicit rule)
+```
 
 ## Task Reference
 
@@ -158,14 +165,24 @@ mise run release --dry-run
     run = "echo hello"
     ```
 
-2. Add the hyphenated target name to the `actions` list in `Makefile`:
+2. Register the target in `Makefile`:
 
-    ```makefile
-    actions = \
-        ...
-        mycat-mytask \
-        ...
-    ```
+    - **Simple two-part tasks** (`category:action` → `category-action`): add to the `actions` list — the generic `$(subst -,:,$@)` substitution handles the rest.
+
+        ```makefile
+        actions = \
+            ...
+            mycat-mytask \
+            ...
+        ```
+
+    - **Multi-part tasks where the action contains a hyphen** (e.g. `mycat:do-thing`): add an explicit rule so the hyphen in the action part is preserved.
+
+        ```makefile
+        .PHONY: mycat-do-thing
+        mycat-do-thing: _check-mise
+            @mise run "mycat:do-thing"
+        ```
 
 Naming convention: colons (`:`) in mise, hyphens (`-`) in make.
 

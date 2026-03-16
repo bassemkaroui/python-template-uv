@@ -12,11 +12,6 @@ actions = \
 	coverage \
 	{%- if with_doppler %}
 	dc \
-	doppler-create-config \
-	doppler-create-token \
-	doppler-set-token \
-	doppler-delete-config \
-	doppler-upload-secrets \
 	{%- endif %}
 	{%- if dockerfile %}
 	docker-build \
@@ -30,7 +25,6 @@ actions = \
 	docs-deploy \
 	{%- endif %}
 	format \
-	mise-setup-completions \
 	{%- if publish_to_pypi %}
 	publish \
 	{%- endif %}
@@ -55,6 +49,23 @@ _check-mise:
 .PHONY: $(actions)
 $(actions): _check-mise
 	@mise run "$(subst -,:,$@)"
+
+{%- if with_doppler %}
+doppler_actions = \
+	doppler-create-config \
+	doppler-create-token \
+	doppler-set-token \
+	doppler-delete-config \
+	doppler-upload-secrets
+
+.PHONY: $(doppler_actions)
+$(doppler_actions): _check-mise
+	@mise run "doppler:$(patsubst doppler-%,%,$@)"
+{%- endif %}
+
+.PHONY: mise-setup-completions
+mise-setup-completions: _check-mise
+	@mise run "mise:setup-completions"
 
 .PHONY: pre-commit
 pre-commit: _check-mise

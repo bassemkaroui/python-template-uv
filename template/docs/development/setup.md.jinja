@@ -68,11 +68,50 @@ docker compose up --build
 
 This project uses [Doppler](https://www.doppler.com/) for secrets management.
 
+### Initial Setup
+
+Authenticate and link this directory to a Doppler config:
+
 ```bash
 doppler setup
 ```
 
 Once configured, secrets are automatically injected into your environment when running tasks through mise.
+
+### Common Tasks
+
+| Task | mise |
+|------|------|
+| Upload a local `.env` to Doppler | `mise run doppler:upload-secrets` |
+| Create a branch config | `mise run doppler:create-config` |
+| Delete a branch config | `mise run doppler:delete-config` |
+| Create a service token | `mise run doppler:create-token` |
+| Set a preexisting service token | `mise run doppler:set-token` |
+
+> For the full list of options and flags, see the [Task Runner](task-runner.md#doppler-secrets-management) guide.
+
+### Branch Configs
+
+Each developer or feature branch can have its own Doppler config:
+
+```bash
+mise run doppler:create-config --config dev.alice
+mise run doppler:delete-config --config dev.alice
+```
+
+### Service Tokens
+
+Provision a read-only token for CI or another environment:
+
+```bash
+mise run doppler:create-token --token-name ci-token
+```
+
+Or configure an existing token interactively:
+
+```bash
+mise run doppler:set-token
+```
 {% endif %}
 {%- if tox %}
 
