@@ -45,6 +45,16 @@
         "github-actions"
       ],
       "groupName": "GitHub Actions"
+    },
+    {
+      "description": "Ignore python-version in docs workflow \u2014 pinned intentionally",
+      "matchFileNames": [
+        ".github/workflows/docs.yaml"
+      ],
+      "matchDepNames": [
+        "python"
+      ],
+      "enabled": false
     }
   ],
   "customManagers": [
