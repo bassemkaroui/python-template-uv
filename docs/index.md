@@ -84,7 +84,7 @@ Scaffold production-ready Python packages and applications in seconds with [Copi
 
     ---
 
-    MkDocs with Material theme pre-configured. Auto-generated API docs with mkdocstrings. Deploy to GitHub Pages with one command.
+    MkDocs with Material theme pre-configured. Auto-generated docs with mkdocstrings. Deploy to GitHub Pages with one command.
 
     [:octicons-arrow-right-24: Documentation](features/documentation.md)
 

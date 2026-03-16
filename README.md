@@ -116,7 +116,7 @@ make setup-dev
 make setup-cli
 
 # 5. Run quality & tests
-make check-all   # runs all checks: lint, types, docs build, API, etc.
+make check-all   # runs all checks: lint, types, docs build, etc.
 ```
 
 **Stay up to date**

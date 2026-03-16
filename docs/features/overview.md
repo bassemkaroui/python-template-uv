@@ -14,7 +14,7 @@ python-template-uv generates a fully configured Python project with modern tooli
 
 ## Infrastructure
 
-- **[Documentation](documentation.md)** -- MkDocs with Material theme, auto-generated API docs, GitHub Pages deployment
+- **[Documentation](documentation.md)** -- MkDocs with Material theme, auto-generated docs, GitHub Pages deployment
 - **[Docker](docker.md)** -- Production Dockerfile, compose files, development overrides, optional GPU support
 - **[CI/CD](ci-cd.md)** -- GitHub Actions workflows for testing, releasing, docs, and dependency updates
 
