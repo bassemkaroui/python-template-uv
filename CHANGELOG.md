@@ -1,3 +1,97 @@
+## 1.0.0 (2026-03-19)
+
+### ✨ Features
+
+- add mkdocs for the template
+- add support for self hosted Renovate using a GitHub App
+- add support for self hosted Renovate using a GitHub App
+- add support for self-hosted Renovate in the template
+- add support for self-hosted Renovate in the template
+
+### 🐛🚑️ Fixes
+
+- fix an issue with Makefile when commands have more than one hyphen
+- remove font size which made the deployed docs smaller than the locally served
+- remove commitizen-branch since it generates an error when creating docs
+- wrap GitHub Actions expressions in {% raw %} blocks in renovate.yaml.jinja
+- add '.jinja' to renovate github action workflow
+- make 'pre-commit' more robust in _tasks
+- **config**: attempt to correct renovate config to handle template's precommit config
+
+### ♻️ Refactorings
+
+- **ci**: make dependabot optional
+
+### build
+
+- **deps**: update dependency astral-sh/ruff-pre-commit to v0.15.7
+- **deps**: update dependency astral-sh/ruff-pre-commit to v0.15.7
+- **deps**: update ghcr.io/renovatebot/renovate docker tag to v43.83.0
+- **deps**: update ghcr.io/renovatebot/renovate docker tag to v43.83.0
+- **deps**: update dependency astral-sh/uv-pre-commit to v0.10.11 (#62)
+- **deps**: update ghcr.io/renovatebot/renovate docker tag to v43.76.4
+- **deps**: update ghcr.io/renovatebot/renovate docker tag to v43.76.4
+- **deps**: update astral-sh/setup-uv digest to 37802ad
+- **deps**: update astral-sh/setup-uv digest to 37802ad
+- **deps**: update github actions (#56)
+- **deps**: update ghcr.io/renovatebot/renovate docker tag to v43.76.3
+- **deps**: update ghcr.io/renovatebot/renovate docker tag to v43.76.3
+- **deps**: update github actions (major)
+- **deps**: update github actions
+- **deps**: update ghcr.io/renovatebot/renovate docker tag to v43.76.2 (#58)
+- **deps**: update ghcr.io/renovatebot/renovate docker tag to v43.76.1 (#55)
+- **deps**: update softprops/action-gh-release digest to b25b93d (#52)
+- **deps**: update dependency commitizen-tools/commitizen to v4.13.9
+- **deps**: update dependency commitizen-tools/commitizen to v4.13.9
+- **deps**: update dependency astral-sh/uv-pre-commit to v0.10.10
+- **deps**: update dependency astral-sh/uv-pre-commit to v0.10.10
+- **deps**: update dependency astral-sh/ruff-pre-commit to v0.15.6
+- **deps**: update dependency astral-sh/ruff-pre-commit to v0.15.6
+- **deps**: update actions/checkout action to v6
+- **deps**: update actions/checkout action to v6
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.13.9
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.13.9
+- **deps**: update astral-sh/setup-uv digest to e06108d
+- **deps**: update astral-sh/setup-uv digest to e06108d
+- **deps**: update softprops/action-gh-release digest to a06a81a
+- **deps**: update softprops/action-gh-release digest to a06a81a
+- **deps**: update dependency copier to v9.14.0
+- **deps**: update dependency copier to v9.14.0
+- **deps**: lock file maintenance
+- **deps**: lock file maintenance
+- **deps**: update actions/checkout digest to 93cb6ef
+- **deps**: update actions/checkout digest to 93cb6ef
+- **deps**: update actions/setup-python digest to a309ff8
+- **deps**: update actions/setup-python digest to a309ff8
+- **deps**: update jdx/mise-action action to v4
+- **deps**: update jdx/mise-action action to v4
+- **deps**: update actions/upload-artifact action to v7
+- **deps**: update actions/upload-artifact action to v7
+
+### 💚👷 CI & Build
+
+- exclude python-version in docs workflow from being updated by Renovate
+- update Renovate config to detect versions in workflow templates
+
+### 📝💡 Documentation
+
+- remove any mention of API from the docs
+- correct some mistakes in the docs
+- rewrite the template README and changed the contributor docs to include more info
+- add some emojis and fix some rendering issues
+- **mkdocs**: add mise equivalent commands along with make
+- add docs badge to link to the docs website
+- add mkdocs
+
+### 🔧🔨📦️ Configuration, Scripts, Packages
+
+- add prerequisites to mise tools
+- fix some dependencies for docs and add mise tasks for docs
+
+### 🧹 chore
+
+- **pyproject.toml**: set major_version_zero to false in preparation for the first major stable release
+
 ## 0.3.0 (2026-03-14)
 
 ### ✨ Features
