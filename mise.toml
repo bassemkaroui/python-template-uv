@@ -1,3 +1,7 @@
+[tools]
+uv = "latest"
+"pipx:copier" = { version = "latest", uvx_args = "--with copier-templates-extensions"}
+
 # --- Documentation -----------------------------------------------------------
 
 [tasks."docs:check"]
