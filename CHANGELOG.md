@@ -1,3 +1,73 @@
+## 1.0.1 (2026-05-21)
+
+### build
+
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.16.2
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.16.2
+- **deps**: update dependency commitizen-tools/commitizen to v4.16.2
+- **deps**: update dependency commitizen-tools/commitizen to v4.16.2
+- **deps**: lock file maintenance
+- **deps**: lock file maintenance
+- **deps**: update dependency copier to v9.15.1
+- **deps**: update dependency copier to v9.15.1
+- **deps**: update astral-sh/setup-uv action to v8
+- **deps**: update astral-sh/setup-uv action to v8
+- **deps**: update ghcr.io/renovatebot/renovate docker tag to v43.191.1
+- **deps**: update ghcr.io/renovatebot/renovate docker tag to v43.191.1
+- **deps**: update dependency astral-sh/uv-pre-commit to v0.11.15 (#113)
+- **deps**: update dependency astral-sh/ruff-pre-commit to v0.15.13 (#112)
+- **deps**: update actions/create-github-app-token digest to bcd2ba4 (#111)
+- **deps**: update dependency astral-sh/uv-pre-commit to v0.11.14 (#110)
+- **deps**: update dependency astral-sh/uv-pre-commit to v0.11.13 (#109)
+- **deps**: update renovatebot/github-action action to v46.1.14 (#108)
+- **deps**: update dependency astral-sh/uv-pre-commit to v0.11.12 (#107)
+- **deps**: update dependency astral-sh/uv-pre-commit to v0.11.11 (#106)
+- **deps**: update dependency astral-sh/uv-pre-commit to v0.11.10 (#105)
+- **deps**: update renovatebot/github-action action to v46.1.13 (#104)
+- **deps**: update renovatebot/github-action action to v46.1.12 (#99)
+- **deps**: update dependency astral-sh/uv-pre-commit to v0.11.8 (#98)
+- **deps**: update renovatebot/github-action action to v46.1.11 (#97)
+- **deps**: update dependency astral-sh/ruff-pre-commit to v0.15.12 (#94)
+- **deps**: update renovatebot/github-action action to v46.1.10 (#93)
+- **deps**: lock file maintenance
+- **deps**: lock file maintenance
+- **deps**: update softprops/action-gh-release action to v3
+- **deps**: update softprops/action-gh-release action to v3
+- **deps**: update ghcr.io/renovatebot/renovate docker tag to v43.132.1
+- **deps**: update ghcr.io/renovatebot/renovate docker tag to v43.132.1
+- **deps**: update dependency astral-sh/ruff-pre-commit to v0.15.11 (#92)
+- **deps**: update dependency astral-sh/uv-pre-commit to v0.11.7 (#91)
+- **deps**: update renovatebot/github-action action to v46.1.9 (#90)
+- **deps**: update softprops/action-gh-release digest to 3bb1273 (#88)
+- **deps**: update pre-commit hook commitizen-tools/commitizen to v4.13.10 (#87)
+- **deps**: update dependency commitizen-tools/commitizen to v4.13.10 (#86)
+- **deps**: update actions/create-github-app-token digest to 1b10c78 (#85)
+- **deps**: update actions/upload-artifact digest to 043fb46 (#84)
+- **deps**: update dependency copier to v9.14.3 (#83)
+- **deps**: update patch production dependencies (#82)
+- **deps**: update dependency astral-sh/uv-pre-commit to v0.11.5 (#81)
+- **deps**: update dependency astral-sh/uv-pre-commit to v0.11.4 (#80)
+- **deps**: update renovatebot/github-action action to v46.1.8 (#79)
+- **deps**: update dependency astral-sh/ruff-pre-commit to v0.15.9 (#78)
+- **deps**: update dependency astral-sh/uv-pre-commit to v0.11.3 (#77)
+- **deps**: update dependency copier to v9.14.1 (#75)
+- **deps**: update renovatebot/github-action action to v46.1.7 (#74)
+- **deps**: update dependency astral-sh/uv-pre-commit to v0.11.2 (#72)
+- **deps**: update ghcr.io/renovatebot/renovate docker tag to v43.92.1
+- **deps**: update ghcr.io/renovatebot/renovate docker tag to v43.92.1
+- **deps**: update dependency astral-sh/ruff-pre-commit to v0.15.8 (#71)
+- **deps**: update ghcr.io/renovatebot/renovate docker tag to v43.89.8
+- **deps**: update ghcr.io/renovatebot/renovate docker tag to v43.89.8
+- **deps**: update dependency astral-sh/uv-pre-commit to v0.11.1
+- **deps**: update dependency astral-sh/uv-pre-commit to v0.11.1
+- **deps**: update renovatebot/github-action action to v46.1.6 (#68)
+- **deps**: update jdx/mise-action digest to 1648a78 (#67)
+- **deps**: update patch production dependencies (#65)
+
+### chore
+
+- add indent_size for .toml and .md files in editorconfig
+
 ## 1.0.0 (2026-03-19)
 
 ### ✨ Features
