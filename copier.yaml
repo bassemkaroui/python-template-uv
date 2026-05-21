@@ -7,7 +7,7 @@ _jinja_extensions:
 
 _tasks:
   - "git init"
-  - "mkdir scripts"
+  - "mkdir -p scripts"
   - "mise trust"
   - "make setup-dev"
   - >-
