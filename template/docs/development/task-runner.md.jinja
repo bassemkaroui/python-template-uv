@@ -20,10 +20,12 @@ make check-all     →  mise run check:all
 
 This is done via `$(subst -,:,$@)` in the Makefile for targets in the `actions` list.
 
-Multi-word targets where the mise task name retains a hyphen in the action part (e.g. `doppler:create-config`, `mise:setup-completions`) require explicit rules, since the generic substitution would incorrectly convert every hyphen:
+Multi-word targets where the mise task name retains a hyphen in the action part (e.g. `mise:setup-completions`{% if with_doppler %}, `doppler:create-config`{% endif %}) require explicit rules, since the generic substitution would incorrectly convert every hyphen:
 
 ```
+{%- if with_doppler %}
 make doppler-create-config  →  mise run doppler:create-config  (explicit rule)
+{%- endif %}
 make mise-setup-completions →  mise run mise:setup-completions  (explicit rule)
 ```
 
@@ -80,7 +82,7 @@ mise run test -- -k "test_specific"
 | Deploy docs to GitHub Pages | `make docs-deploy` | `mise run docs:deploy` |
 {%- endif %}
 
-### Build & Publish
+### Build{% if publish_to_pypi %} & Publish{% endif %}
 
 | Description | `make` | `mise` |
 |-------------|--------|--------|

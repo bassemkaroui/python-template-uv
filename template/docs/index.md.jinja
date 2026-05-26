@@ -41,7 +41,7 @@ hide:
 
     ---
 
-    Install from PyPI with pip or uv, or clone the repository for development. Get up and running in minutes.
+    Install {% if publish_to_pypi %}from PyPI {% endif %}with pip or uv, or clone the repository for development. Get up and running in minutes.
 
     [:octicons-arrow-right-24: Installation](getting-started/installation.md)
 
@@ -57,7 +57,7 @@ hide:
 
     ---
 
-    pytest with coverage reporting and optional multi-version testing with Tox.
+    pytest with coverage reporting{% if tox %} and optional multi-version testing with Tox{% endif %}.
 
     [:octicons-arrow-right-24: Development setup](development/setup.md)
 

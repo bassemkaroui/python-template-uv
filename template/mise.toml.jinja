@@ -255,7 +255,7 @@ run = [
     "uv run ruff format src tests --config pyproject.toml",
 ]
 
-# --- Build & Publish ---------------------------------------------------------
+# --- Build{% if publish_to_pypi %} & Publish{% endif %} ---------------------------------------------------------
 
 [tasks.build]
 description = "Build source and wheel distributions"

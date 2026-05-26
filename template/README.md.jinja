@@ -116,10 +116,11 @@ Then, install the dependencies using Make:
 {%- if with_typer_cli %}
 
 > [!tip]
-> To make the CLI available globally (without needing to activate the virtual environment every time), you can run:
+> To use the CLI without activating the virtual environment every time, run:
 > ```bash
 > make setup-cli
 > ```
+> This installs the CLI with `uv tool install`. It is available everywhere only when `uv` is installed globally (on your `PATH`) — not just provided through `mise`. If `uv` is only available via `mise`, the CLI still runs without activating the virtualenv, but only from within the project directory.
 {%- endif %}
 
 ## Documentation

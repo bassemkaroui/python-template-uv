@@ -52,13 +52,13 @@ Build and run with Docker Compose:
 
 /// tab | Development
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+docker compose up --build
 ```
 ///
 
 /// tab | Production
 ```bash
-docker compose up --build
+docker compose -f compose.yaml up --build
 ```
 ///
 {% endif %}

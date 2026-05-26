@@ -68,7 +68,7 @@ This will install all dependencies (including dev dependencies) and set up pre-c
 {% if with_typer_cli %}
 ## CLI Installation
 
-To make the CLI available globally (without needing to activate the virtual environment every time):
+To use the CLI without activating the virtual environment every time:
 
 /// tab | make
 ```bash
@@ -81,6 +81,12 @@ make setup-cli
 mise run setup:cli
 ```
 ///
+
+!!! note
+    `setup:cli` installs the CLI with `uv tool install`. It is available **everywhere** only
+    when `uv` is installed globally (on your `PATH`) — not just provided through `mise`. If
+    `uv` is only available via `mise`, the CLI still runs without activating the virtualenv,
+    but only from within the project directory.
 
 After installation, you can run the CLI with:
 
