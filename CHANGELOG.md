@@ -1,3 +1,16 @@
+## 1.0.2 (2026-05-26)
+
+### 🐛🚑️ Fixes
+
+- track scripts/ via .gitkeep instead of mkdir task
+- align generated docs with selected project features
+- make updating projects more idempotent
+
+### build
+
+- **deps**: update dependency astral-sh/uv-pre-commit to v0.11.16 (#115)
+- **deps**: update patch production dependencies (#114)
+
 ## 1.0.1 (2026-05-21)
 
 ### build
