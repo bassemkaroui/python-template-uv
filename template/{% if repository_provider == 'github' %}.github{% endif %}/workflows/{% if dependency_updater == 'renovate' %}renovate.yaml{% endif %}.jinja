@@ -35,7 +35,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
 {% if renovate_auth_method == 'github_app' %}
       - name: Generate GitHub App token
@@ -49,7 +49,7 @@ jobs:
 
 {% endif %}
       - name: Run Renovate
-        uses: renovatebot/github-action@693b9ef15eec82123529a37c782242f091365961 # v46.1.14
+        uses: renovatebot/github-action@3064367f740a1a91cca218698a63902689cce200 # v46.1.20
         with:
           renovate-version: {% raw %}${{ env.RENOVATE_VERSION }}{% endraw %}
 {% if renovate_auth_method == 'github_app' %}
